@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join GameHub - Register</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/auth.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom Checkbox Styling - Fixed */
+        .auth-checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            margin: var(--spacing-md) 0;
+        }
+
+        .auth-checkbox {
+            position: relative;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .auth-checkbox input[type="checkbox"] {
+            opacity: 0;
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .auth-checkbox-custom {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(220, 20, 60, 0.3);
+            border-radius: 4px;
+            background: transparent;
+            position: relative;
+            transition: all var(--transition-normal);
+            pointer-events: none;
+        }
+
+        .auth-checkbox input[type="checkbox"]:checked + .auth-checkbox-custom {
+            background: var(--demon-red);
+            border-color: var(--demon-red);
+        }
+
+        .auth-checkbox input[type="checkbox"]:checked + .auth-checkbox-custom::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .auth-checkbox input[type="checkbox"]:hover + .auth-checkbox-custom {
+            border-color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .auth-checkbox input[type="checkbox"]:focus + .auth-checkbox-custom {
+            outline: 2px solid rgba(220, 20, 60, 0.5);
+            outline-offset: 2px;
+        }
+
+        .auth-checkbox-label {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .auth-checkbox-label a {
+            color: var(--demon-red);
+            text-decoration: none;
+            transition: color var(--transition-normal);
+        }
+
+        .auth-checkbox-label a:hover {
+            color: #ff1744;
+            text-decoration: underline;
+        }
+
+        /* Error state for checkboxes */
+        .auth-checkbox input[type="checkbox"].error + .auth-checkbox-custom {
+            border-color: #ef4444;
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            margin-top: 8px;
+        }
+
+        .password-strength-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .strength-bars {
+            display: flex;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .strength-bar {
+            height: 4px;
+            flex: 1;
+            background: rgba(220, 20, 60, 0.2);
+            border-radius: 2px;
+            transition: all var(--transition-normal);
+        }
+
+        .strength-bar.active {
+            background: var(--demon-red);
+        }
+
+        .password-strength-indicator.weak .strength-bar.active {
+            background: #ef4444;
+        }
+
+        .password-strength-indicator.medium .strength-bar.active {
+            background: #f59e0b;
+        }
+
+        .password-strength-indicator.strong .strength-bar.active {
+            background: #22c55e;
+        }
+
+        .strength-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--light-gray);
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .password-strength-indicator.weak .strength-text {
+            color: #ef4444;
+        }
+
+        .password-strength-indicator.medium .strength-text {
+            color: #f59e0b;
+        }
+
+        .password-strength-indicator.strong .strength-text {
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body class="auth-body">
+    <!-- Auth Background -->
+    <div class="auth-background">
+        <div class="auth-particles"></div>
+    </div>
+
+    <!-- Back to Home -->
+    <div class="auth-back">
+        <a href="../../index.html" class="auth-back-button">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Home</span>
+        </a>
+    </div>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Auth Header -->
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-gamepad auth-logo-icon"></i>
+                    <h1 class="auth-logo-text">GAMEHUB</h1>
+                </div>
+                <h2 class="auth-title">Join the Battle Arena!</h2>
+                <p class="auth-subtitle">Create your gaming account and start your journey to victory.</p>
+            </div>
+
+            <!-- Registration Form -->
+            <form id="registerForm" class="auth-form">
+                <!-- Name Input -->
+                <div class="auth-form-group">
+                    <label for="name" class="auth-form-label">Full Name</label>
+                    <div style="position: relative;">
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            class="auth-form-input" 
+                            placeholder="Enter your full name"
+                            required
+                            autocomplete="name"
+                        >
+                        <i class="fas fa-user auth-form-icon"></i>
+                    </div>
+                    <div class="auth-error" id="name-error" style="display: none;"></div>
+                </div>
+
+                <!-- Email Input -->
+                <div class="auth-form-group">
+                    <label for="email" class="auth-form-label">Email Address</label>
+                    <div style="position: relative;">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="auth-form-input" 
+                            placeholder="Enter your email address"
+                            required
+                            autocomplete="email"
+                        >
+                        <i class="fas fa-envelope auth-form-icon"></i>
+                    </div>
+                    <div class="auth-error" id="email-error" style="display: none;"></div>
+                </div>
+
+                <!-- Role Selection -->
+                <div class="auth-form-group">
+                    <label for="role" class="auth-form-label">Account Type</label>
+                    <div style="position: relative;">
+                        <select id="role" name="role" class="auth-form-select" required>
+                            <option value="">Select your role</option>
+                            <option value="player">🎮 Player - Join tournaments and compete</option>
+                            <option value="organizer">👑 Organizer - Create and manage events</option>
+                        </select>
+                        <i class="fas fa-user-tag auth-form-icon"></i>
+                    </div>
+                    <div class="auth-error" id="role-error" style="display: none;"></div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="auth-form-group">
+                    <label for="password" class="auth-form-label">Password</label>
+                    <div style="position: relative;">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="auth-form-input" 
+                            placeholder="Create a strong password"
+                            required
+                            autocomplete="new-password"
+                        >
+                        <i class="fas fa-lock auth-form-icon"></i>
+                        <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="auth-error" id="password-error" style="display: none;"></div>
+                    <div class="password-strength" id="password-strength"></div>
+                </div>
+
+                <!-- Confirm Password Input -->
+                <div class="auth-form-group">
+                    <label for="confirmPassword" class="auth-form-label">Confirm Password</label>
+                    <div style="position: relative;">
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            class="auth-form-input" 
+                            placeholder="Confirm your password"
+                            required
+                            autocomplete="new-password"
+                        >
+                        <i class="fas fa-shield-alt auth-form-icon"></i>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="auth-error" id="confirmPassword-error" style="display: none;"></div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="auth-checkbox-group" style="margin: var(--spacing-lg) 0;">
+                    <div class="auth-checkbox">
+                        <input type="checkbox" id="termsAccepted" name="termsAccepted" required>
+                        <div class="auth-checkbox-custom"></div>
+                    </div>
+                    <label for="termsAccepted" class="auth-checkbox-label">
+                        I agree to the <a href="../../pages/shared/terms.html" target="_blank">Terms of Service</a> 
+                        and <a href="../../pages/shared/privacy.html" target="_blank">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <!-- Marketing Consent -->
+                <div class="auth-checkbox-group">
+                    <div class="auth-checkbox">
+                        <input type="checkbox" id="marketingConsent" name="marketingConsent">
+                        <div class="auth-checkbox-custom"></div>
+                    </div>
+                    <label for="marketingConsent" class="auth-checkbox-label">
+                        Send me tournament updates and gaming news
+                    </label>
+                </div>
+
+                <!-- Register Button -->
+                <button type="submit" class="auth-button" style="margin-top: var(--spacing-lg);">
+                    <i class="fas fa-rocket"></i>
+                    <span>Join the Arena</span>
+                </button>
+
+                <!-- Loading State -->
+                <div id="register-loading" class="auth-loading" style="display: none;">
+                    Creating your account...
+                </div>
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider">
+                <span>or join with</span>
+            </div>
+
+            <!-- Social Register -->
+            <div class="social-login">
+                <button type="button" class="social-button google" onclick="socialRegister('google')">
+                    <i class="fab fa-google"></i>
+                    <span>Join with Google</span>
+                </button>
+                <button type="button" class="social-button discord" onclick="socialRegister('discord')">
+                    <i class="fab fa-discord"></i>
+                    <span>Join with Discord</span>
+                </button>
+                <button type="button" class="social-button steam" onclick="socialRegister('steam')">
+                    <i class="fab fa-steam"></i>
+                    <span>Join with Steam</span>
+                </button>
+            </div>
+
+            <!-- Login Link -->
+            <div class="auth-links">
+                <div class="auth-link">
+                    Already have an account? 
+                    <a href="login.html">Sign in to battle!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts
+    <script src="../../config/api-config.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+     -->
+    <!-- Replace the entire script section with this: -->
+<script>
+console.log('🔥 BULLETPROOF SCRIPT STARTING');
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM LOADED');
+    
+    const form = document.getElementById('registerForm');
+    console.log('📋 Form found:', !!form);
+    
+    form.addEventListener('submit', async function(e) {
+        console.log('🎯 FORM SUBMITTED!');
+        e.preventDefault();
+        
+        // Get data
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const role = document.getElementById('role').value;
+        const terms = document.getElementById('termsAccepted').checked;
+        
+        console.log('📝 Data:', { name, email, role, terms });
+        
+        // Validate
+        if (!name || !email || !password || !role || !terms) {
+            console.log('❌ Validation failed');
+            alert('Please fill all fields');
+            return;
+        }
+        
+        console.log('✅ Validation passed');
+        
+        try {
+            console.log('🌐 Making API call...');
+            
+            const response = await fetch('http://127.0.0.1:8000/test/register-user', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password, role })
+            });
+            
+            console.log('📡 Response status:', response.status);
+            console.log('📡 Response ok:', response.ok);
+            
+            if (response.ok) {
+                console.log('🎉 SUCCESS! Now redirecting...');
+                
+                // MULTIPLE REDIRECT ATTEMPTS
+                console.log('🔄 Method 1: location.href');
+                location.href = 'login.html';
+                
+                setTimeout(() => {
+                    console.log('🔄 Method 2: window.location.href');
+                    window.location.href = 'login.html';
+                }, 500);
+                
+                setTimeout(() => {
+                    console.log('🔄 Method 3: window.location.replace');
+                    window.location.replace('login.html');
+                }, 1000);
+                
+                setTimeout(() => {
+                    console.log('🔄 Method 4: window.location.assign');
+                    window.location.assign('login.html');
+                }, 1500);
+                
+            } else {
+                console.log('❌ API failed');
+                const error = await response.json().catch(() => ({}));
+                alert('Error: ' + (error.detail || 'Registration failed'));
+            }
+            
+        } catch (error) {
+            console.error('💥 ERROR:', error);
+            alert('Network error: ' + error.message);
+        }
+    });
+    
+    console.log('✅ Form handler attached');
+});
+
+console.log('🎯 SCRIPT COMPLETED');
+</script>
+</body>
+</html>

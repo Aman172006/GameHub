@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub Sidebar Component</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- GameHub Universal Sidebar Component -->
+    <aside class="gamehub-sidebar" id="gamehub-sidebar">
+        <!-- Sidebar Header -->
+        <div class="sidebar-header">
+            <div class="brand-logo" onclick="navigateToHome()">
+                <i class="fas fa-gamepad brand-icon" id="brand-icon"></i>
+                <span class="brand-text" id="brand-text">GAMEHUB</span>
+            </div>
+            
+            <div class="sidebar-controls">
+                <button class="sidebar-minimize" onclick="toggleSidebar()" title="Minimize Sidebar">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="sidebar-toggle" onclick="toggleMobileSidebar()" title="Close Sidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- User Profile Section -->
+        <div class="sidebar-user" id="sidebar-user">
+            <div class="user-avatar" id="user-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-info" id="user-info">
+                <div class="user-name" id="user-name">Loading...</div>
+                <div class="user-role" id="user-role">User</div>
+                <div class="user-level" id="user-level" style="display: none;">
+                    <span class="level-badge">Level <span id="level-number">1</span></span>
+                </div>
+            </div>
+            <button class="user-menu-toggle" onclick="toggleUserDropdown()" id="user-dropdown-toggle">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+
+        <!-- User Quick Stats -->
+        <div class="sidebar-stats" id="sidebar-stats" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-item" id="events-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Events</div>
+                    </div>
+                </div>
+                <div class="stat-item" id="points-stat">
+                    <div class="stat-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Points</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="sidebar-nav" id="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Dashboard</div>
+                <ul class="nav-list" id="primary-nav">
+                    <!-- Populated dynamically based on user role -->
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Events</div>
+                <ul class="nav-list" id="events-nav">
+                    <!-- Populated dynamically -->
+                </ul>
+            </div>
+            
+            <div class="nav-section" id="role-specific-nav" style="display: none;">
+                <div class="nav-section-title" id="role-nav-title">Tools</div>
+                <ul class="nav-list" id="role-nav-list">
+                    <!-- Populated dynamically based on user role -->
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Community</div>
+                <ul class="nav-list" id="community-nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="navigateToLeaderboards()">
+                            <i class="nav-icon fas fa-trophy"></i>
+                            <span class="nav-text">Leaderboards</span>
+                            <span class="nav-badge">New</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="navigateToForum()">
+                            <i class="nav-icon fas fa-comments"></i>
+                            <span class="nav-text">Forum</span>
+                            <span class="nav-counter" id="forum-notifications">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="navigateToStreams()">
+                            <i class="nav-icon fas fa-video"></i>
+                            <span class="nav-text">Live Streams</span>
+                            <span class="live-indicator"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Account</div>
+                <ul class="nav-list" id="account-nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="navigateToProfile()">
+                            <i class="nav-icon fas fa-user"></i>
+                            <span class="nav-text">My Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="navigateToSettings()">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <span class="nav-text">Settings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" onclick="navigateToHelp()">
+                            <i class="nav-icon fas fa-question-circle"></i>
+                            <span class="nav-text">Help & Support</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Quick Actions -->
+        <div class="sidebar-actions" id="sidebar-actions">
+            <button class="action-button primary" id="primary-action" onclick="handlePrimaryAction()">
+                <i class="fas fa-plus"></i>
+                <span>Create Event</span>
+            </button>
+            <button class="action-button secondary" onclick="navigateToSearch()">
+                <i class="fas fa-search"></i>
+                <span>Find Events</span>
+            </button>
+        </div>
+
+        <!-- User Dropdown Menu -->
+        <div class="user-dropdown" id="user-dropdown">
+            <div class="dropdown-header">
+                <div class="dropdown-user-info">
+                    <div class="dropdown-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="dropdown-details">
+                        <div class="dropdown-name" id="dropdown-name">Gaming Warrior</div>
+                        <div class="dropdown-email" id="dropdown-email">user@gamehub.com</div>
+                    </div>
+                </div>
+                <div class="dropdown-status">
+                    <span class="status-indicator online"></span>
+                    <span class="status-text">Online</span>
+                </div>
+            </div>
+            
+            <div class="dropdown-menu">
+                <a href="#" class="dropdown-item" onclick="navigateToProfile()">
+                    <i class="fas fa-user"></i>
+                    <span>View Profile</span>
+                </a>
+                <a href="#" class="dropdown-item" onclick="navigateToSettings()">
+                    <i class="fas fa-cog"></i>
+                    <span>Account Settings</span>
+                </a>
+                <a href="#" class="dropdown-item" onclick="navigateToNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span>Notifications</span>
+                    <span class="dropdown-counter" id="notifications-count">0</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item" onclick="navigateToPrivacy()">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Privacy</span>
+                </a>
+                <a href="#" class="dropdown-item" onclick="navigateToSupport()">
+                    <i class="fas fa-headset"></i>
+                    <span>Support</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item danger" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+            <div class="footer-info">
+                <div class="app-version">v2.1.0</div>
+                <div class="footer-links">
+                    <a href="#" onclick="showAbout()">About</a>
+                    <a href="#" onclick="showTerms()">Terms</a>
+                    <a href="#" onclick="showPrivacy()">Privacy</a>
+                </div>
+            </div>
+            
+            <div class="theme-toggle" id="theme-toggle">
+                <button class="theme-button" onclick="toggleTheme()" title="Toggle Theme">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sidebar Overlay for Mobile -->
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+    </aside>
+
+    <!-- Sidebar JavaScript -->
+    <script>
+        // Sidebar Component JavaScript
+        class GameHubSidebar {
+            constructor() {
+                this.currentUser = null;
+                this.isMinimized = localStorage.getItem('sidebarMinimized') === 'true';
+                this.currentTheme = localStorage.getItem('theme') || 'dark';
+                this.isInitialized = false;
+                
+                this.init();
+            }
+            
+            async init() {
+                if (this.isInitialized) return;
+                
+                // Check authentication status
+                await this.checkAuthStatus();
+                
+                // Setup sidebar based on auth status
+                this.setupSidebar();
+                
+                // Apply saved theme
+                this.applyTheme();
+                
+                // Apply minimized state
+                if (this.isMinimized) {
+                    this.minimizeSidebar();
+                }
+                
+                // Load user stats if authenticated
+                if (this.currentUser) {
+                    this.loadUserStats();
+                    this.loadNotifications();
+                }
+                
+                // Setup event listeners
+                this.setupEventListeners();
+                
+                // Highlight active page
+                this.highlightActivePage();
+                
+                this.isInitialized = true;
+            }
+            
+            async checkAuthStatus() {
+                try {
+                    if (typeof auth !== 'undefined' && auth.isAuthenticated()) {
+                        this.currentUser = auth.getCurrentUser();
+                    }
+                } catch (error) {
+                    console.error('Auth check error:', error);
+                }
+            }
+            
+            setupSidebar() {
+                if (this.currentUser) {
+                    this.setupAuthenticatedSidebar();
+                } else {
+                    this.setupGuestSidebar();
+                }
+            }
+            
+            setupAuthenticatedSidebar() {
+                // Update user info
+                this.updateUserInfo();
+                
+                // Setup role-based navigation
+                this.setupRoleBasedNavigation();
+                
+                // Show user stats
+                document.getElementById('sidebar-stats').style.display = 'block';
+                document.getElementById('user-level').style.display = 'block';
+                
+                // Update brand based on role
+                this.updateBrandForRole();
+            }
+            
+            setupGuestSidebar() {
+                // Hide user-specific elements
+                document.getElementById('sidebar-stats').style.display = 'none';
+                document.getElementById('user-level').style.display = 'none';
+                
+                // Setup guest navigation
+                this.setupGuestNavigation();
+                
+                // Update primary action for guests
+                const primaryAction = document.getElementById('primary-action');
+                primaryAction.innerHTML = '<i class="fas fa-sign-in-alt"></i><span>Login</span>';
+                primaryAction.onclick = () => navigateToLogin();
+            }
+            
+            updateUserInfo() {
+                if (!this.currentUser) return;
+                
+                const userName = this.currentUser.name || 'Gaming Warrior';
+                const userRole = this.currentUser.role || 'Player';
+                const userEmail = this.currentUser.email || '';
+                
+                // Update main user info
+                document.getElementById('user-name').textContent = userName;
+                document.getElementById('user-role').textContent = this.formatRole(userRole);
+                document.getElementById('level-number').textContent = this.calculateUserLevel();
+                
+                // Update dropdown info
+                document.getElementById('dropdown-name').textContent = userName;
+                document.getElementById('dropdown-email').textContent = userEmail;
+            }
+            
+            updateBrandForRole() {
+                const brandIcon = document.getElementById('brand-icon');
+                const brandText = document.getElementById('brand-text');
+                
+                if (this.currentUser.role === 'organizer') {
+                    brandIcon.className = 'fas fa-crown brand-icon';
+                    brandText.textContent = 'ORGANIZER';
+                } else if (this.currentUser.role === 'admin') {
+                    brandIcon.className = 'fas fa-shield-alt brand-icon';
+                    brandText.textContent = 'ADMIN';
+                } else {
+                    brandIcon.className = 'fas fa-gamepad brand-icon';
+                    brandText.textContent = 'GAMEHUB';
+                }
+            }
+            
+            setupRoleBasedNavigation() {
+                const role = this.currentUser.role;
+                
+                // Setup primary navigation
+                this.setupPrimaryNavigation(role);
+                
+                // Setup events navigation
+                this.setupEventsNavigation(role);
+                
+                // Setup role-specific navigation
+                this.setupRoleSpecificNavigation(role);
+                
+                // Update primary action button
+                this.updatePrimaryActionButton(role);
+            }
+            
+            setupPrimaryNavigation(role) {
+                const primaryNav = document.getElementById('primary-nav');
+                
+                if (role === 'player') {
+                    primaryNav.innerHTML = `
+                        <li class="nav-item">
+                            <a href="../player/dashboard.html" class="nav-link" data-page="dashboard">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../player/my-registrations.html" class="nav-link" data-page="registrations">
+                                <i class="nav-icon fas fa-ticket-alt"></i>
+                                <span class="nav-text">My Events</span>
+                                <span class="nav-counter" id="my-events-count">0</span>
+                            </a>
+                        </li>
+                    `;
+                } else if (role === 'organizer') {
+                    primaryNav.innerHTML = `
+                        <li class="nav-item">
+                            <a href="../organizer/dashboard.html" class="nav-link" data-page="dashboard">
+                                <i class="nav-icon fas fa-crown"></i>
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../organizer/manage-events.html" class="nav-link" data-page="manage">
+                                <i class="nav-icon fas fa-cogs"></i>
+                                <span class="nav-text">Manage Events</span>
+                                <span class="nav-counter" id="manage-events-count">0</span>
+                            </a>
+                        </li>
+                    `;
+                }
+            }
+            
+            setupEventsNavigation(role) {
+                const eventsNav = document.getElementById('events-nav');
+                
+                const commonEventLinks = `
+                    <li class="nav-item">
+                        <a href="../events/event-list.html" class="nav-link" data-page="events">
+                            <i class="nav-icon fas fa-calendar"></i>
+                            <span class="nav-text">Browse Events</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../events/event-search.html" class="nav-link" data-page="search">
+                            <i class="nav-icon fas fa-search"></i>
+                            <span class="nav-text">Search Events</span>
+                        </a>
+                    </li>
+                `;
+                
+                if (role === 'player') {
+                    eventsNav.innerHTML = commonEventLinks + `
+                        <li class="nav-item">
+                            <a href="../player/browse-events.html" class="nav-link" data-page="browse">
+                                <i class="nav-icon fas fa-trophy"></i>
+                                <span class="nav-text">Tournaments</span>
+                                <span class="nav-badge">Hot</span>
+                            </a>
+                        </li>
+                    `;
+                } else if (role === 'organizer') {
+                    eventsNav.innerHTML = commonEventLinks + `
+                        <li class="nav-item">
+                            <a href="../organizer/create-event.html" class="nav-link" data-page="create">
+                                <i class="nav-icon fas fa-plus-circle"></i>
+                                <span class="nav-text">Create Event</span>
+                            </a>
+                        </li>
+                    `;
+                }
+            }
+            
+            setupRoleSpecificNavigation(role) {
+                const roleNav = document.getElementById('role-specific-nav');
+                const roleNavTitle = document.getElementById('role-nav-title');
+                const roleNavList = document.getElementById('role-nav-list');
+                
+                if (role === 'organizer') {
+                    roleNavTitle.textContent = 'Organizer Tools';
+                    roleNavList.innerHTML = `
+                        <li class="nav-item">
+                            <a href="../organizer/registrations.html" class="nav-link" data-page="registrations">
+                                <i class="nav-icon fas fa-users"></i>
+                                <span class="nav-text">Registrations</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="../organizer/event-analytics.html" class="nav-link" data-page="analytics">
+                                <i class="nav-icon fas fa-chart-line"></i>
+                                <span class="nav-text">Analytics</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" onclick="navigateToPayments()">
+                                <i class="nav-icon fas fa-credit-card"></i>
+                                <span class="nav-text">Payments</span>
+                            </a>
+                        </li>
+                    `;
+                    roleNav.style.display = 'block';
+                } else if (role === 'admin') {
+                    roleNavTitle.textContent = 'Admin Panel';
+                    roleNavList.innerHTML = `
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" onclick="navigateToAdminPanel()">
+                                <i class="nav-icon fas fa-tools"></i>
+                                <span class="nav-text">System Admin</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" onclick="navigateToUserManagement()">
+                                <i class="nav-icon fas fa-user-cog"></i>
+                                <span class="nav-text">User Management</span>
+                            </a>
+                        </li>
+                    `;
+                    roleNav.style.display = 'block';
+                } else {
+                    roleNav.style.display = 'none';
+                }
+            }
+            
+            setupGuestNavigation() {
+                const primaryNav = document.getElementById('primary-nav');
+                primaryNav.innerHTML = `
+                    <li class="nav-item">
+                        <a href="../../index.html" class="nav-link">
+                            <i class="nav-icon fas fa-home"></i>
+                            <span class="nav-text">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../auth/login.html" class="nav-link">
+                            <i class="nav-icon fas fa-sign-in-alt"></i>
+                            <span class="nav-text">Login</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../auth/register.html" class="nav-link">
+                            <i class="nav-icon fas fa-user-plus"></i>
+                            <span class="nav-text">Register</span>
+                        </a>
+                    </li>
+                `;
+                
+                // Hide role-specific navigation
+                document.getElementById('role-specific-nav').style.display = 'none';
+                
+                // Update user info section for guests
+                document.getElementById('user-name').textContent = 'Guest User';
+                document.getElementById('user-role').textContent = 'Not logged in';
+                document.getElementById('user-avatar').innerHTML = '<i class="fas fa-user-slash"></i>';
+            }
+            
+            updatePrimaryActionButton(role) {
+                const primaryAction = document.getElementById('primary-action');
+                
+                if (role === 'organizer') {
+                    primaryAction.innerHTML = '<i class="fas fa-plus"></i><span>Create Event</span>';
+                    primaryAction.onclick = () => navigateToCreateEvent();
+                } else if (role === 'player') {
+                    primaryAction.innerHTML = '<i class="fas fa-search"></i><span>Find Events</span>';
+                    primaryAction.onclick = () => navigateToSearch();
+                } else {
+                    primaryAction.innerHTML = '<i class="fas fa-gamepad"></i><span>Join Now</span>';
+                    primaryAction.onclick = () => navigateToRegister();
+                }
+            }
+            
+            async loadUserStats() {
+                try {
+                    if (typeof api === 'undefined') return;
+                    
+                    let eventsCount = 0;
+                    let pointsCount = 0;
+                    
+                    if (this.currentUser.role === 'player') {
+                        const registrations = await api.getMyRegistrations();
+                        eventsCount = registrations.length;
+                        pointsCount = this.calculatePlayerPoints(registrations);
+                        
+                        document.getElementById('my-events-count').textContent = eventsCount;
+                    } else if (this.currentUser.role === 'organizer') {
+                        const events = await api.getMyEvents();
+                        eventsCount = events.length;
+                        pointsCount = this.calculateOrganizerPoints(events);
+                        
+                        document.getElementById('manage-events-count').textContent = eventsCount;
+                    }
+                    
+                    // Update sidebar stats
+                    document.querySelector('#events-stat .stat-value').textContent = eventsCount;
+                    document.querySelector('#points-stat .stat-value').textContent = pointsCount;
+                    
+                } catch (error) {
+                    console.error('Error loading user stats:', error);
+                }
+            }
+            
+            async loadNotifications() {
+                try {
+                    if (typeof api === 'undefined') return;
+                    
+                    const notifications = await api.getNotifications();
+                    const unreadCount = notifications.filter(n => !n.read).length;
+                    
+                    document.getElementById('notifications-count').textContent = unreadCount > 0 ? unreadCount : '';
+                    
+                    // Update forum notifications (mock data)
+                    document.getElementById('forum-notifications').textContent = Math.floor(Math.random() * 5);
+                    
+                } catch (error) {
+                    console.error('Error loading notifications:', error);
+                }
+            }
+            
+            highlightActivePage() {
+                const currentPath = window.location.pathname;
+                const navLinks = document.querySelectorAll('.nav-link[data-page]');
+                
+                navLinks.forEach(link => {
+                    const page = link.getAttribute('data-page');
+                    if (currentPath.includes(page)) {
+                        link.classList.add('active');
+                        
+                        // Expand parent section if collapsed
+                        const navSection = link.closest('.nav-section');
+                        if (navSection) {
+                            navSection.classList.add('expanded');
+                        }
+                    }
+                });
+            }
+            
+            setupEventListeners() {
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    const dropdown = document.getElementById('user-dropdown');
+                    const userSection = document.getElementById('sidebar-user');
+                    
+                    if (!userSection.contains(e.target) && dropdown.classList.contains('show')) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+                
+                // Handle responsive behavior
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) {
+                        this.closeMobileSidebar();
+                    }
+                });
+            }
+            
+            // Theme management
+            applyTheme() {
+                document.body.className = `theme-${this.currentTheme}`;
+                const themeIcon = document.getElementById('theme-icon');
+                
+                if (this.currentTheme === 'dark') {
+                    themeIcon.className = 'fas fa-sun';
+                } else {
+                    themeIcon.className = 'fas fa-moon';
+                }
+            }
+            
+            toggleTheme() {
+                this.currentTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+                localStorage.setItem('theme', this.currentTheme);
+                this.applyTheme();
+            }
+            
+            // Sidebar state management
+            minimizeSidebar() {
+                const sidebar = document.getElementById('gamehub-sidebar');
+                sidebar.classList.add('minimized');
+                this.isMinimized = true;
+                localStorage.setItem('sidebarMinimized', 'true');
+            }
+            
+            expandSidebar() {
+                const sidebar = document.getElementById('gamehub-sidebar');
+                sidebar.classList.remove('minimized');
+                this.isMinimized = false;
+                localStorage.setItem('sidebarMinimized', 'false');
+            }
+            
+            toggleSidebar() {
+                if (this.isMinimized) {
+                    this.expandSidebar();
+                } else {
+                    this.minimizeSidebar();
+                }
+            }
+            
+            showMobileSidebar() {
+                const sidebar = document.getElementById('gamehub-sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                
+                sidebar.classList.add('mobile-show');
+                overlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            closeMobileSidebar() {
+                const sidebar = document.getElementById('gamehub-sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                
+                sidebar.classList.remove('mobile-show');
+                overlay.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Utility methods
+            formatRole(role) {
+                const roleMap = {
+                    player: 'Player',
+                    organizer: 'Event Organizer',
+                    admin: 'Administrator'
+                };
+                return roleMap[role] || 'User';
+            }
+            
+            calculateUserLevel() {
+                // Simple level calculation based on activity
+                if (!this.currentUser) return 1;
+                
+                // Mock calculation - replace with actual logic
+                const baseLevel = 1;
+                const activityBonus = Math.floor(Math.random() * 10);
+                return baseLevel + activityBonus;
+            }
+            
+            calculatePlayerPoints(registrations) {
+                // Calculate points based on registrations
+                return registrations.length * 10;
+            }
+            
+            calculateOrganizerPoints(events) {
+                // Calculate points based on events organized
+                return events.length * 25;
+            }
+        }
+        
+        // Global sidebar functions
+        function toggleSidebar() {
+            if (window.gameHubSidebar) {
+                window.gameHubSidebar.toggleSidebar();
+            }
+        }
+        
+        function toggleMobileSidebar() {
+            if (window.gameHubSidebar) {
+                window.gameHubSidebar.closeMobileSidebar();
+            }
+        }
+        
+        function closeMobileSidebar() {
+            if (window.gameHubSidebar) {
+                window.gameHubSidebar.closeMobileSidebar();
+            }
+        }
+        
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('user-dropdown');
+            dropdown.classList.toggle('show');
+        }
+        
+        function toggleTheme() {
+            if (window.gameHubSidebar) {
+                window.gameHubSidebar.toggleTheme();
+            }
+        }
+        
+        function handlePrimaryAction() {
+            if (window.gameHubSidebar && window.gameHubSidebar.currentUser) {
+                const role = window.gameHubSidebar.currentUser.role;
+                if (role === 'organizer') {
+                    navigateToCreateEvent();
+                } else {
+                    navigateToSearch();
+                }
+            } else {
+                navigateToLogin();
+            }
+        }
+        
+        // Navigation functions
+        function navigateToHome() { window.location.href = '../../index.html'; }
+        function navigateToLogin() { window.location.href = '../auth/login.html'; }
+        function navigateToRegister() { window.location.href = '../auth/register.html'; }
+        function navigateToSearch() { window.location.href = '../events/event-search.html'; }
+        function navigateToCreateEvent() { window.location.href = '../organizer/create-event.html'; }
+        function navigateToProfile() {
+            const user = window.gameHubSidebar?.currentUser;
+            if (user) {
+                window.location.href = `../${user.role}/profile.html`;
+            } else {
+                window.location.href = '../auth/login.html';
+            }
+        }
+        function navigateToSettings() { window.location.href = '../shared/settings.html'; }
+        function navigateToHelp() { window.location.href = '../shared/help.html'; }
+        function navigateToLeaderboards() { window.location.href = '../shared/leaderboards.html'; }
+        function navigateToForum() { window.location.href = '../shared/forum.html'; }
+        function navigateToStreams() { window.location.href = '../shared/streams.html'; }
+        function navigateToNotifications() { window.location.href = '../shared/notifications.html'; }
+        function navigateToPrivacy() { window.location.href = '../shared/privacy.html'; }
+        function navigateToSupport() { window.location.href = '../shared/support.html'; }
+        function navigateToPayments() { window.location.href = '../organizer/payments.html'; }
+        function navigateToAdminPanel() { window.location.href = '../admin/dashboard.html'; }
+        function navigateToUserManagement() { window.location.href = '../admin/users.html'; }
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                if (typeof auth !== 'undefined') {
+                    auth.logout();
+                } else {
+                    window.location.href = '../../index.html';
+                }
+            }
+        }
+        
+        // Footer functions
+        function showAbout() { window.location.href = '../shared/about.html'; }
+        function showTerms() { window.location.href = '../shared/terms.html'; }
+        function showPrivacy() { window.location.href = '../shared/privacy.html'; }
+        
+        // Initialize sidebar when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.gameHubSidebar = new GameHubSidebar();
+        });
+    </script>
+
+    <style>
+        /* Sidebar Component Styles */
+        .gamehub-sidebar {
+            width: 280px;
+            height: 100vh;
+            background: var(--gradient-dark);
+            border-right: 1px solid rgba(220, 20, 60, 0.3);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            transition: all var(--transition-normal);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--demon-red) transparent;
+        }
+
+        .gamehub-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .gamehub-sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .gamehub-sidebar::-webkit-scrollbar-thumb {
+            background: var(--demon-red);
+            border-radius: 3px;
+        }
+
+        .gamehub-sidebar.minimized {
+            width: 80px;
+        }
+
+        .gamehub-sidebar.minimized .nav-text,
+        .gamehub-sidebar.minimized .brand-text,
+        .gamehub-sidebar.minimized .user-info,
+        .gamehub-sidebar.minimized .nav-section-title,
+        .gamehub-sidebar.minimized .sidebar-stats,
+        .gamehub-sidebar.minimized .sidebar-actions span,
+        .gamehub-sidebar.minimized .footer-info {
+            display: none;
+        }
+
+        .gamehub-sidebar.minimized .nav-counter,
+        .gamehub-sidebar.minimized .nav-badge,
+        .gamehub-sidebar.minimized .live-indicator {
+            display: none;
+        }
+
+        /* Sidebar Header */
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+            min-height: 70px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .brand-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .brand-icon {
+            font-size: 1.8rem;
+            color: var(--demon-red);
+            text-shadow: 0 0 10px var(--demon-red);
+        }
+
+        .brand-text {
+            font-family: var(--font-primary);
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: 2px;
+        }
+
+        .sidebar-controls {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        .sidebar-minimize,
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: var(--light-gray);
+            padding: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .sidebar-minimize:hover,
+        .sidebar-toggle:hover {
+            color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .sidebar-toggle {
+            display: none;
+        }
+
+        /* User Profile Section */
+        .sidebar-user {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+            position: relative;
+        }
+
+        .user-avatar {
+            font-size: 2.5rem;
+            color: var(--demon-red);
+            flex-shrink: 0;
+        }
+
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-weight: 700;
+            color: var(--white);
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .user-role {
+            color: var(--light-gray);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .user-level {
+            margin-top: 4px;
+        }
+
+        .level-badge {
+            background: var(--gradient-red);
+            color: var(--white);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .user-menu-toggle {
+            background: none;
+            border: none;
+            color: var(--light-gray);
+            padding: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .user-menu-toggle:hover {
+            color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        /* Sidebar Stats */
+        .sidebar-stats {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            background: rgba(220, 20, 60, 0.05);
+            padding: var(--spacing-sm);
+            border-radius: 8px;
+        }
+
+        .stat-icon {
+            color: var(--demon-red);
+            font-size: 1.2rem;
+        }
+
+        .stat-value {
+            font-weight: 900;
+            color: var(--white);
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--light-gray);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation */
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--spacing-md) 0;
+        }
+
+        .nav-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .nav-section-title {
+            color: var(--demon-red);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 0 var(--spacing-lg);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin-bottom: 2px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--white);
+        }
+
+        .nav-link.active {
+            background: rgba(220, 20, 60, 0.15);
+            color: var(--demon-red);
+            border-right: 3px solid var(--demon-red);
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--demon-red);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .nav-text {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .nav-counter,
+        .nav-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        .nav-counter {
+            background: var(--demon-red);
+            color: var(--white);
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            background: #22c55e;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+
+        .nav-badge:empty,
+        .nav-counter:empty {
+            display: none;
+        }
+
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Quick Actions */
+        .sidebar-actions {
+            padding: var(--spacing-lg);
+            border-top: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+            width: 100%;
+            padding: var(--spacing-sm);
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .action-button.primary {
+            background: var(--gradient-red);
+            color: var(--white);
+        }
+
+        .action-button.primary:hover {
+            background: linear-gradient(135deg, #ff1744, #dc143c);
+            transform: translateY(-2px);
+        }
+
+        .action-button.secondary {
+            background: none;
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            color: var(--light-gray);
+        }
+
+        .action-button.secondary:hover {
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--white);
+            border-color: var(--demon-red);
+        }
+
+        /* User Dropdown */
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            left: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            box-shadow: var(--shadow-dark);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+            z-index: 1001;
+        }
+
+        .user-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-header {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .dropdown-user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .dropdown-avatar {
+            font-size: 2rem;
+            color: var(--demon-red);
+        }
+
+        .dropdown-name {
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 2px;
+        }
+
+        .dropdown-email {
+            color: var(--light-gray);
+            font-size: 0.8rem;
+        }
+
+        .dropdown-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        .status-text {
+            color: var(--light-gray);
+            font-size: 0.8rem;
+        }
+
+        .dropdown-menu {
+            padding: var(--spacing-sm) 0;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: all var(--transition-normal);
+        }
+
+        .dropdown-item:hover {
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--white);
+        }
+
+        .dropdown-item.danger {
+            color: #ef4444;
+        }
+
+        .dropdown-item.danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .dropdown-counter {
+            background: var(--demon-red);
+            color: var(--white);
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 4px;
+            border-radius: 6px;
+            margin-left: auto;
+        }
+
+        .dropdown-counter:empty {
+            display: none;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(220, 20, 60, 0.2);
+            margin: var(--spacing-sm) var(--spacing-md);
+        }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-top: 1px solid rgba(220, 20, 60, 0.2);
+            background: rgba(220, 20, 60, 0.05);
+        }
+
+        .footer-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .app-version {
+            color: var(--light-gray);
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        .footer-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.7rem;
+            transition: color var(--transition-normal);
+        }
+
+        .footer-links a:hover {
+            color: var(--demon-red);
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-button {
+            background: none;
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            color: var(--light-gray);
+            padding: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .theme-button:hover {
+            color: var(--demon-red);
+            border-color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        /* Mobile Sidebar */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+            z-index: 999;
+        }
+
+        .sidebar-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .gamehub-sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .gamehub-sidebar.mobile-show {
+                transform: translateX(0);
+            }
+            
+            .sidebar-minimize {
+                display: none;
+            }
+            
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gamehub-sidebar {
+                width: 260px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gamehub-sidebar {
+                width: 240px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+            }
+        }
+
+        /* Theme Variations */
+        .theme-light .gamehub-sidebar {
+            background: linear-gradient(135deg, #ffffff, #f8fafc);
+            border-right-color: rgba(220, 20, 60, 0.2);
+        }
+
+        .theme-light .nav-link {
+            color: #64748b;
+        }
+
+        .theme-light .nav-link:hover {
+            color: #1e293b;
+            background: rgba(220, 20, 60, 0.05);
+        }
+
+        .theme-light .user-name {
+            color: #1e293b;
+        }
+
+        .theme-light .user-dropdown {
+            background: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Animation for minimized state */
+        .gamehub-sidebar.minimized .nav-link {
+            justify-content: center;
+            padding-left: var(--spacing-lg);
+            padding-right: var(--spacing-lg);
+        }
+
+        .gamehub-sidebar.minimized .action-button span {
+            display: none;
+        }
+
+        .gamehub-sidebar.minimized .user-menu-toggle {
+            display: none;
+        }
+    </style>
+</body>
+</html>

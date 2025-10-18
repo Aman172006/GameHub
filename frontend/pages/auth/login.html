@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - GameHub</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/auth.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="auth-body">
+    <!-- Auth Background -->
+    <div class="auth-background">
+        <div class="auth-particles"></div>
+    </div>
+
+    <!-- Back to Home -->
+    <div class="auth-back">
+        <a href="../../index.html" class="auth-back-button">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Home</span>
+        </a>
+    </div>
+
+    <!-- Auth Container -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Auth Header -->
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-gamepad auth-logo-icon"></i>
+                    <h1 class="auth-logo-text">GAMEHUB</h1>
+                </div>
+                <h2 class="auth-title">Welcome Back, Champion!</h2>
+                <p class="auth-subtitle">Sign in to your gaming account and continue your journey to victory.</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <!-- Email Input -->
+                <div class="auth-form-group">
+                    <label for="email" class="auth-form-label">Email Address</label>
+                    <div style="position: relative;">
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="auth-form-input" 
+                            placeholder="Enter your email address"
+                            required
+                            autocomplete="email"
+                        >
+                        <i class="fas fa-envelope auth-form-icon"></i>
+                    </div>
+                    <div class="auth-error" id="email-error" style="display: none;"></div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="auth-form-group">
+                    <label for="password" class="auth-form-label">Password</label>
+                    <div style="position: relative;">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="auth-form-input" 
+                            placeholder="Enter your password"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <i class="fas fa-lock auth-form-icon"></i>
+                        <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="auth-error" id="password-error" style="display: none;"></div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin: var(--spacing-md) 0;">
+                    <div class="auth-checkbox-group">
+                        <div class="auth-checkbox">
+                            <input type="checkbox" id="rememberMe" name="rememberMe">
+                            <div class="auth-checkbox-custom"></div>
+                        </div>
+                        <label for="rememberMe" class="auth-checkbox-label">Remember me</label>
+                    </div>
+                    <a href="forgot-password.html" class="auth-link">
+                        <span style="color: var(--demon-red); text-decoration: none;">Forgot Password?</span>
+                    </a>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="auth-button">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login to Battle Arena</span>
+                </button>
+
+                <!-- Loading State -->
+                <div id="login-loading" class="auth-loading" style="display: none;">
+                    Authenticating...
+                </div>
+            </form>
+
+            <!-- Divider -->
+            <div class="auth-divider">
+                <span>or continue with</span>
+            </div>
+
+            <!-- Social Login -->
+            <div class="social-login">
+                <button type="button" class="social-button google" onclick="socialLogin('google')">
+                    <i class="fab fa-google"></i>
+                    <span>Continue with Google</span>
+                </button>
+                <button type="button" class="social-button discord" onclick="socialLogin('discord')">
+                    <i class="fab fa-discord"></i>
+                    <span>Continue with Discord</span>
+                </button>
+                <button type="button" class="social-button steam" onclick="socialLogin('steam')">
+                    <i class="fab fa-steam"></i>
+                    <span>Continue with Steam</span>
+                </button>
+            </div>
+
+            <!-- Register Link -->
+            <div class="auth-links">
+                <div class="auth-link">
+                    Don't have an account yet? 
+                    <a href="register.html">Join the arena now!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../config/api-config.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    
+    <script>
+        // Initialize login page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupLoginForm();
+            checkExistingAuth();
+            setupFormValidation();
+        });
+
+        // Check if user is already authenticated
+        function checkExistingAuth() {
+            if (auth.isAuthenticated()) {
+                const user = auth.getCurrentUser();
+                if (user) {
+                    // Redirect to appropriate dashboard
+                    window.location.href = `../../../pages/${user.role}/dashboard.html`;
+                }
+            }
+        }
+
+        // Setup login form
+        function setupLoginForm() {
+            const loginForm = document.getElementById('loginForm');
+            
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    return;
+                }
+
+                await handleLogin();
+            });
+
+            // Setup enter key handling
+            const inputs = loginForm.querySelectorAll('input');
+            inputs.forEach((input, index) => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        if (index === inputs.length - 1) {
+                            loginForm.dispatchEvent(new Event('submit'));
+                        } else {
+                            inputs[index + 1].focus();
+                        }
+                    }
+                });
+            });
+        }
+
+        // Handle login process
+        async function handleLogin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+
+            try {
+                showLoadingState(true);
+                clearErrors();
+
+                const result = await auth.login(email, password);
+
+                if (result.success) {
+                    showSuccessMessage('Login successful! Redirecting to dashboard...');
+                    
+                    // Set remember me preference
+                    if (rememberMe) {
+                        localStorage.setItem('rememberLogin', 'true');
+                    }
+
+                    // Small delay to show success message
+                    setTimeout(() => {
+                        const user = result.user;
+                        const redirectUrl = localStorage.getItem('redirectAfterLogin') || 
+                                          `../${user.role}/dashboard.html`;
+                        
+                        localStorage.removeItem('redirectAfterLogin');
+                        window.location.href = redirectUrl;
+                    }, 1500);
+
+                } else {
+                    showErrorMessage(result.error || 'Login failed. Please try again.');
+                }
+
+            } catch (error) {
+                console.error('Login error:', error);
+                showErrorMessage('Network error. Please check your connection and try again.');
+            } finally {
+                showLoadingState(false);
+            }
+        }
+
+        // Form validation
+        function validateForm() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            let isValid = true;
+
+            clearErrors();
+
+            // Email validation
+            if (!email) {
+                showFieldError('email', 'Email is required');
+                isValid = false;
+            } else if (!ValidationUtils.isValidEmail(email)) {
+                showFieldError('email', 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Password validation
+            if (!password) {
+                showFieldError('password', 'Password is required');
+                isValid = false;
+            } else if (password.length < 6) {
+                showFieldError('password', 'Password must be at least 6 characters');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function setupFormValidation() {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+
+            emailInput.addEventListener('blur', function() {
+                const email = this.value.trim();
+                if (email && !ValidationUtils.isValidEmail(email)) {
+                    showFieldError('email', 'Please enter a valid email address');
+                    this.classList.add('error');
+                } else {
+                    clearFieldError('email');
+                    this.classList.remove('error');
+                }
+            });
+
+            passwordInput.addEventListener('input', function() {
+                clearFieldError('password');
+                this.classList.remove('error');
+            });
+        }
+
+        // Show field-specific error
+        function showFieldError(fieldName, message) {
+            const errorElement = document.getElementById(`${fieldName}-error`);
+            const inputElement = document.getElementById(fieldName);
+            
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+            
+            if (inputElement) {
+                inputElement.classList.add('error');
+            }
+        }
+
+        // Clear field-specific error
+        function clearFieldError(fieldName) {
+            const errorElement = document.getElementById(`${fieldName}-error`);
+            const inputElement = document.getElementById(fieldName);
+            
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+            
+            if (inputElement) {
+                inputElement.classList.remove('error');
+            }
+        }
+
+        // Clear all errors
+        function clearErrors() {
+            const errorElements = document.querySelectorAll('.auth-error');
+            const inputElements = document.querySelectorAll('.auth-form-input');
+            
+            errorElements.forEach(element => {
+                element.style.display = 'none';
+            });
+            
+            inputElements.forEach(element => {
+                element.classList.remove('error');
+            });
+        }
+
+        // Show loading state
+        function showLoadingState(show) {
+            const submitButton = document.querySelector('.auth-button');
+            const loadingElement = document.getElementById('login-loading');
+            
+            if (show) {
+                submitButton.style.display = 'none';
+                loadingElement.style.display = 'block';
+            } else {
+                submitButton.style.display = 'block';
+                loadingElement.style.display = 'none';
+            }
+        }
+
+        // Password visibility toggle
+        function togglePassword(fieldId) {
+            const passwordField = document.getElementById(fieldId);
+            const toggleButton = passwordField.parentElement.querySelector('.password-toggle i');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleButton.classList.remove('fa-eye');
+                toggleButton.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleButton.classList.remove('fa-eye-slash');
+                toggleButton.classList.add('fa-eye');
+            }
+        }
+
+        // Social login (placeholder)
+        function socialLogin(provider) {
+            showErrorMessage(`${provider} login is not yet implemented. Please use email login.`);
+        }
+
+        // Message functions
+        function showSuccessMessage(message) {
+            showNotification(message, 'success');
+        }
+
+        function showErrorMessage(message) {
+            showNotification(message, 'error');
+        }
+
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existingNotifications = document.querySelectorAll('.auth-notification');
+            existingNotifications.forEach(notification => notification.remove());
+
+            const notification = document.createElement('div');
+            notification.className = `auth-notification notification-${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="${getNotificationIcon(type)}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+            // Add notification styles
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                max-width: 400px;
+                background: var(--pure-black);
+                border: 1px solid ${type === 'error' ? '#ef4444' : type === 'success' ? '#22c55e' : 'var(--demon-red)'};
+                border-radius: 12px;
+                padding: var(--spacing-md);
+                box-shadow: var(--shadow-dark);
+                z-index: 10000;
+                transform: translateX(100%);
+                opacity: 0;
+                transition: all var(--transition-normal);
+                color: var(--white);
+            `;
+
+            document.body.appendChild(notification);
+
+            // Show notification
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+                notification.style.opacity = '1';
+            }, 100);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.transform = 'translateX(100%)';
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
+        }
+
+        function getNotificationIcon(type) {
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            };
+            return icons[type] || icons.info;
+        }
+    </script>
+</body>
+</html>

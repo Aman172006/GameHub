@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registrations - GameHub</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <i class="fas fa-crown"></i>
+                    <span>ORGANIZER</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="user-info" id="sidebar-user-info">
+                    <div class="user-name">Loading...</div>
+                    <div class="user-role">Organizer</div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="create-event.html" class="nav-link">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Create Event</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="manage-events.html" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Manage Events</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="registrations.html" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Registrations</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="event-analytics.html" class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../shared/profile.html" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-footer">
+                    <button class="btn-logout" onclick="auth.logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 class="page-title">
+                        <i class="fas fa-users"></i>
+                        Event Registrations
+                    </h1>
+                    <p class="page-subtitle">Manage participant registrations and attendance</p>
+                </div>
+                
+                <div class="header-right">
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-registrations">0</div>
+                            <div class="stat-label">Total Registrations</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="pending-approvals">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="checked-in">0</div>
+                            <div class="stat-label">Checked In</div>
+                        </div>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <button class="btn-secondary" onclick="exportRegistrations()">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                        <button class="btn-primary" onclick="openBulkActionsModal()">
+                            <i class="fas fa-tasks"></i>
+                            Bulk Actions
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Registration Content -->
+            <div class="dashboard-content">
+                <!-- Event Selector -->
+                <section class="event-selector-section">
+                    <div class="event-selector-card">
+                        <div class="selector-header">
+                            <h3>
+                                <i class="fas fa-calendar"></i>
+                                Select Event
+                            </h3>
+                        </div>
+                        
+                        <div class="selector-content">
+                            <select id="event-selector" class="event-select" onchange="loadEventRegistrations()">
+                                <option value="">Select an event to view registrations</option>
+                                <!-- Populated dynamically -->
+                            </select>
+                            
+                            <div class="event-info" id="selected-event-info" style="display: none;">
+                                <div class="event-details">
+                                    <div class="event-detail">
+                                        <span class="detail-label">Event Date:</span>
+                                        <span class="detail-value" id="event-date">-</span>
+                                    </div>
+                                    <div class="event-detail">
+                                        <span class="detail-label">Max Participants:</span>
+                                        <span class="detail-value" id="event-capacity">-</span>
+                                    </div>
+                                    <div class="event-detail">
+                                        <span class="detail-label">Registration Deadline:</span>
+                                        <span class="detail-value" id="registration-deadline">-</span>
+                                    </div>
+                                    <div class="event-detail">
+                                        <span class="detail-label">Entry Fee:</span>
+                                        <span class="detail-value" id="event-fee">-</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="event-actions">
+                                    <button class="btn-outline btn-small" onclick="viewEventDetails()">
+                                        <i class="fas fa-eye"></i>
+                                        View Event
+                                    </button>
+                                    <button class="btn-secondary btn-small" onclick="editEvent()">
+                                        <i class="fas fa-edit"></i>
+                                        Edit Event
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Registration Filters & Controls -->
+                <section class="registrations-controls" id="registrations-controls" style="display: none;">
+                    <div class="controls-card">
+                        <div class="controls-header">
+                            <h3>Registration Management</h3>
+                            <div class="view-toggle">
+                                <button class="view-btn active" data-view="table" onclick="switchView('table')">
+                                    <i class="fas fa-table"></i>
+                                    Table
+                                </button>
+                                <button class="view-btn" data-view="cards" onclick="switchView('cards')">
+                                    <i class="fas fa-th"></i>
+                                    Cards
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="controls-content">
+                            <div class="filters-row">
+                                <div class="filter-group">
+                                    <label class="filter-label">Status</label>
+                                    <select id="status-filter" class="filter-select" onchange="applyFilters()">
+                                        <option value="">All Statuses</option>
+                                        <option value="confirmed">Confirmed</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="cancelled">Cancelled</option>
+                                        <option value="checked-in">Checked In</option>
+                                        <option value="no-show">No Show</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label class="filter-label">Payment Status</label>
+                                    <select id="payment-filter" class="filter-select" onchange="applyFilters()">
+                                        <option value="">All Payments</option>
+                                        <option value="paid">Paid</option>
+                                        <option value="pending">Pending Payment</option>
+                                        <option value="refunded">Refunded</option>
+                                        <option value="free">Free Event</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label class="filter-label">Registration Date</label>
+                                    <select id="date-filter" class="filter-select" onchange="applyFilters()">
+                                        <option value="">All Dates</option>
+                                        <option value="today">Today</option>
+                                        <option value="yesterday">Yesterday</option>
+                                        <option value="week">This Week</option>
+                                        <option value="month">This Month</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="filter-group">
+                                    <label class="filter-label">Search</label>
+                                    <div class="search-input-container">
+                                        <input type="text" id="search-input" class="search-input" placeholder="Search participants..." oninput="applyFilters()">
+                                        <i class="fas fa-search search-icon"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="actions-row">
+                                <div class="bulk-selection">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="select-all" onchange="toggleSelectAll()">
+                                        <div class="checkbox-custom"></div>
+                                        <span>Select All</span>
+                                    </label>
+                                    <span class="selected-count" id="selected-count">0 selected</span>
+                                </div>
+                                
+                                <div class="quick-actions">
+                                    <button class="btn-outline btn-small" onclick="sendBulkEmail()" disabled id="email-btn">
+                                        <i class="fas fa-envelope"></i>
+                                        Send Email
+                                    </button>
+                                    <button class="btn-secondary btn-small" onclick="bulkCheckIn()" disabled id="checkin-btn">
+                                        <i class="fas fa-check"></i>
+                                        Check In
+                                    </button>
+                                    <button class="btn-danger btn-small" onclick="bulkCancel()" disabled id="cancel-btn">
+                                        <i class="fas fa-times"></i>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Registrations Display -->
+                <section class="registrations-display" id="registrations-display" style="display: none;">
+                    <!-- Table View -->
+                    <div class="registrations-table-view" id="table-view">
+                        <div class="table-container">
+                            <table class="registrations-table">
+                                <thead>
+                                    <tr>
+                                        <th width="40px">
+                                            <input type="checkbox" onchange="toggleSelectAllTable(this)">
+                                        </th>
+                                        <th>Participant</th>
+                                        <th>Registration Date</th>
+                                        <th>Status</th>
+                                        <th>Payment</th>
+                                        <th>Check-in</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="registrations-table-body">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Cards View -->
+                    <div class="registrations-cards-view" id="cards-view" style="display: none;">
+                        <div class="registrations-grid" id="registrations-cards-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                    
+                    <!-- Empty State -->
+                    <div class="empty-state" id="empty-state" style="display: none;">
+                        <i class="fas fa-users-slash"></i>
+                        <h3>No Registrations Found</h3>
+                        <p>There are no registrations matching your current filters.</p>
+                        <button class="btn-outline" onclick="clearFilters()">
+                            <i class="fas fa-times"></i>
+                            Clear Filters
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Registration Details Modal -->
+                <div id="registration-details-modal" class="modal">
+                    <div class="modal-content large">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-user"></i> Registration Details</h3>
+                            <span class="modal-close" onclick="closeModal('registration-details-modal')">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <div id="registration-details-content">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-secondary" onclick="closeModal('registration-details-modal')">Close</button>
+                            <button class="btn-primary" id="update-registration-btn" onclick="updateRegistration()">
+                                Update Registration
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bulk Actions Modal -->
+                <div id="bulk-actions-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-tasks"></i> Bulk Actions</h3>
+                            <span class="modal-close" onclick="closeModal('bulk-actions-modal')">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <div class="bulk-actions-content">
+                                <p>Select an action to apply to <span id="bulk-selected-count">0</span> registration(s):</p>
+                                
+                                <div class="bulk-action-buttons">
+                                    <button class="bulk-action-btn" onclick="bulkAction('approve')">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Approve Registrations</span>
+                                    </button>
+                                    <button class="bulk-action-btn" onclick="bulkAction('checkin')">
+                                        <i class="fas fa-sign-in-alt"></i>
+                                        <span>Check In Participants</span>
+                                    </button>
+                                    <button class="bulk-action-btn" onclick="bulkAction('email')">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>Send Email</span>
+                                    </button>
+                                    <button class="bulk-action-btn warning" onclick="bulkAction('cancel')">
+                                        <i class="fas fa-ban"></i>
+                                        <span>Cancel Registrations</span>
+                                    </button>
+                                    <button class="bulk-action-btn danger" onclick="bulkAction('refund')">
+                                        <i class="fas fa-undo"></i>
+                                        <span>Process Refunds</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-secondary" onclick="closeModal('bulk-actions-modal')">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Email Composer Modal -->
+                <div id="email-composer-modal" class="modal">
+                    <div class="modal-content large">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-envelope"></i> Send Email</h3>
+                            <span class="modal-close" onclick="closeModal('email-composer-modal')">&times;</span>
+                        </div>
+                        <div class="modal-body">
+                            <div class="email-composer">
+                                <div class="form-group">
+                                    <label class="form-label">Recipients</label>
+                                    <div class="recipients-display" id="email-recipients">
+                                        <!-- Populated dynamically -->
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Email Template</label>
+                                    <select id="email-template" class="form-select" onchange="loadEmailTemplate()">
+                                        <option value="">Custom Email</option>
+                                        <option value="confirmation">Registration Confirmation</option>
+                                        <option value="reminder">Event Reminder</option>
+                                        <option value="checkin">Check-in Instructions</option>
+                                        <option value="cancellation">Event Cancellation</option>
+                                        <option value="update">Event Update</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Subject</label>
+                                    <input type="text" id="email-subject" class="form-input" placeholder="Email subject">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="form-label">Message</label>
+                                    <textarea id="email-message" class="form-textarea" rows="8" placeholder="Type your message..."></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="send-copy">
+                                        <div class="checkbox-custom"></div>
+                                        <span>Send a copy to myself</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-secondary" onclick="closeModal('email-composer-modal')">Cancel</button>
+                            <button class="btn-primary" onclick="sendEmail()">
+                                <i class="fas fa-paper-plane"></i>
+                                Send Email
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../config/api-config.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    
+    <script>
+        let currentEvent = null;
+        let allRegistrations = [];
+        let filteredRegistrations = [];
+        let selectedRegistrations = new Set();
+        let currentView = 'table';
+
+        // Initialize registrations page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication and role
+            if (!auth.requireOrganizer()) {
+                return;
+            }
+            
+            // Update user info in sidebar
+            const user = auth.getCurrentUser();
+            if (user) {
+                updateSidebarUserInfo(user);
+            }
+            
+            // Load organizer events
+            await loadOrganizerEvents();
+        });
+
+        // Update sidebar user info
+        function updateSidebarUserInfo(user) {
+            const userInfo = document.getElementById('sidebar-user-info');
+            if (userInfo) {
+                userInfo.innerHTML = `
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-role">${user.role}</div>
+                `;
+            }
+        }
+
+        // Load organizer's events
+        async function loadOrganizerEvents() {
+            try {
+                const events = await api.getMyEvents();
+                populateEventSelector(events);
+            } catch (error) {
+                console.error('Error loading events:', error);
+                showNotification('Failed to load events', 'error');
+            }
+        }
+
+        function populateEventSelector(events) {
+            const selector = document.getElementById('event-selector');
+            
+            // Clear existing options except the first one
+            selector.innerHTML = '<option value="">Select an event to view registrations</option>';
+            
+            events.forEach(event => {
+                const option = document.createElement('option');
+                option.value = event.id;
+                option.textContent = `${event.title} - ${DateUtils.formatDate(event.date)}`;
+                selector.appendChild(option);
+            });
+        }
+
+        // Load registrations for selected event
+        async function loadEventRegistrations() {
+            const eventId = document.getElementById('event-selector').value;
+            
+            if (!eventId) {
+                hideRegistrationsUI();
+                return;
+            }
+            
+            try {
+                showLoadingState();
+                
+                // Load event details and registrations
+                currentEvent = await api.getEventDetails(eventId);
+                allRegistrations = await api.getEventRegistrations(eventId);
+                
+                // Update UI
+                displayEventInfo();
+                showRegistrationsUI();
+                updateRegistrationStats();
+                applyFilters();
+                
+            } catch (error) {
+                console.error('Error loading registrations:', error);
+                showNotification('Failed to load registrations', 'error');
+            } finally {
+                hideLoadingState();
+            }
+        }
+
+        function displayEventInfo() {
+            document.getElementById('event-date').textContent = DateUtils.formatDate(currentEvent.date);
+            document.getElementById('event-capacity').textContent = currentEvent.max_participants;
+            document.getElementById('registration-deadline').textContent = DateUtils.formatDate(currentEvent.registration_deadline);
+            document.getElementById('event-fee').textContent = currentEvent.entry_fee ? `$${currentEvent.entry_fee}` : 'Free';
+            
+            document.getElementById('selected-event-info').style.display = 'block';
+        }
+
+        function showRegistrationsUI() {
+            document.getElementById('registrations-controls').style.display = 'block';
+            document.getElementById('registrations-display').style.display = 'block';
+        }
+
+        function hideRegistrationsUI() {
+            document.getElementById('registrations-controls').style.display = 'none';
+            document.getElementById('registrations-display').style.display = 'none';
+            document.getElementById('selected-event-info').style.display = 'none';
+        }
+
+        function updateRegistrationStats() {
+            const total = allRegistrations.length;
+            const pending = allRegistrations.filter(r => r.status === 'pending').length;
+            const checkedIn = allRegistrations.filter(r => r.checked_in).length;
+            
+            document.getElementById('total-registrations').textContent = total;
+            document.getElementById('pending-approvals').textContent = pending;
+            document.getElementById('checked-in').textContent = checkedIn;
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const paymentFilter = document.getElementById('payment-filter').value;
+            const dateFilter = document.getElementById('date-filter').value;
+            const searchFilter = document.getElementById('search-input').value.toLowerCase();
+            
+            filteredRegistrations = allRegistrations.filter(registration => {
+                // Status filter
+                if (statusFilter && registration.status !== statusFilter) return false;
+                
+                // Payment filter
+                if (paymentFilter && registration.payment_status !== paymentFilter) return false;
+                
+                // Date filter
+                if (dateFilter && !matchesDateFilter(registration.created_at, dateFilter)) return false;
+                
+                // Search filter
+                if (searchFilter && !matchesSearch(registration, searchFilter)) return false;
+                
+                return true;
+            });
+            
+            displayRegistrations();
+        }
+
+        function matchesDateFilter(date, filter) {
+            const regDate = new Date(date);
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            switch (filter) {
+                case 'today':
+                    return regDate >= today;
+                case 'yesterday':
+                    const yesterday = new Date(today);
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    return regDate >= yesterday && regDate < today;
+                case 'week':
+                    const weekStart = new Date(today);
+                    weekStart.setDate(today.getDate() - today.getDay());
+                    return regDate >= weekStart;
+                case 'month':
+                    return regDate.getMonth() === now.getMonth() && regDate.getFullYear() === now.getFullYear();
+                default:
+                    return true;
+            }
+        }
+
+        function matchesSearch(registration, search) {
+            return registration.participant_name.toLowerCase().includes(search) ||
+                   registration.participant_email.toLowerCase().includes(search) ||
+                   (registration.participant_phone && registration.participant_phone.includes(search));
+        }
+
+        // Display registrations
+        function displayRegistrations() {
+            if (filteredRegistrations.length === 0) {
+                showEmptyState();
+                return;
+            }
+            
+            hideEmptyState();
+            
+            if (currentView === 'table') {
+                displayTableView();
+            } else {
+                displayCardsView();
+            }
+        }
+
+        function displayTableView() {
+            const tbody = document.getElementById('registrations-table-body');
+            
+            tbody.innerHTML = filteredRegistrations.map(registration => `
+                <tr class="registration-row ${selectedRegistrations.has(registration.id) ? 'selected' : ''}">
+                    <td>
+                        <input type="checkbox" class="registration-checkbox" 
+                               data-id="${registration.id}"
+                               ${selectedRegistrations.has(registration.id) ? 'checked' : ''}
+                               onchange="toggleRegistrationSelection(${registration.id}, this.checked)">
+                    </td>
+                    <td>
+                        <div class="participant-info">
+                            <div class="participant-name">${registration.participant_name}</div>
+                            <div class="participant-email">${registration.participant_email}</div>
+                            ${registration.participant_phone ? `<div class="participant-phone">${registration.participant_phone}</div>` : ''}
+                        </div>
+                    </td>
+                    <td>${DateUtils.formatDate(registration.created_at)}</td>
+                    <td>
+                        <span class="status-badge status-${registration.status}">
+                            ${getStatusText(registration.status)}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="payment-badge payment-${registration.payment_status}">
+                            ${getPaymentStatusText(registration.payment_status)}
+                        </span>
+                    </td>
+                    <td>
+                        ${registration.checked_in ? 
+                            `<span class="checkin-status checked-in">
+                                <i class="fas fa-check-circle"></i>
+                                ${DateUtils.formatDate(registration.checked_in_at)}
+                            </span>` :
+                            `<button class="btn-outline btn-small" onclick="checkInParticipant(${registration.id})">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Check In
+                            </button>`
+                        }
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="action-btn" onclick="viewRegistrationDetails(${registration.id})" title="View Details">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" onclick="sendIndividualEmail(${registration.id})" title="Send Email">
+                                <i class="fas fa-envelope"></i>
+                            </button>
+                            <button class="action-btn danger" onclick="cancelRegistration(${registration.id})" title="Cancel Registration">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function displayCardsView() {
+            const container = document.getElementById('registrations-cards-container');
+            
+            container.innerHTML = filteredRegistrations.map(registration => `
+                <div class="registration-card ${selectedRegistrations.has(registration.id) ? 'selected' : ''}">
+                    <div class="card-header">
+                        <div class="card-selection">
+                            <input type="checkbox" class="registration-checkbox" 
+                                   data-id="${registration.id}"
+                                   ${selectedRegistrations.has(registration.id) ? 'checked' : ''}
+                                   onchange="toggleRegistrationSelection(${registration.id}, this.checked)">
+                        </div>
+                        <div class="card-status">
+                            <span class="status-badge status-${registration.status}">
+                                ${getStatusText(registration.status)}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-content">
+                        <div class="participant-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="participant-details">
+                            <h4 class="participant-name">${registration.participant_name}</h4>
+                            <p class="participant-email">${registration.participant_email}</p>
+                            ${registration.participant_phone ? `<p class="participant-phone">${registration.participant_phone}</p>` : ''}
+                        </div>
+                        
+                        <div class="registration-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>Registered ${DateUtils.formatDate(registration.created_at)}</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-credit-card"></i>
+                                <span class="payment-badge payment-${registration.payment_status}">
+                                    ${getPaymentStatusText(registration.payment_status)}
+                                </span>
+                            </div>
+                            ${registration.checked_in ? `
+                                <div class="meta-item">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Checked in ${DateUtils.formatDate(registration.checked_in_at)}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="card-actions">
+                        <button class="btn-outline btn-small" onclick="viewRegistrationDetails(${registration.id})">
+                            <i class="fas fa-eye"></i>
+                            Details
+                        </button>
+                        ${!registration.checked_in ? `
+                            <button class="btn-primary btn-small" onclick="checkInParticipant(${registration.id})">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Check In
+                            </button>
+                        ` : `
+                            <button class="btn-success btn-small" disabled>
+                                <i class="fas fa-check"></i>
+                                Checked In
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // View switching
+        function switchView(view) {
+            currentView = view;
+            
+            // Update buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-view="${view}"]`).classList.add('active');
+            
+            // Update display
+            if (view === 'table') {
+                document.getElementById('table-view').style.display = 'block';
+                document.getElementById('cards-view').style.display = 'none';
+            } else {
+                document.getElementById('table-view').style.display = 'none';
+                document.getElementById('cards-view').style.display = 'block';
+            }
+            
+            displayRegistrations();
+        }
+
+        // Selection management
+        function toggleRegistrationSelection(registrationId, isSelected) {
+            if (isSelected) {
+                selectedRegistrations.add(registrationId);
+            } else {
+                selectedRegistrations.delete(registrationId);
+            }
+            
+            updateSelectionUI();
+        }
+
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('select-all').checked;
+            
+            if (selectAll) {
+                filteredRegistrations.forEach(reg => {
+                    selectedRegistrations.add(reg.id);
+                });
+            } else {
+                selectedRegistrations.clear();
+            }
+            
+            // Update checkboxes
+            document.querySelectorAll('.registration-checkbox').forEach(checkbox => {
+                const regId = parseInt(checkbox.getAttribute('data-id'));
+                checkbox.checked = selectedRegistrations.has(regId);
+            });
+            
+            updateSelectionUI();
+        }
+
+        function updateSelectionUI() {
+            const count = selectedRegistrations.size;
+            document.getElementById('selected-count').textContent = `${count} selected`;
+            
+            // Enable/disable action buttons
+            const hasSelection = count > 0;
+            document.getElementById('email-btn').disabled = !hasSelection;
+            document.getElementById('checkin-btn').disabled = !hasSelection;
+            document.getElementById('cancel-btn').disabled = !hasSelection;
+        }
+
+        // Individual actions
+        async function checkInParticipant(registrationId) {
+            try {
+                await api.checkInParticipant(registrationId);
+                showNotification('Participant checked in successfully!', 'success');
+                loadEventRegistrations();
+            } catch (error) {
+                console.error('Check-in error:', error);
+                showNotification('Failed to check in participant', 'error');
+            }
+        }
+
+        async function cancelRegistration(registrationId) {
+            if (!confirm('Are you sure you want to cancel this registration?')) {
+                return;
+            }
+            
+            try {
+                await api.cancelRegistration(registrationId);
+                showNotification('Registration cancelled successfully', 'success');
+                loadEventRegistrations();
+            } catch (error) {
+                console.error('Cancellation error:', error);
+                showNotification('Failed to cancel registration', 'error');
+            }
+        }
+
+        function viewRegistrationDetails(registrationId) {
+            const registration = allRegistrations.find(r => r.id === registrationId);
+            if (!registration) return;
+            
+            document.getElementById('registration-details-content').innerHTML = `
+                <div class="registration-details">
+                    <div class="details-section">
+                        <h4>Participant Information</h4>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <label>Name:</label>
+                                <span>${registration.participant_name}</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Email:</label>
+                                <span>${registration.participant_email}</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Phone:</label>
+                                <span>${registration.participant_phone || 'N/A'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Registration Date:</label>
+                                <span>${DateUtils.formatDate(registration.created_at)}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="details-section">
+                        <h4>Status Information</h4>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <label>Registration Status:</label>
+                                <span class="status-badge status-${registration.status}">
+                                    ${getStatusText(registration.status)}
+                                </span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Payment Status:</label>
+                                <span class="payment-badge payment-${registration.payment_status}">
+                                    ${getPaymentStatusText(registration.payment_status)}
+                                </span>
+                            </div>
+                            <div class="detail-item">
+                                <label>Check-in Status:</label>
+                                <span>${registration.checked_in ? `Checked in at ${DateUtils.formatDate(registration.checked_in_at)}` : 'Not checked in'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${registration.notes ? `
+                        <div class="details-section">
+                            <h4>Notes</h4>
+                            <p>${registration.notes}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            openModal('registration-details-modal');
+        }
+
+        // Utility functions
+        function getStatusText(status) {
+            const statusMap = {
+                confirmed: 'Confirmed',
+                pending: 'Pending',
+                cancelled: 'Cancelled',
+                'checked-in': 'Checked In',
+                'no-show': 'No Show'
+            };
+            return statusMap[status] || status;
+        }
+
+        function getPaymentStatusText(status) {
+            const statusMap = {
+                paid: 'Paid',
+                pending: 'Pending',
+                refunded: 'Refunded',
+                free: 'Free Event'
+            };
+            return statusMap[status] || status;
+        }
+
+        function showEmptyState() {
+            document.getElementById('empty-state').style.display = 'block';
+            document.getElementById('table-view').style.display = 'none';
+            document.getElementById('cards-view').style.display = 'none';
+        }
+
+        function hideEmptyState() {
+            document.getElementById('empty-state').style.display = 'none';
+        }
+
+        function clearFilters() {
+            document.getElementById('status-filter').value = '';
+            document.getElementById('payment-filter').value = '';
+            document.getElementById('date-filter').value = '';
+            document.getElementById('search-input').value = '';
+            applyFilters();
+        }
+
+        function exportRegistrations() {
+            // Create CSV content
+            const headers = ['Name', 'Email', 'Phone', 'Registration Date', 'Status', 'Payment Status', 'Checked In'];
+            const csvContent = [
+                headers.join(','),
+                ...filteredRegistrations.map(reg => [
+                    reg.participant_name,
+                    reg.participant_email,
+                    reg.participant_phone || '',
+                    DateUtils.formatDate(reg.created_at),
+                    getStatusText(reg.status),
+                    getPaymentStatusText(reg.payment_status),
+                    reg.checked_in ? 'Yes' : 'No'
+                ].join(','))
+            ].join('\n');
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `registrations-${currentEvent.title}-${Date.now()}.csv`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('Registration data exported successfully!', 'success');
+        }
+
+        // Navigation functions
+        function viewEventDetails() {
+            localStorage.setItem('selectedEventId', currentEvent.id);
+            window.location.href = '../events/event-details.html';
+        }
+
+        function editEvent() {
+            localStorage.setItem('editEventId', currentEvent.id);
+            window.location.href = 'create-event.html';
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.dashboard-sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        // Loading and error states
+        function showLoadingState() {
+            // Show loading indicators
+        }
+
+        function hideLoadingState() {
+            // Hide loading indicators
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Placeholder functions for additional features
+        function openBulkActionsModal() {
+            document.getElementById('bulk-selected-count').textContent = selectedRegistrations.size;
+            openModal('bulk-actions-modal');
+        }
+
+        function bulkAction(action) {
+            // Implement bulk actions
+            showNotification(`Bulk ${action} feature coming soon!`, 'info');
+            closeModal('bulk-actions-modal');
+        }
+
+        function sendBulkEmail() {
+            openModal('email-composer-modal');
+        }
+
+        function sendIndividualEmail(registrationId) {
+            selectedRegistrations.clear();
+            selectedRegistrations.add(registrationId);
+            openModal('email-composer-modal');
+        }
+
+        function sendEmail() {
+            showNotification('Email sent successfully!', 'success');
+            closeModal('email-composer-modal');
+        }
+
+        function loadEmailTemplate() {
+            // Load predefined email templates
+            const template = document.getElementById('email-template').value;
+            // Implement template loading
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            const icon = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            }[type];
+            
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="${icon}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                closeNotification(notification.querySelector('.notification-close'));
+            }, 5000);
+        }
+
+        function closeNotification(button) {
+            const notification = button.closest('.notification');
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }
+    </script>
+
+    <style>
+        /* Registration Management Specific Styles */
+        .event-selector-card,
+        .controls-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .selector-header,
+        .controls-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .selector-header h3,
+        .controls-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .event-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 1rem;
+            transition: all var(--transition-normal);
+        }
+
+        .event-select:focus {
+            outline: none;
+            border-color: var(--demon-red);
+        }
+
+        .event-info {
+            margin-top: var(--spacing-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: var(--spacing-lg);
+        }
+
+        .event-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            flex: 1;
+        }
+
+        .event-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-value {
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .event-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        /* Filters */
+        .filters-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .actions-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-lg);
+            padding-top: var(--spacing-md);
+            border-top: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .bulk-selection {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .selected-count {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        /* Table View */
+        .table-container {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .registrations-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .registrations-table th {
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--white);
+            font-weight: 700;
+            padding: var(--spacing-md);
+            text-align: left;
+            border-bottom: 1px solid rgba(220, 20, 60, 0.3);
+        }
+
+        .registrations-table td {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.1);
+            color: var(--light-gray);
+        }
+
+        .registrations-table tr:hover {
+            background: rgba(220, 20, 60, 0.05);
+        }
+
+        .registration-row.selected {
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .participant-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .participant-name {
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .participant-email {
+            font-size: 0.9rem;
+            color: var(--light-gray);
+        }
+
+        .participant-phone {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+        }
+
+        /* Status Badges */
+        .status-badge,
+        .payment-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-confirmed {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .status-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .status-checked-in {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .status-no-show {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+        }
+
+        .payment-paid {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .payment-pending {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .payment-refunded {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .payment-free {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .checkin-status {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-size: 0.8rem;
+        }
+
+        .checkin-status.checked-in {
+            color: #22c55e;
+        }
+
+        /* Cards View */
+        .registrations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .registration-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .registration-card:hover {
+            border-color: var(--demon-red);
+            transform: translateY(-2px);
+        }
+
+        .registration-card.selected {
+            border-color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .card-content {
+            padding: var(--spacing-lg);
+        }
+
+        .participant-avatar {
+            font-size: 3rem;
+            color: var(--demon-red);
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .participant-details {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .participant-details h4 {
+            color: var(--white);
+            margin: 0 0 var(--spacing-xs) 0;
+        }
+
+        .participant-details p {
+            color: var(--light-gray);
+            margin: 2px 0;
+            font-size: 0.9rem;
+        }
+
+        .registration-meta {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--light-gray);
+            font-size: 0.8rem;
+        }
+
+        .meta-item i {
+            width: 16px;
+            color: var(--demon-red);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            border-top: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .card-actions .btn-small {
+            flex: 1;
+            justify-content: center;
+        }
+
+        /* Bulk Actions */
+        .bulk-action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .bulk-action-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            background: none;
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            color: var(--white);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-align: left;
+            width: 100%;
+        }
+
+        .bulk-action-btn:hover {
+            background: rgba(220, 20, 60, 0.1);
+            border-color: var(--demon-red);
+        }
+
+        .bulk-action-btn.warning {
+            border-color: rgba(245, 158, 11, 0.3);
+            color: #f59e0b;
+        }
+
+        .bulk-action-btn.warning:hover {
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .bulk-action-btn.danger {
+            border-color: rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .bulk-action-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        /* Email Composer */
+        .email-composer {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .recipients-display {
+            background: rgba(220, 20, 60, 0.05);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 8px;
+            padding: var(--spacing-sm);
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        /* Registration Details */
+        .registration-details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .details-section {
+            background: rgba(220, 20, 60, 0.05);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .details-section h4 {
+            color: var(--demon-red);
+            margin: 0 0 var(--spacing-md) 0;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid rgba(220, 20, 60, 0.1);
+        }
+
+        .detail-item label {
+            font-weight: 600;
+            color: var(--light-gray);
+        }
+
+        .detail-item span {
+            color: var(--white);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--light-gray);
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--demon-red);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .empty-state h3 {
+            color: var(--white);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .filters-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-stats {
+                display: none;
+            }
+            
+            .actions-row {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+            
+            .filters-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .registrations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .event-info {
+                flex-direction: column;
+            }
+            
+            .event-details {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .event-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+            }
+            
+            .bulk-action-buttons {
+                gap: var(--spacing-sm);
+            }
+        }
+    </style>
+</body>
+</html>

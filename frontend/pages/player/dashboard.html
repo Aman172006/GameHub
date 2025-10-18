@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Dashboard - GameHub</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="dashboard-loading">
+        <div class="loading-content">
+            <div class="gaming-logo">
+                <i class="fas fa-gamepad"></i>
+                <h2>GAMEHUB</h2>
+            </div>
+            <div class="loading-text">Loading Player Dashboard...</div>
+        </div>
+    </div>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GAMEHUB</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info" id="sidebar-user-info">
+                    <div class="user-name">Loading...</div>
+                    <div class="user-role">Player</div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item active">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="browse-events.html" class="nav-link">
+                            <i class="fas fa-calendar"></i>
+                            <span>Browse Events</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="my-registrations.html" class="nav-link">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span>My Registrations</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="profile.html" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../events/event-search.html" class="nav-link">
+                            <i class="fas fa-search"></i>
+                            <span>Search Events</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-footer">
+                    <button class="btn-logout" onclick="auth.logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 class="page-title">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Player Dashboard
+                    </h1>
+                    <p class="page-subtitle">Welcome back, champion! Ready for your next battle?</p>
+                </div>
+                
+                <div class="header-right">
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-registrations">0</div>
+                            <div class="stat-label">Total Events</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="active-registrations">0</div>
+                            <div class="stat-label">Active Events</div>
+                        </div>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <button class="btn-primary" onclick="goToEvents()">
+                            <i class="fas fa-plus"></i>
+                            Join Event
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Quick Actions -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Quick Actions</h2>
+                    </div>
+                    
+                    <div class="quick-actions-grid">
+                        <div class="action-card" onclick="goToEvents()">
+                            <div class="action-icon">
+                                <i class="fas fa-calendar-plus"></i>
+                            </div>
+                            <h3>Browse Events</h3>
+                            <p>Find and join exciting tournaments</p>
+                            <div class="action-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="action-card" onclick="goToRegistrations()">
+                            <div class="action-icon">
+                                <i class="fas fa-ticket-alt"></i>
+                            </div>
+                            <h3>My Registrations</h3>
+                            <p>View your registered events</p>
+                            <div class="action-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="action-card" onclick="goToProfile()">
+                            <div class="action-icon">
+                                <i class="fas fa-user-edit"></i>
+                            </div>
+                            <h3>Update Profile</h3>
+                            <p>Manage your account settings</p>
+                            <div class="action-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="action-card" onclick="goToSearch()">
+                            <div class="action-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h3>Search Events</h3>
+                            <p>Find events by category or location</p>
+                            <div class="action-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Upcoming Events -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Upcoming Events</h2>
+                        <a href="my-registrations.html" class="section-action">View All</a>
+                    </div>
+                    
+                    <div class="events-container" id="upcoming-events">
+                        <!-- Events will be loaded here -->
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading your upcoming events...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Activity -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Activity</h2>
+                    </div>
+                    
+                    <div class="activity-feed" id="recent-activity">
+                        <!-- Activity items will be loaded here -->
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading recent activity...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Featured Tournaments -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Featured Tournaments</h2>
+                        <a href="browse-events.html" class="section-action">Browse All</a>
+                    </div>
+                    
+                    <div class="events-grid" id="featured-events">
+                        <!-- Featured events will be loaded here -->
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading featured tournaments...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../config/api-config.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    
+    <script>
+        // Initialize player dashboard
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication
+            if (!auth.requirePlayer()) {
+                return;
+            }
+            
+            // Initialize dashboard
+            await initializePlayerDashboard();
+            
+            // Hide loading screen
+            setTimeout(() => {
+                hideLoadingScreen();
+            }, 1000);
+        });
+        
+        // Dashboard initialization
+        async function initializePlayerDashboard() {
+            try {
+                // Update user info in sidebar
+                const user = auth.getCurrentUser();
+                if (user) {
+                    updateSidebarUserInfo(user);
+                }
+                
+                // Load dashboard data
+                await Promise.all([
+                    loadPlayerStats(),
+                    loadUpcomingEvents(),
+                    loadRecentActivity(),
+                    loadFeaturedEvents()
+                ]);
+                
+            } catch (error) {
+                console.error('Dashboard initialization error:', error);
+                showNotification('Failed to load dashboard data', 'error');
+            }
+        }
+        
+        // Update sidebar user info
+        function updateSidebarUserInfo(user) {
+            const userInfo = document.getElementById('sidebar-user-info');
+            if (userInfo) {
+                userInfo.innerHTML = `
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-role">${user.role}</div>
+                `;
+            }
+        }
+        
+        // Load player statistics
+        async function loadPlayerStats() {
+            try {
+                const registrations = await api.getMyRegistrations();
+                
+                const totalRegistrations = registrations.length;
+                const activeRegistrations = registrations.filter(reg => 
+                    reg.status === 'registered' && new Date(reg.event.date) > new Date()
+                ).length;
+                
+                document.getElementById('total-registrations').textContent = totalRegistrations;
+                document.getElementById('active-registrations').textContent = activeRegistrations;
+                
+            } catch (error) {
+                console.error('Error loading player stats:', error);
+            }
+        }
+        
+        // Load upcoming events
+        async function loadUpcomingEvents() {
+            try {
+                const registrations = await api.getMyRegistrations();
+                const upcomingEvents = registrations
+                    .filter(reg => reg.status === 'registered' && new Date(reg.event.date) > new Date())
+                    .slice(0, 3);
+                
+                const container = document.getElementById('upcoming-events');
+                
+                if (upcomingEvents.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <h3>No Upcoming Events</h3>
+                            <p>You haven't registered for any upcoming events.</p>
+                            <button class="btn-primary" onclick="goToEvents()">Browse Events</button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = upcomingEvents.map(reg => `
+                    <div class="event-card-mini">
+                        <div class="event-header">
+                            <div class="event-category">${reg.event.category}</div>
+                            <div class="event-date">${formatDate(reg.event.date)}</div>
+                        </div>
+                        <h4 class="event-title">${reg.event.title}</h4>
+                        <div class="event-info">
+                            <span class="event-time">
+                                <i class="fas fa-clock"></i> ${reg.event.time}
+                            </span>
+                            <span class="event-location">
+                                <i class="fas fa-map-marker-alt"></i> ${reg.event.location}
+                            </span>
+                        </div>
+                        <div class="event-actions">
+                            <button class="btn-secondary-sm" onclick="viewEventDetails(${reg.event.id})">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading upcoming events:', error);
+                document.getElementById('upcoming-events').innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load upcoming events</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Load recent activity
+        async function loadRecentActivity() {
+            try {
+                const registrations = await api.getMyRegistrations();
+                const recentActivity = registrations
+                    .sort((a, b) => new Date(b.registered_at) - new Date(a.registered_at))
+                    .slice(0, 5);
+                
+                const container = document.getElementById('recent-activity');
+                
+                if (recentActivity.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-history"></i>
+                            <p>No recent activity</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = recentActivity.map(reg => `
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">
+                                Registered for <strong>${reg.event.title}</strong>
+                            </div>
+                            <div class="activity-time">${formatTimeAgo(reg.registered_at)}</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading recent activity:', error);
+                document.getElementById('recent-activity').innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load recent activity</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Load featured events
+        async function loadFeaturedEvents() {
+            try {
+                const events = await api.getFeaturedEvents();
+                const container = document.getElementById('featured-events');
+                
+                if (events.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <p>No featured events available</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = events.slice(0, 4).map(event => `
+                    <div class="event-card">
+                        <div class="event-header">
+                            <span class="event-category">${event.category}</span>
+                            <div class="event-date">
+                                <div>${formatDate(event.date)}</div>
+                                <div>${event.time}</div>
+                            </div>
+                        </div>
+                        <h3 class="event-title">${event.title}</h3>
+                        <p class="event-description">${event.description}</p>
+                        <div class="event-info">
+                            <div class="event-participants">
+                                <i class="fas fa-users"></i>
+                                <span>${event.registered_count || 0}/${event.max_participants}</span>
+                            </div>
+                            <div class="event-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${event.location}</span>
+                            </div>
+                        </div>
+                        <div class="event-actions">
+                            <button class="btn-primary" onclick="registerForEvent(${event.id})">
+                                <i class="fas fa-plus"></i> Join
+                            </button>
+                            <button class="btn-secondary" onclick="viewEventDetails(${event.id})">
+                                <i class="fas fa-eye"></i> Details
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading featured events:', error);
+                document.getElementById('featured-events').innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load featured events</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Navigation functions
+        function goToEvents() {
+            window.location.href = 'browse-events.html';
+        }
+        
+        function goToRegistrations() {
+            window.location.href = 'my-registrations.html';
+        }
+        
+        function goToProfile() {
+            window.location.href = 'profile.html';
+        }
+        
+        function goToSearch() {
+            window.location.href = '../events/event-search.html';
+        }
+        
+        function viewEventDetails(eventId) {
+            localStorage.setItem('selectedEventId', eventId);
+            window.location.href = '../events/event-details.html';
+        }
+        
+        async function registerForEvent(eventId) {
+            try {
+                showLoadingState('Registering for event...');
+                
+                const result = await api.registerForEvent(eventId);
+                
+                if (result) {
+                    showNotification('Successfully registered for the event!', 'success');
+                    // Refresh dashboard data
+                    await loadPlayerStats();
+                    await loadUpcomingEvents();
+                    await loadRecentActivity();
+                    await loadFeaturedEvents();
+                }
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                showNotification('Failed to register for event. Please try again.', 'error');
+            } finally {
+                hideLoadingState();
+            }
+        }
+        
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.dashboard-sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+        
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }
+        
+        // Utility functions
+        function formatDate(dateString) {
+            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        function formatTimeAgo(dateString) {
+            const now = new Date();
+            const date = new Date(dateString);
+            const diffInSeconds = Math.floor((now - date) / 1000);
+            
+            if (diffInSeconds < 60) return 'Just now';
+            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+            return `${Math.floor(diffInSeconds / 86400)}d ago`;
+        }
+    </script>
+</body>
+</html>

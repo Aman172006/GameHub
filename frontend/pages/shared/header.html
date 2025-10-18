@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub Header Component</title>
+    
+    <!-- This is a shared header component that can be included in other pages -->
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- GameHub Universal Header Component -->
+    <header class="gamehub-header" id="gamehub-header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <!-- Brand Logo -->
+                <div class="nav-brand" onclick="goToHome()">
+                    <div class="brand-logo">
+                        <i class="fas fa-gamepad brand-icon"></i>
+                        <span class="brand-text">GAMEHUB</span>
+                    </div>
+                    <div class="brand-tagline">Ultimate Gaming Arena</div>
+                </div>
+
+                <!-- Main Navigation Menu -->
+                <div class="nav-menu" id="nav-menu">
+                    <div class="nav-section primary-nav">
+                        <a href="../../index.html" class="nav-link" data-page="home">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                        <a href="../events/event-list.html" class="nav-link" data-page="events">
+                            <i class="fas fa-calendar"></i>
+                            <span>Events</span>
+                        </a>
+                        <a href="../events/event-search.html" class="nav-link" data-page="search">
+                            <i class="fas fa-search"></i>
+                            <span>Search</span>
+                        </a>
+                        <a href="../player/browse-events.html" class="nav-link" data-page="browse">
+                            <i class="fas fa-trophy"></i>
+                            <span>Tournaments</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Role-based Navigation (populated dynamically) -->
+                    <div class="nav-section role-nav" id="role-nav">
+                        <!-- Will be populated based on user role -->
+                    </div>
+                </div>
+
+                <!-- User Actions -->
+                <div class="nav-actions" id="nav-actions">
+                    <!-- Guest Navigation -->
+                    <div class="guest-actions" id="guest-actions">
+                        <button class="btn-secondary nav-btn" onclick="goToLogin()">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </button>
+                        <button class="btn-primary nav-btn" onclick="goToRegister()">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Join Now</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Authenticated User Actions -->
+                    <div class="user-actions" id="user-actions" style="display: none;">
+                        <!-- Quick Action Buttons -->
+                        <div class="quick-actions">
+                            <button class="quick-action-btn" id="notifications-btn" onclick="toggleNotifications()" title="Notifications">
+                                <i class="fas fa-bell"></i>
+                                <span class="notification-badge" id="notification-count" style="display: none;">0</span>
+                            </button>
+                            <button class="quick-action-btn" id="messages-btn" onclick="toggleMessages()" title="Messages">
+                                <i class="fas fa-envelope"></i>
+                                <span class="message-badge" id="message-count" style="display: none;">0</span>
+                            </button>
+                        </div>
+                        
+                        <!-- User Menu -->
+                        <div class="user-menu" id="user-menu">
+                            <button class="user-menu-toggle" onclick="toggleUserMenu()">
+                                <div class="user-avatar" id="user-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="user-info">
+                                    <span class="user-name" id="user-name">Loading...</span>
+                                    <span class="user-role" id="user-role">User</span>
+                                </div>
+                                <i class="fas fa-chevron-down dropdown-icon"></i>
+                            </button>
+                            
+                            <!-- User Dropdown Menu -->
+                            <div class="user-dropdown" id="user-dropdown">
+                                <div class="dropdown-header">
+                                    <div class="user-avatar-large">
+                                        <i class="fas fa-user-circle"></i>
+                                    </div>
+                                    <div class="user-details">
+                                        <div class="user-name-large" id="user-name-dropdown">Gaming Warrior</div>
+                                        <div class="user-email" id="user-email">user@gamehub.com</div>
+                                        <div class="user-level">Level <span id="user-level">1</span></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="dropdown-menu">
+                                    <!-- Role-specific Menu Items -->
+                                    <div class="menu-section role-menu" id="role-menu">
+                                        <!-- Populated dynamically based on user role -->
+                                    </div>
+                                    
+                                    <!-- Common Menu Items -->
+                                    <div class="menu-section common-menu">
+                                        <a href="../shared/profile.html" class="menu-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>My Profile</span>
+                                        </a>
+                                        <a href="#" class="menu-item" onclick="showSettings()">
+                                            <i class="fas fa-cog"></i>
+                                            <span>Settings</span>
+                                        </a>
+                                        <a href="#" class="menu-item" onclick="showHelp()">
+                                            <i class="fas fa-question-circle"></i>
+                                            <span>Help & Support</span>
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="menu-divider"></div>
+                                    
+                                    <!-- Account Actions -->
+                                    <div class="menu-section account-actions">
+                                        <button class="menu-item logout-btn" onclick="handleLogout()">
+                                            <i class="fas fa-sign-out-alt"></i>
+                                            <span>Logout</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Overlay -->
+        <div class="mobile-menu-overlay" id="mobile-menu-overlay" onclick="closeMobileMenu()"></div>
+        
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobile-menu">
+            <div class="mobile-menu-header">
+                <div class="brand-logo">
+                    <i class="fas fa-gamepad brand-icon"></i>
+                    <span class="brand-text">GAMEHUB</span>
+                </div>
+                <button class="mobile-menu-close" onclick="closeMobileMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="mobile-menu-content">
+                <!-- User Info (if authenticated) -->
+                <div class="mobile-user-info" id="mobile-user-info" style="display: none;">
+                    <div class="mobile-user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="mobile-user-details">
+                        <div class="mobile-user-name" id="mobile-user-name">Gaming Warrior</div>
+                        <div class="mobile-user-role" id="mobile-user-role">Player</div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Navigation Links -->
+                <div class="mobile-nav-links">
+                    <a href="../../index.html" class="mobile-nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="../events/event-list.html" class="mobile-nav-link">
+                        <i class="fas fa-calendar"></i>
+                        <span>Events</span>
+                    </a>
+                    <a href="../events/event-search.html" class="mobile-nav-link">
+                        <i class="fas fa-search"></i>
+                        <span>Search Events</span>
+                    </a>
+                    <a href="../player/browse-events.html" class="mobile-nav-link">
+                        <i class="fas fa-trophy"></i>
+                        <span>Browse Tournaments</span>
+                    </a>
+                    
+                    <!-- Role-specific mobile links -->
+                    <div class="mobile-role-links" id="mobile-role-links">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Mobile Actions -->
+                <div class="mobile-actions" id="mobile-actions">
+                    <!-- Guest actions -->
+                    <div class="mobile-guest-actions" id="mobile-guest-actions">
+                        <button class="btn-primary mobile-btn" onclick="goToLogin()">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Login</span>
+                        </button>
+                        <button class="btn-outline mobile-btn" onclick="goToRegister()">
+                            <i class="fas fa-user-plus"></i>
+                            <span>Join GameHub</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Authenticated user actions -->
+                    <div class="mobile-user-actions" id="mobile-user-actions" style="display: none;">
+                        <button class="btn-outline mobile-btn" onclick="goToProfile()">
+                            <i class="fas fa-user"></i>
+                            <span>My Profile</span>
+                        </button>
+                        <button class="btn-secondary mobile-btn" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Panel -->
+        <div class="notifications-panel" id="notifications-panel" style="display: none;">
+            <div class="notifications-header">
+                <h3>
+                    <i class="fas fa-bell"></i>
+                    Notifications
+                </h3>
+                <div class="notifications-actions">
+                    <button class="btn-text" onclick="markAllAsRead()">Mark all read</button>
+                    <button class="btn-icon" onclick="toggleNotifications()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="notifications-content" id="notifications-content">
+                <!-- Notifications will be populated here -->
+                <div class="loading-placeholder">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading notifications...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Messages Panel -->
+        <div class="messages-panel" id="messages-panel" style="display: none;">
+            <div class="messages-header">
+                <h3>
+                    <i class="fas fa-envelope"></i>
+                    Messages
+                </h3>
+                <div class="messages-actions">
+                    <button class="btn-text" onclick="goToAllMessages()">View all</button>
+                    <button class="btn-icon" onclick="toggleMessages()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="messages-content" id="messages-content">
+                <!-- Messages will be populated here -->
+                <div class="loading-placeholder">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading messages...</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Header JavaScript -->
+    <script>
+        // Header Component JavaScript
+        class GameHubHeader {
+            constructor() {
+                this.currentUser = null;
+                this.notifications = [];
+                this.messages = [];
+                this.isInitialized = false;
+                
+                this.init();
+            }
+            
+            async init() {
+                if (this.isInitialized) return;
+                
+                // Check authentication status
+                await this.checkAuthStatus();
+                
+                // Setup header based on auth status
+                this.setupHeader();
+                
+                // Load notifications and messages if authenticated
+                if (this.currentUser) {
+                    this.loadNotifications();
+                    this.loadMessages();
+                    this.startPeriodicUpdates();
+                }
+                
+                // Setup active page highlighting
+                this.highlightActivePage();
+                
+                // Setup responsive handlers
+                this.setupResponsiveHandlers();
+                
+                this.isInitialized = true;
+            }
+            
+            async checkAuthStatus() {
+                try {
+                    if (typeof auth !== 'undefined' && auth.isAuthenticated()) {
+                        this.currentUser = auth.getCurrentUser();
+                    }
+                } catch (error) {
+                    console.error('Auth check error:', error);
+                }
+            }
+            
+            setupHeader() {
+                if (this.currentUser) {
+                    this.showAuthenticatedHeader();
+                } else {
+                    this.showGuestHeader();
+                }
+            }
+            
+            showAuthenticatedHeader() {
+                // Hide guest actions
+                document.getElementById('guest-actions').style.display = 'none';
+                document.getElementById('mobile-guest-actions').style.display = 'none';
+                
+                // Show user actions
+                document.getElementById('user-actions').style.display = 'flex';
+                document.getElementById('mobile-user-info').style.display = 'flex';
+                document.getElementById('mobile-user-actions').style.display = 'block';
+                
+                // Populate user info
+                this.populateUserInfo();
+                
+                // Setup role-based navigation
+                this.setupRoleNavigation();
+            }
+            
+            showGuestHeader() {
+                // Show guest actions
+                document.getElementById('guest-actions').style.display = 'flex';
+                document.getElementById('mobile-guest-actions').style.display = 'block';
+                
+                // Hide user actions
+                document.getElementById('user-actions').style.display = 'none';
+                document.getElementById('mobile-user-info').style.display = 'none';
+                document.getElementById('mobile-user-actions').style.display = 'none';
+            }
+            
+            populateUserInfo() {
+                if (!this.currentUser) return;
+                
+                const userName = this.currentUser.name || 'Gaming Warrior';
+                const userRole = this.currentUser.role || 'User';
+                const userEmail = this.currentUser.email || '';
+                
+                // Update header user info
+                document.getElementById('user-name').textContent = userName;
+                document.getElementById('user-role').textContent = this.formatRole(userRole);
+                
+                // Update dropdown user info
+                document.getElementById('user-name-dropdown').textContent = userName;
+                document.getElementById('user-email').textContent = userEmail;
+                document.getElementById('user-level').textContent = this.calculateUserLevel();
+                
+                // Update mobile user info
+                document.getElementById('mobile-user-name').textContent = userName;
+                document.getElementById('mobile-user-role').textContent = this.formatRole(userRole);
+            }
+            
+            setupRoleNavigation() {
+                const roleNav = document.getElementById('role-nav');
+                const roleMenu = document.getElementById('role-menu');
+                const mobileRoleLinks = document.getElementById('mobile-role-links');
+                
+                if (this.currentUser.role === 'player') {
+                    this.setupPlayerNavigation(roleNav, roleMenu, mobileRoleLinks);
+                } else if (this.currentUser.role === 'organizer') {
+                    this.setupOrganizerNavigation(roleNav, roleMenu, mobileRoleLinks);
+                }
+            }
+            
+            setupPlayerNavigation(roleNav, roleMenu, mobileLinks) {
+                roleNav.innerHTML = `
+                    <a href="../player/dashboard.html" class="nav-link" data-page="dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="../player/my-registrations.html" class="nav-link" data-page="registrations">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>My Events</span>
+                    </a>
+                `;
+                
+                roleMenu.innerHTML = `
+                    <a href="../player/dashboard.html" class="menu-item">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="../player/browse-events.html" class="menu-item">
+                        <i class="fas fa-calendar"></i>
+                        <span>Browse Events</span>
+                    </a>
+                    <a href="../player/my-registrations.html" class="menu-item">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>My Registrations</span>
+                    </a>
+                `;
+                
+                mobileLinks.innerHTML = `
+                    <a href="../player/dashboard.html" class="mobile-nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="../player/my-registrations.html" class="mobile-nav-link">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span>My Registrations</span>
+                    </a>
+                `;
+            }
+            
+            setupOrganizerNavigation(roleNav, roleMenu, mobileLinks) {
+                roleNav.innerHTML = `
+                    <a href="../organizer/dashboard.html" class="nav-link" data-page="dashboard">
+                        <i class="fas fa-crown"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="../organizer/create-event.html" class="nav-link" data-page="create">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Create Event</span>
+                    </a>
+                `;
+                
+                roleMenu.innerHTML = `
+                    <a href="../organizer/dashboard.html" class="menu-item">
+                        <i class="fas fa-crown"></i>
+                        <span>Organizer Dashboard</span>
+                    </a>
+                    <a href="../organizer/create-event.html" class="menu-item">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Create Event</span>
+                    </a>
+                    <a href="../organizer/manage-events.html" class="menu-item">
+                        <i class="fas fa-cogs"></i>
+                        <span>Manage Events</span>
+                    </a>
+                    <a href="../organizer/event-analytics.html" class="menu-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </a>
+                `;
+                
+                mobileLinks.innerHTML = `
+                    <a href="../organizer/dashboard.html" class="mobile-nav-link">
+                        <i class="fas fa-crown"></i>
+                        <span>Organizer Dashboard</span>
+                    </a>
+                    <a href="../organizer/create-event.html" class="mobile-nav-link">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Create Event</span>
+                    </a>
+                    <a href="../organizer/manage-events.html" class="mobile-nav-link">
+                        <i class="fas fa-cogs"></i>
+                        <span>Manage Events</span>
+                    </a>
+                `;
+            }
+            
+            highlightActivePage() {
+                const currentPath = window.location.pathname;
+                const navLinks = document.querySelectorAll('.nav-link[data-page]');
+                
+                navLinks.forEach(link => {
+                    const page = link.getAttribute('data-page');
+                    if (currentPath.includes(page)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            
+            async loadNotifications() {
+                try {
+                    if (typeof api !== 'undefined') {
+                        this.notifications = await api.getNotifications() || [];
+                        this.updateNotificationBadge();
+                        this.populateNotifications();
+                    }
+                } catch (error) {
+                    console.error('Error loading notifications:', error);
+                }
+            }
+            
+            async loadMessages() {
+                try {
+                    if (typeof api !== 'undefined') {
+                        this.messages = await api.getMessages() || [];
+                        this.updateMessageBadge();
+                        this.populateMessages();
+                    }
+                } catch (error) {
+                    console.error('Error loading messages:', error);
+                }
+            }
+            
+            updateNotificationBadge() {
+                const unreadCount = this.notifications.filter(n => !n.read).length;
+                const badge = document.getElementById('notification-count');
+                
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+            
+            updateMessageBadge() {
+                const unreadCount = this.messages.filter(m => !m.read).length;
+                const badge = document.getElementById('message-count');
+                
+                if (unreadCount > 0) {
+                    badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                    badge.style.display = 'block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+            
+            populateNotifications() {
+                const container = document.getElementById('notifications-content');
+                
+                if (this.notifications.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-bell-slash"></i>
+                            <p>No notifications yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = this.notifications.slice(0, 10).map(notification => `
+                    <div class="notification-item ${notification.read ? '' : 'unread'}">
+                        <div class="notification-icon ${notification.type}">
+                            <i class="${this.getNotificationIcon(notification.type)}"></i>
+                        </div>
+                        <div class="notification-content">
+                            <div class="notification-title">${notification.title}</div>
+                            <div class="notification-message">${notification.message}</div>
+                            <div class="notification-time">${this.formatTime(notification.created_at)}</div>
+                        </div>
+                        ${!notification.read ? '<div class="notification-dot"></div>' : ''}
+                    </div>
+                `).join('');
+            }
+            
+            populateMessages() {
+                const container = document.getElementById('messages-content');
+                
+                if (this.messages.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-envelope-open"></i>
+                            <p>No messages yet</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = this.messages.slice(0, 10).map(message => `
+                    <div class="message-item ${message.read ? '' : 'unread'}">
+                        <div class="message-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-sender">${message.sender_name}</div>
+                            <div class="message-subject">${message.subject}</div>
+                            <div class="message-time">${this.formatTime(message.created_at)}</div>
+                        </div>
+                        ${!message.read ? '<div class="message-dot"></div>' : ''}
+                    </div>
+                `).join('');
+            }
+            
+            startPeriodicUpdates() {
+                // Update notifications and messages every 30 seconds
+                setInterval(() => {
+                    if (this.currentUser) {
+                        this.loadNotifications();
+                        this.loadMessages();
+                    }
+                }, 30000);
+            }
+            
+            setupResponsiveHandlers() {
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) {
+                        this.closeMobileMenu();
+                    }
+                });
+            }
+            
+            // Utility methods
+            formatRole(role) {
+                const roleMap = {
+                    player: 'Player',
+                    organizer: 'Organizer',
+                    admin: 'Administrator'
+                };
+                return roleMap[role] || 'User';
+            }
+            
+            calculateUserLevel() {
+                // Simple level calculation based on user activity
+                return 1; // Placeholder
+            }
+            
+            getNotificationIcon(type) {
+                const icons = {
+                    info: 'fas fa-info-circle',
+                    success: 'fas fa-check-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    error: 'fas fa-exclamation-circle',
+                    event: 'fas fa-calendar',
+                    message: 'fas fa-envelope'
+                };
+                return icons[type] || 'fas fa-bell';
+            }
+            
+            formatTime(timestamp) {
+                if (typeof DateUtils !== 'undefined') {
+                    return DateUtils.getTimeAgo(timestamp);
+                }
+                return new Date(timestamp).toLocaleDateString();
+            }
+            
+            closeMobileMenu() {
+                document.getElementById('mobile-menu').classList.remove('show');
+                document.getElementById('mobile-menu-overlay').classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        // Global header functions
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('user-dropdown');
+            dropdown.classList.toggle('show');
+        }
+        
+        function toggleNotifications() {
+            const panel = document.getElementById('notifications-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function toggleMessages() {
+            const panel = document.getElementById('messages-panel');
+            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('mobile-menu-overlay');
+            
+            menu.classList.add('show');
+            overlay.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileMenu() {
+            if (window.gameHubHeader) {
+                window.gameHubHeader.closeMobileMenu();
+            }
+        }
+        
+        // Navigation functions
+        function goToHome() { window.location.href = '../../index.html'; }
+        function goToLogin() { window.location.href = '../auth/login.html'; }
+        function goToRegister() { window.location.href = '../auth/register.html'; }
+        function goToProfile() { 
+            const user = window.gameHubHeader?.currentUser;
+            if (user) {
+                window.location.href = `../${user.role}/profile.html`;
+            }
+        }
+        
+        async function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                if (typeof auth !== 'undefined') {
+                    auth.logout();
+                } else {
+                    window.location.href = '../../index.html';
+                }
+            }
+        }
+        
+        async function markAllAsRead() {
+            try {
+                if (typeof api !== 'undefined') {
+                    await api.markAllNotificationsAsRead();
+                    window.gameHubHeader?.loadNotifications();
+                }
+            } catch (error) {
+                console.error('Error marking notifications as read:', error);
+            }
+        }
+        
+        function goToAllMessages() {
+            // Navigate to messages page
+            window.location.href = '../shared/messages.html';
+        }
+        
+        function showSettings() {
+            // Navigate to settings
+            window.location.href = '../shared/settings.html';
+        }
+        
+        function showHelp() {
+            // Navigate to help
+            window.location.href = '../shared/help.html';
+        }
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            const userMenu = document.getElementById('user-menu');
+            const dropdown = document.getElementById('user-dropdown');
+            
+            if (!userMenu?.contains(event.target)) {
+                dropdown?.classList.remove('show');
+            }
+            
+            // Close notification panels
+            const notifPanel = document.getElementById('notifications-panel');
+            const notifBtn = document.getElementById('notifications-btn');
+            if (!notifBtn?.contains(event.target) && notifPanel?.style.display !== 'none') {
+                notifPanel.style.display = 'none';
+            }
+            
+            const msgPanel = document.getElementById('messages-panel');
+            const msgBtn = document.getElementById('messages-btn');
+            if (!msgBtn?.contains(event.target) && msgPanel?.style.display !== 'none') {
+                msgPanel.style.display = 'none';
+            }
+        });
+        
+        // Initialize header when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.gameHubHeader = new GameHubHeader();
+        });
+    </script>
+
+    <style>
+        /* Header Component Specific Styles */
+        .gamehub-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--gradient-dark);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.3);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar {
+            width: 100%;
+            padding: 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        /* Brand */
+        .nav-brand {
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .brand-icon {
+            font-size: 2rem;
+            color: var(--demon-red);
+            text-shadow: 0 0 10px var(--demon-red);
+        }
+
+        .brand-text {
+            font-family: var(--font-primary);
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: 2px;
+        }
+
+        .brand-tagline {
+            font-size: 0.7rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-left: 2.5rem;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        .nav-section {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--light-gray);
+            text-decoration: none;
+            font-weight: 600;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 8px;
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--white);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .nav-link.active {
+            color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.15);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--demon-red);
+            border-radius: 50%;
+        }
+
+        /* User Actions */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .guest-actions {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .quick-action-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: var(--light-gray);
+            font-size: 1.2rem;
+            padding: var(--spacing-sm);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .quick-action-btn:hover {
+            color: var(--white);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .notification-badge,
+        .message-badge {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: var(--demon-red);
+            color: var(--white);
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            min-width: 16px;
+            text-align: center;
+        }
+
+        /* User Menu */
+        .user-menu {
+            position: relative;
+        }
+
+        .user-menu-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background: none;
+            border: none;
+            color: var(--white);
+            padding: var(--spacing-sm);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .user-menu-toggle:hover {
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .user-avatar {
+            font-size: 2rem;
+            color: var(--demon-red);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
+        .user-role {
+            font-size: 0.7rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .dropdown-icon {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            transition: transform var(--transition-normal);
+        }
+
+        .user-menu-toggle:hover .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        /* User Dropdown */
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 300px;
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            box-shadow: var(--shadow-dark);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+            margin-top: var(--spacing-sm);
+        }
+
+        .user-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .user-avatar-large {
+            font-size: 3rem;
+            color: var(--demon-red);
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name-large {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--white);
+            margin-bottom: 2px;
+        }
+
+        .user-email {
+            color: var(--light-gray);
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+        }
+
+        .user-level {
+            background: var(--gradient-red);
+            color: var(--white);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        .dropdown-menu {
+            padding: var(--spacing-sm) 0;
+        }
+
+        .menu-section {
+            padding: var(--spacing-sm) 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            color: var(--light-gray);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition-normal);
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            color: var(--white);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .menu-item i {
+            width: 16px;
+            color: var(--demon-red);
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: rgba(220, 20, 60, 0.2);
+            margin: var(--spacing-sm) var(--spacing-lg);
+        }
+
+        .logout-btn {
+            color: #ef4444 !important;
+        }
+
+        .logout-btn i {
+            color: #ef4444 !important;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.1) !important;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-sm);
+        }
+
+        .hamburger-line {
+            width: 25px;
+            height: 3px;
+            background: var(--white);
+            margin: 2px 0;
+            transition: all var(--transition-normal);
+        }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+            z-index: 1001;
+        }
+
+        .mobile-menu-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100vh;
+            background: var(--gradient-dark);
+            border-left: 1px solid rgba(220, 20, 60, 0.3);
+            transition: right var(--transition-normal);
+            z-index: 1002;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.show {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .mobile-menu-content {
+            padding: var(--spacing-lg);
+        }
+
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            background: rgba(220, 20, 60, 0.05);
+            border-radius: 12px;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .mobile-user-avatar {
+            font-size: 2.5rem;
+            color: var(--demon-red);
+        }
+
+        .mobile-user-name {
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 2px;
+        }
+
+        .mobile-user-role {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+        }
+
+        .mobile-nav-links {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            color: var(--light-gray);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: var(--spacing-xs);
+            transition: all var(--transition-normal);
+        }
+
+        .mobile-nav-link:hover {
+            color: var(--white);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .mobile-nav-link i {
+            width: 20px;
+            color: var(--demon-red);
+        }
+
+        .mobile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .mobile-btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Notification & Message Panels */
+        .notifications-panel,
+        .messages-panel {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            width: 350px;
+            max-height: 400px;
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            box-shadow: var(--shadow-dark);
+            margin-top: var(--spacing-sm);
+            overflow: hidden;
+        }
+
+        .notifications-header,
+        .messages-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .notifications-header h3,
+        .messages-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .notifications-actions,
+        .messages-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .btn-text {
+            background: none;
+            border: none;
+            color: var(--demon-red);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all var(--transition-normal);
+        }
+
+        .btn-text:hover {
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            color: var(--light-gray);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all var(--transition-normal);
+        }
+
+        .btn-icon:hover {
+            color: var(--white);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .notifications-content,
+        .messages-content {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: var(--spacing-sm);
+        }
+
+        .notification-item,
+        .message-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-xs);
+            position: relative;
+            transition: all var(--transition-normal);
+        }
+
+        .notification-item:hover,
+        .message-item:hover {
+            background: rgba(220, 20, 60, 0.05);
+        }
+
+        .notification-item.unread,
+        .message-item.unread {
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .notification-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: var(--white);
+        }
+
+        .notification-icon.info { background: #3b82f6; }
+        .notification-icon.success { background: #22c55e; }
+        .notification-icon.warning { background: #f59e0b; }
+        .notification-icon.error { background: #ef4444; }
+        .notification-icon.event { background: var(--demon-red); }
+
+        .notification-content,
+        .message-content {
+            flex: 1;
+        }
+
+        .notification-title,
+        .message-sender {
+            font-weight: 700;
+            color: var(--white);
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .notification-message,
+        .message-subject {
+            color: var(--light-gray);
+            font-size: 0.8rem;
+            line-height: 1.3;
+            margin-bottom: 4px;
+        }
+
+        .notification-time,
+        .message-time {
+            color: var(--light-gray);
+            font-size: 0.7rem;
+        }
+
+        .notification-dot,
+        .message-dot {
+            position: absolute;
+            top: 50%;
+            right: var(--spacing-sm);
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--demon-red);
+            border-radius: 50%;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(220, 20, 60, 0.2);
+            color: var(--demon-red);
+            font-size: 1.2rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--light-gray);
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            color: var(--demon-red);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .nav-menu .nav-section {
+                gap: var(--spacing-md);
+            }
+            
+            .brand-tagline {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                padding: 0 var(--spacing-md);
+            }
+            
+            .nav-menu,
+            .guest-actions {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
+            .user-info {
+                display: none;
+            }
+            
+            .notifications-panel,
+            .messages-panel {
+                width: 300px;
+                right: -50px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-container {
+                height: 60px;
+            }
+            
+            .brand-text {
+                font-size: 1.2rem;
+            }
+            
+            .brand-icon {
+                font-size: 1.5rem;
+            }
+            
+            .mobile-menu {
+                width: 280px;
+            }
+            
+            .notifications-panel,
+            .messages-panel {
+                width: 280px;
+                right: -20px;
+            }
+        }
+    </style>
+</body>
+</html>

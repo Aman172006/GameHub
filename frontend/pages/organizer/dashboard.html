@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizer Dashboard - GameHub</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="dashboard-loading">
+        <div class="loading-content">
+            <div class="gaming-logo">
+                <i class="fas fa-crown"></i>
+                <h2>ORGANIZER PANEL</h2>
+            </div>
+            <div class="loading-text">Loading Organizer Dashboard...</div>
+        </div>
+    </div>
+
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <i class="fas fa-crown"></i>
+                    <span>ORGANIZER</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="user-info" id="sidebar-user-info">
+                    <div class="user-name">Loading...</div>
+                    <div class="user-role">Organizer</div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item active">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="create-event.html" class="nav-link">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Create Event</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="manage-events.html" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Manage Events</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="registrations.html" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Registrations</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="event-analytics.html" class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../shared/profile.html" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-footer">
+                    <button class="btn-logout" onclick="auth.logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 class="page-title">
+                        <i class="fas fa-crown"></i>
+                        Organizer Dashboard
+                    </h1>
+                    <p class="page-subtitle">Manage your tournaments and engage your community</p>
+                </div>
+                
+                <div class="header-right">
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-events">0</div>
+                            <div class="stat-label">Total Events</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="active-events">0</div>
+                            <div class="stat-label">Active Events</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-participants">0</div>
+                            <div class="stat-label">Total Participants</div>
+                        </div>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <button class="btn-primary" onclick="CreateEvent()">
+                            <i class="fas fa-plus"></i>
+                            Create Event
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Quick Actions -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Quick Actions</h2>
+                    </div>
+                    
+                    <div class="quick-actions-grid">
+                        <div class="action-card" onclick="createEvent()">
+                            <div class="action-icon">
+                                <i class="fas fa-plus-circle"></i>
+                            </div>
+                            <h3>Create Event</h3>
+                            <p>Set up a new tournament or competition</p>
+                            <div class="action-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="action-card" onclick="manageEvents()">
+                            <div class="action-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h3>Manage Events</h3>
+                            <p>Edit and monitor your existing events</p>
+                            <div class="action-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="action-card" onclick="viewRegistrations()">
+                            <div class="action-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h3>View Registrations</h3>
+                            <p>Check participant registrations</p>
+                            <div class="action-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="action-card" onclick="viewAnalytics()">
+                            <div class="action-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>View Analytics</h3>
+                            <p>Analyze event performance and metrics</p>
+                            <div class="action-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Event Overview -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Event Overview</h2>
+                        <a href="manage-events.html" class="section-action">Manage All</a>
+                    </div>
+                    
+                    <div class="overview-grid">
+                        <div class="overview-card">
+                            <div class="overview-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="overview-content">
+                                <h3>Upcoming Events</h3>
+                                <div class="overview-value" id="upcoming-events-count">0</div>
+                                <p>Events scheduled for the future</p>
+                            </div>
+                        </div>
+                        
+                        <div class="overview-card">
+                            <div class="overview-icon">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div class="overview-content">
+                                <h3>Live Events</h3>
+                                <div class="overview-value" id="live-events-count">0</div>
+                                <p>Currently active tournaments</p>
+                            </div>
+                        </div>
+                        
+                        <div class="overview-card">
+                            <div class="overview-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="overview-content">
+                                <h3>Completed Events</h3>
+                                <div class="overview-value" id="completed-events-count">0</div>
+                                <p>Successfully finished tournaments</p>
+                            </div>
+                        </div>
+                        
+                        <div class="overview-card">
+                            <div class="overview-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="overview-content">
+                                <h3>Total Registrations</h3>
+                                <div class="overview-value" id="total-registrations-count">0</div>
+                                <p>All-time participant registrations</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Events -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Events</h2>
+                        <a href="manage-events.html" class="section-action">View All</a>
+                    </div>
+                    
+                    <div class="events-table" id="recent-events">
+                        <!-- Events table will be loaded here -->
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading recent events...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Registration Activity -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Recent Registration Activity</h2>
+                        <a href="registrations.html" class="section-action">View All</a>
+                    </div>
+                    
+                    <div class="activity-feed" id="registration-activity">
+                        <!-- Registration activity will be loaded here -->
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading registration activity...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Performance Charts -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Performance Insights</h2>
+                        <a href="event-analytics.html" class="section-action">Detailed Analytics</a>
+                    </div>
+                    
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h4>Event Popularity</h4>
+                            <div class="chart-placeholder" id="popularity-chart">
+                                <i class="fas fa-chart-bar"></i>
+                                <p>Event registration trends</p>
+                            </div>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <h4>Category Distribution</h4>
+                            <div class="chart-placeholder" id="category-chart">
+                                <i class="fas fa-chart-pie"></i>
+                                <p>Events by category</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../config/api-config.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    
+    <script>
+        // Initialize organizer dashboard
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication and role
+            if (!auth.requireOrganizer()) {
+                return;
+            }
+            
+            // Initialize dashboard
+            await initializeOrganizerDashboard();
+            
+            // Hide loading screen
+            setTimeout(() => {
+                hideLoadingScreen();
+            }, 1000);
+        });
+        
+        // Dashboard initialization
+        async function initializeOrganizerDashboard() {
+            try {
+                // Update user info in sidebar
+                const user = auth.getCurrentUser();
+                if (user) {
+                    updateSidebarUserInfo(user);
+                }
+                
+                // Load dashboard data
+                await Promise.all([
+                    loadOrganizerStats(),
+                    loadEventOverview(),
+                    loadRecentEvents(),
+                    loadRegistrationActivity(),
+                    loadPerformanceCharts()
+                ]);
+                
+            } catch (error) {
+                console.error('Dashboard initialization error:', error);
+                showNotification('Failed to load dashboard data', 'error');
+            }
+        }
+        
+        // Update sidebar user info
+        function updateSidebarUserInfo(user) {
+            const userInfo = document.getElementById('sidebar-user-info');
+            if (userInfo) {
+                userInfo.innerHTML = `
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-role">${user.role}</div>
+                `;
+            }
+        }
+        
+        // Load organizer statistics
+        async function loadOrganizerStats() {
+            try {
+                const events = await api.getMyEvents();
+                
+                const totalEvents = events.length;
+                const activeEvents = events.filter(event => 
+                    event.is_active && new Date(event.date) > new Date()
+                ).length;
+                
+                // Calculate total participants across all events
+                let totalParticipants = 0;
+                for (const event of events) {
+                    try {
+                        const registrations = await api.getEventRegistrations(event.id);
+                        totalParticipants += registrations.length;
+                    } catch (error) {
+                        console.error('Error loading registrations for event', event.id, error);
+                    }
+                }
+                
+                document.getElementById('total-events').textContent = totalEvents;
+                document.getElementById('active-events').textContent = activeEvents;
+                document.getElementById('total-participants').textContent = totalParticipants;
+                
+            } catch (error) {
+                console.error('Error loading organizer stats:', error);
+                // Use fallback values
+                document.getElementById('total-events').textContent = '0';
+                document.getElementById('active-events').textContent = '0';
+                document.getElementById('total-participants').textContent = '0';
+            }
+        }
+        
+        // Load event overview
+        async function loadEventOverview() {
+            try {
+                const events = await api.getMyEvents();
+                
+                const now = new Date();
+                
+                const upcomingEvents = events.filter(event => 
+                    event.is_active && new Date(event.date) > now
+                ).length;
+                
+                const liveEvents = events.filter(event => {
+                    const eventDate = new Date(event.date);
+                    const eventEndDate = new Date(eventDate.getTime() + 24 * 60 * 60 * 1000); // Assume 1 day duration
+                    return event.is_active && eventDate <= now && now <= eventEndDate;
+                }).length;
+                
+                const completedEvents = events.filter(event => 
+                    new Date(event.date) < now
+                ).length;
+                
+                let totalRegistrations = 0;
+                for (const event of events) {
+                    try {
+                        const registrations = await api.getEventRegistrations(event.id);
+                        totalRegistrations += registrations.length;
+                    } catch (error) {
+                        // Ignore errors for individual events
+                    }
+                }
+                
+                document.getElementById('upcoming-events-count').textContent = upcomingEvents;
+                document.getElementById('live-events-count').textContent = liveEvents;
+                document.getElementById('completed-events-count').textContent = completedEvents;
+                document.getElementById('total-registrations-count').textContent = totalRegistrations;
+                
+            } catch (error) {
+                console.error('Error loading event overview:', error);
+            }
+        }
+        
+        // Load recent events
+        async function loadRecentEvents() {
+            try {
+                const events = await api.getMyEvents();
+                const recentEvents = events
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                    .slice(0, 5);
+                
+                const container = document.getElementById('recent-events');
+                
+                if (recentEvents.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-calendar-times"></i>
+                            <h3>No Events Created</h3>
+                            <p>You haven't created any events yet.</p>
+                            <button class="btn-primary" onclick="createEvent()">Create Your First Event</button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = `
+                    <div class="table-container">
+                        <table class="events-table">
+                            <thead>
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Participants</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${recentEvents.map(event => `
+                                    <tr>
+                                        <td>
+                                            <div class="event-info">
+                                                <h4>${event.title}</h4>
+                                                <p>${event.location}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="category-badge">${event.category}</span>
+                                        </td>
+                                        <td>${formatDate(event.date)}</td>
+                                        <td>
+                                            <span class="participant-count" data-event-id="${event.id}">
+                                                Loading...
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="status-badge ${getEventStatus(event)}">
+                                                ${getEventStatusText(event)}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="action-buttons">
+                                                <button class="btn-action" onclick="editEvent(${event.id})" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn-action" onclick="viewEventRegistrations(${event.id})" title="Registrations">
+                                                    <i class="fas fa-users"></i>
+                                                </button>
+                                                <button class="btn-action danger" onclick="deleteEvent(${event.id})" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                // Load participant counts
+                loadParticipantCounts(recentEvents);
+                
+            } catch (error) {
+                console.error('Error loading recent events:', error);
+                document.getElementById('recent-events').innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load recent events</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Load participant counts for events
+        async function loadParticipantCounts(events) {
+            for (const event of events) {
+                try {
+                    const registrations = await api.getEventRegistrations(event.id);
+                    const countElement = document.querySelector(`[data-event-id="${event.id}"]`);
+                    if (countElement) {
+                        countElement.textContent = `${registrations.length}/${event.max_participants}`;
+                    }
+                } catch (error) {
+                    const countElement = document.querySelector(`[data-event-id="${event.id}"]`);
+                    if (countElement) {
+                        countElement.textContent = `0/${event.max_participants}`;
+                    }
+                }
+            }
+        }
+        
+        // Load registration activity
+        async function loadRegistrationActivity() {
+            try {
+                const events = await api.getMyEvents();
+                const activities = [];
+                
+                // Get registrations for all events
+                for (const event of events) {
+                    try {
+                        const registrations = await api.getEventRegistrations(event.id);
+                        registrations.forEach(registration => {
+                            activities.push({
+                                type: 'registration',
+                                event: event.title,
+                                user: registration.user_name || 'Anonymous',
+                                timestamp: registration.registered_at || registration.created_at,
+                                eventId: event.id
+                            });
+                        });
+                    } catch (error) {
+                        // Ignore errors for individual events
+                    }
+                }
+                
+                // Sort by timestamp and take recent 10
+                activities.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+                const recentActivities = activities.slice(0, 10);
+                
+                const container = document.getElementById('registration-activity');
+                
+                if (recentActivities.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-users"></i>
+                            <p>No recent registration activity</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = recentActivities.map(activity => `
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">
+                                <strong>${activity.user}</strong> registered for <strong>${activity.event}</strong>
+                            </div>
+                            <div class="activity-time">${formatTimeAgo(activity.timestamp)}</div>
+                        </div>
+                        <div class="activity-action">
+                            <button class="btn-action" onclick="viewEventRegistrations(${activity.eventId})" title="View Registrations">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading registration activity:', error);
+                document.getElementById('registration-activity').innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load registration activity</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Load performance charts (placeholder)
+        async function loadPerformanceCharts() {
+            try {
+                const events = await api.getMyEvents();
+                
+                // For now, show placeholder charts
+                // In a real implementation, you'd use a charting library like Chart.js
+                
+                document.getElementById('popularity-chart').innerHTML = `
+                    <div class="chart-data">
+                        <div class="chart-item">
+                            <div class="chart-bar" style="height: 70%"></div>
+                            <label>This Week</label>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-bar" style="height: 90%"></div>
+                            <label>Last Week</label>
+                        </div>
+                        <div class="chart-item">
+                            <div class="chart-bar" style="height: 50%"></div>
+                            <label>2 Weeks Ago</label>
+                        </div>
+                    </div>
+                `;
+                
+                // Category distribution
+                const categories = {};
+                events.forEach(event => {
+                    categories[event.category] = (categories[event.category] || 0) + 1;
+                });
+                
+                const categoryItems = Object.entries(categories).map(([category, count]) => `
+                    <div class="category-item">
+                        <span class="category-name">${category}</span>
+                        <div class="category-bar">
+                            <div class="category-fill" style="width: ${(count / events.length) * 100}%"></div>
+                        </div>
+                        <span class="category-count">${count}</span>
+                    </div>
+                `).join('');
+                
+                document.getElementById('category-chart').innerHTML = `
+                    <div class="category-distribution">
+                        ${categoryItems || '<p>No events to display</p>'}
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading performance charts:', error);
+            }
+        }
+        
+        // Navigation functions
+        function createEvent() {
+            window.location.href = 'create-event.html';
+        }
+        
+        function manageEvents() {
+            window.location.href = 'manage-events.html';
+        }
+        
+        function viewRegistrations() {
+            window.location.href = 'registrations.html';
+        }
+        
+        function viewAnalytics() {
+            window.location.href = 'event-analytics.html';
+        }
+        
+        function editEvent(eventId) {
+            localStorage.setItem('editEventId', eventId);
+            window.location.href = 'create-event.html';
+        }
+        
+        function viewEventRegistrations(eventId) {
+            localStorage.setItem('selectedEventId', eventId);
+            window.location.href = 'registrations.html';
+        }
+        
+        async function deleteEvent(eventId) {
+    if (!confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+        return;
+    }
+    
+    try {
+        // Show loading state - use a simple visual indicator instead
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'flex';
+            loadingScreen.querySelector('.loading-text').textContent = 'Deleting event...';
+        }
+        
+        await api.deleteEvent(eventId);
+        
+        showNotification('Event deleted successfully', 'success');
+        
+        // Refresh the dashboard
+        await loadOrganizerStats();
+        await loadEventOverview();
+        await loadRecentEvents();
+        
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        showNotification('Failed to delete event. Please try again.', 'error');
+    } finally {
+        // Hide loading screen
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+            loadingScreen.style.display = 'none';
+        }
+    }
+}
+
+// Also add the missing showNotification function
+function showNotification(message, type = 'info') {
+    // Simple notification using alert for now - you can enhance this
+    if (type === 'success') {
+        alert('✅ ' + message);
+    } else if (type === 'error') {
+        alert('❌ ' + message);
+    } else {
+        alert(message);
+    }
+}
+
+        
+        // Utility functions
+        function getEventStatus(event) {
+            const now = new Date();
+            const eventDate = new Date(event.date);
+            
+            if (!event.is_active) return 'cancelled';
+            if (eventDate > now) return 'upcoming';
+            
+            const eventEndDate = new Date(eventDate.getTime() + 24 * 60 * 60 * 1000);
+            if (eventDate <= now && now <= eventEndDate) return 'live';
+            
+            return 'completed';
+        }
+        
+        function getEventStatusText(event) {
+            const status = getEventStatus(event);
+            const statusTexts = {
+                upcoming: 'Upcoming',
+                live: 'Live',
+                completed: 'Completed',
+                cancelled: 'Cancelled'
+            };
+            return statusTexts[status] || 'Unknown';
+        }
+        
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.dashboard-sidebar');
+            sidebar.classList.toggle('show');
+        }
+        
+        function hideLoadingScreen() {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }
+        }
+        
+        // Utility functions
+        function formatDate(dateString) {
+            const options = { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        function formatTimeAgo(dateString) {
+            const now = new Date();
+            const date = new Date(dateString);
+            const diffInSeconds = Math.floor((now - date) / 1000);
+            
+            if (diffInSeconds < 60) return 'Just now';
+            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+            return `${Math.floor(diffInSeconds / 86400)}d ago`;
+        }
+    </script>
+    
+    <style>
+        /* Additional styles for organizer dashboard */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .overview-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            transition: all var(--transition-normal);
+        }
+        
+        .overview-card:hover {
+            border-color: var(--demon-red);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-red);
+        }
+        
+        .overview-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--white);
+            flex-shrink: 0;
+        }
+        
+        .overview-content h3 {
+            font-size: 1rem;
+            color: var(--white);
+            margin: 0 0 var(--spacing-xs) 0;
+            font-weight: 600;
+        }
+        
+        .overview-value {
+            font-family: var(--font-primary);
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--demon-red);
+            line-height: 1;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .overview-content p {
+            color: var(--light-gray);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+        
+        .table-container {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .events-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .events-table th {
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--white);
+            font-weight: 700;
+            padding: var(--spacing-md);
+            text-align: left;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .events-table td {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.1);
+            color: var(--light-gray);
+        }
+        
+        .events-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .events-table tr:hover {
+            background: rgba(220, 20, 60, 0.05);
+        }
+        
+        .event-info h4 {
+            color: var(--white);
+            font-weight: 600;
+            margin: 0 0 4px 0;
+            font-size: 1rem;
+        }
+        
+        .event-info p {
+            color: var(--light-gray);
+            font-size: 0.8rem;
+            margin: 0;
+        }
+        
+        .category-badge {
+            background: var(--gradient-red);
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .status-badge.upcoming {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        .status-badge.live {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .status-badge.completed {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
+        
+        .status-badge.cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .participant-count {
+            font-weight: 600;
+            color: var(--white);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+        
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--demon-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .btn-action:hover {
+            background: var(--demon-red);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+        
+        .btn-action.danger:hover {
+            background: #ef4444;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        
+        .chart-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+        }
+        
+        .chart-card h4 {
+            color: var(--white);
+            font-weight: 600;
+            margin: 0 0 var(--spacing-md) 0;
+            font-size: 1.1rem;
+        }
+        
+        .chart-placeholder {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: var(--light-gray);
+        }
+        
+        .chart-data {
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            height: 150px;
+            gap: var(--spacing-sm);
+        }
+        
+        .chart-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+        
+        .chart-bar {
+            width: 30px;
+            background: var(--gradient-red);
+            border-radius: 4px 4px 0 0;
+            transition: all var(--transition-normal);
+        }
+        
+        .chart-item label {
+            font-size: 0.7rem;
+            color: var(--light-gray);
+            text-align: center;
+        }
+        
+        .category-distribution {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .category-name {
+            width: 80px;
+            font-size: 0.8rem;
+            color: var(--white);
+            font-weight: 600;
+        }
+        
+        .category-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(220, 20, 60, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .category-fill {
+            height: 100%;
+            background: var(--gradient-red);
+            border-radius: 4px;
+            transition: width var(--transition-normal);
+        }
+        
+        .category-count {
+            font-size: 0.8rem;
+            color: var(--demon-red);
+            font-weight: 600;
+            width: 30px;
+            text-align: right;
+        }
+        
+        .activity-item .activity-action {
+            margin-left: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            .events-table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details - GameHub</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/events.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-gamepad brand-icon"></i>
+                <span class="brand-text">GAMEHUB</span>
+            </div>
+            <div class="nav-menu">
+                <a href="../../index.html" class="nav-link">Home</a>
+                <a href="../player/browse-events.html" class="nav-link">Browse Events</a>
+                <a href="#" class="nav-link active">Event Details</a>
+            </div>
+            <div class="nav-buttons" id="nav-buttons">
+                <button class="btn-secondary" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="event-details-main">
+        <!-- Event Header -->
+        <section class="event-detail-header" id="event-header">
+            <div class="loading-placeholder">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading event details...</p>
+            </div>
+        </section>
+
+        <!-- Event Content -->
+        <div class="event-details-container">
+            <div class="event-details-grid">
+                <!-- Main Content Column -->
+                <div class="event-main-content">
+                    <!-- Description Section -->
+                    <section class="content-section">
+                        <h3 class="content-title">
+                            <i class="fas fa-align-left"></i>
+                            Event Description
+                        </h3>
+                        <div class="content-body" id="event-description">
+                            <div class="loading-placeholder">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading description...</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Rules Section -->
+                    <section class="content-section" id="rules-section" style="display: none;">
+                        <h3 class="content-title">
+                            <i class="fas fa-list-ul"></i>
+                            Rules & Guidelines
+                        </h3>
+                        <div class="content-body" id="event-rules"></div>
+                    </section>
+
+                    <!-- Prize Pool Section -->
+                    <section class="content-section" id="prize-section" style="display: none;">
+                        <h3 class="content-title">
+                            <i class="fas fa-trophy"></i>
+                            Prize Pool
+                        </h3>
+                        <div class="content-body" id="event-prizes"></div>
+                    </section>
+
+                    <!-- Additional Info Section -->
+                    <section class="content-section" id="additional-info-section" style="display: none;">
+                        <h3 class="content-title">
+                            <i class="fas fa-info-circle"></i>
+                            Additional Information
+                        </h3>
+                        <div class="content-body" id="event-additional-info"></div>
+                    </section>
+
+                    <!-- Participants Section -->
+                    <section class="content-section">
+                        <h3 class="content-title">
+                            <i class="fas fa-users"></i>
+                            Participants
+                            <span class="participant-count" id="participant-count">0</span>
+                        </h3>
+                        <div class="participants-list" id="participants-list">
+                            <div class="loading-placeholder">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading participants...</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Feedback Section -->
+                    <section class="content-section">
+                        <h3 class="content-title">
+                            <i class="fas fa-comments"></i>
+                            Community Feedback
+                        </h3>
+                        <div class="feedback-container" id="feedback-container">
+                            <div class="loading-placeholder">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading feedback...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Add Feedback Form (for registered users) -->
+                        <div class="add-feedback-section" id="add-feedback-section" style="display: none;">
+                            <h4>Share Your Experience</h4>
+                            <form id="feedback-form" class="feedback-form">
+                                <div class="rating-input">
+                                    <label>Rating:</label>
+                                    <div class="star-rating">
+                                        <i class="fas fa-star" data-rating="1"></i>
+                                        <i class="fas fa-star" data-rating="2"></i>
+                                        <i class="fas fa-star" data-rating="3"></i>
+                                        <i class="fas fa-star" data-rating="4"></i>
+                                        <i class="fas fa-star" data-rating="5"></i>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="feedback-comments">Comments:</label>
+                                    <textarea 
+                                        id="feedback-comments" 
+                                        placeholder="Share your thoughts about this event..."
+                                        rows="4"
+                                        maxlength="500"
+                                    ></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Submit Feedback
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="event-sidebar">
+                    <!-- Registration Card -->
+                    <div class="sidebar-card" id="registration-card">
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading registration info...</p>
+                        </div>
+                    </div>
+
+                    <!-- Event Info Card -->
+                    <div class="sidebar-card">
+                        <h4 class="card-title">
+                            <i class="fas fa-info-circle"></i>
+                            Event Information
+                        </h4>
+                        <div class="info-list" id="event-info">
+                            <div class="loading-placeholder">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading info...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Card -->
+                    <div class="sidebar-card" id="contact-card" style="display: none;">
+                        <h4 class="card-title">
+                            <i class="fas fa-phone"></i>
+                            Contact Information
+                        </h4>
+                        <div class="contact-list" id="contact-info">
+                            <!-- Contact info will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Share Card -->
+                    <div class="sidebar-card">
+                        <h4 class="card-title">
+                            <i class="fas fa-share-alt"></i>
+                            Share Event
+                        </h4>
+                        <div class="share-buttons">
+                            <button class="btn-outline btn-small" onclick="shareEvent('copy')">
+                                <i class="fas fa-link"></i>
+                                Copy Link
+                            </button>
+                            <button class="btn-outline btn-small" onclick="shareEvent('twitter')">
+                                <i class="fab fa-twitter"></i>
+                                Twitter
+                            </button>
+                            <button class="btn-outline btn-small" onclick="shareEvent('facebook')">
+                                <i class="fab fa-facebook"></i>
+                                Facebook
+                            </button>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <!-- Registration Modal -->
+    <div id="registration-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-rocket"></i> Register for Event</h3>
+                <span class="modal-close" onclick="closeModal('registration-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="registration-content">
+                    <!-- Registration content will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('registration-modal')">Cancel</button>
+                <button class="btn-primary" id="confirm-registration-btn" onclick="confirmEventRegistration()">
+                    <i class="fas fa-rocket"></i>
+                    Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../config/api-config.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    
+    <script>
+        let currentEvent = null;
+        let currentRating = 0;
+
+        // Initialize event details page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Get event ID from localStorage or URL
+            const eventId = localStorage.getItem('selectedEventId');
+            if (!eventId) {
+                showNotification('No event selected', 'error');
+                setTimeout(() => {
+                    window.location.href = '../player/browse-events.html';
+                }, 2000);
+                return;
+            }
+            
+            // Load event details
+            await loadEventDetails(eventId);
+            
+            // Setup UI based on authentication
+            updateNavigationForAuth();
+            
+            // Setup star rating
+            setupStarRating();
+            
+            // Setup feedback form
+            setupFeedbackForm();
+        });
+
+        // Load complete event details
+        async function loadEventDetails(eventId) {
+            try {
+                // Load event data
+                const event = await window.api.getEventDetails(eventId);
+                currentEvent = event;
+                
+                // Load related data
+                await Promise.all([
+                    displayEventHeader(event),
+                    displayEventContent(event),
+                    displayEventSidebar(event),
+                    loadParticipants(eventId),
+                    loadFeedback(eventId)
+                ]);
+                
+            } catch (error) {
+                console.error('Error loading event details:', error);
+                showEventError();
+            }
+        }
+
+        // Display event header
+        async function displayEventHeader(event) {
+            const headerElement = document.getElementById('event-header');
+            
+            headerElement.innerHTML = `
+                <div class="event-detail-content">
+                    <div class="event-status-badge ${getEventStatusClass(event)}">
+                        ${getEventStatusText(event)}
+                    </div>
+                    
+                    <h1 class="event-detail-title">${event.title}</h1>
+                    <p class="event-detail-subtitle">${event.description}</p>
+                    
+                    <div class="event-detail-meta">
+                        <div class="detail-meta-item">
+                            <div class="detail-meta-icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <div class="detail-meta-content">
+                                <div class="detail-meta-label">Date & Time</div>
+                                <div class="detail-meta-value">${formatEventDateTime(event.date, event.time)}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-meta-item">
+                            <div class="detail-meta-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="detail-meta-content">
+                                <div class="detail-meta-label">Location</div>
+                                <div class="detail-meta-value">${event.location}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-meta-item">
+                            <div class="detail-meta-icon">
+                                <i class="fas fa-tags"></i>
+                            </div>
+                            <div class="detail-meta-content">
+                                <div class="detail-meta-label">Category</div>
+                                <div class="detail-meta-value">${event.category}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-meta-item">
+                            <div class="detail-meta-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="detail-meta-content">
+                                <div class="detail-meta-label">Participants</div>
+                                <div class="detail-meta-value">${event.registered_count || 0}/${event.max_participants}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Display event content sections
+        async function displayEventContent(event) {
+            // Description (always shown)
+            document.getElementById('event-description').innerHTML = `
+                <p>${event.description}</p>
+            `;
+            
+            // Rules section
+            if (event.rules) {
+                document.getElementById('rules-section').style.display = 'block';
+                document.getElementById('event-rules').innerHTML = `
+                    <div class="rules-content">${formatTextContent(event.rules)}</div>
+                `;
+            }
+            
+            // Prize pool section
+            if (event.prize_pool) {
+                document.getElementById('prize-section').style.display = 'block';
+                document.getElementById('event-prizes').innerHTML = `
+                    <div class="prize-content">${formatTextContent(event.prize_pool)}</div>
+                `;
+            }
+            
+            // Additional info section
+            if (event.additional_info) {
+                document.getElementById('additional-info-section').style.display = 'block';
+                document.getElementById('event-additional-info').innerHTML = `
+                    <div class="additional-info-content">${formatTextContent(event.additional_info)}</div>
+                `;
+            }
+        }
+
+        // Display event sidebar
+        async function displayEventSidebar(event) {
+            // Registration card
+            const registrationCard = document.getElementById('registration-card');
+            const isEventFull = (event.registered_count || 0) >= event.max_participants;
+            const isEventPast = new Date(event.date) < new Date();
+            const currentUser = auth.getCurrentUser();
+            
+            let registrationContent = '';
+            
+            if (isEventPast) {
+                registrationContent = `
+                    <h4 class="card-title">
+                        <i class="fas fa-history"></i>
+                        Event Completed
+                    </h4>
+                    <p class="text-center">This event has already taken place.</p>
+                `;
+            } else if (isEventFull) {
+                registrationContent = `
+                    <h4 class="card-title">
+                        <i class="fas fa-users"></i>
+                        Event Full
+                    </h4>
+                    <p class="text-center">This event has reached maximum capacity.</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 100%"></div>
+                    </div>
+                `;
+            } else if (currentUser) {
+                // Check if user is already registered
+                const isRegistered = await checkUserRegistration(event.id);
+                
+                if (isRegistered) {
+                    registrationContent = `
+                        <h4 class="card-title">
+                            <i class="fas fa-check-circle"></i>
+                            You're Registered!
+                        </h4>
+                        <p class="text-center">You're all set for this event.</p>
+                        <div class="registration-actions">
+                            <button class="btn-outline btn-full" onclick="viewMyRegistrations()">
+                                <i class="fas fa-list"></i>
+                                View My Registrations
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    registrationContent = `
+                        <h4 class="card-title">
+                            <i class="fas fa-rocket"></i>
+                            Join This Event
+                        </h4>
+                        <div class="registration-stats">
+                            <div class="spots-available">
+                                <span class="spots-number">${event.max_participants - (event.registered_count || 0)}</span>
+                                <span class="spots-label">spots left</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${((event.registered_count || 0) / event.max_participants) * 100}%"></div>
+                        </div>
+                        ${event.entry_fee ? `
+                            <div class="entry-fee">
+                                <i class="fas fa-dollar-sign"></i>
+                                <span>$${event.entry_fee} entry fee</span>
+                            </div>
+                        ` : ''}
+                        <button class="btn-primary btn-full btn-large" onclick="showRegistrationModal()">
+                            <i class="fas fa-rocket"></i>
+                            Register Now
+                        </button>
+                    `;
+                }
+            } else {
+                registrationContent = `
+                    <h4 class="card-title">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login Required
+                    </h4>
+                    <p class="text-center">Please login to register for this event.</p>
+                    <button class="btn-primary btn-full" onclick="redirectToLogin()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login to Register
+                    </button>
+                `;
+            }
+            
+            registrationCard.innerHTML = registrationContent;
+            
+            // Event info
+            const eventInfo = document.getElementById('event-info');
+            eventInfo.innerHTML = `
+                <div class="info-item">
+                    <i class="fas fa-calendar-plus"></i>
+                    <div>
+                        <span class="info-label">Created</span>
+                        <span class="info-value">${formatDate(event.created_at)}</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-user-tie"></i>
+                    <div>
+                        <span class="info-label">Organizer</span>
+                        <span class="info-value">${event.organizer.name || 'x-z Gamer'}</span>
+                    </div>
+                </div>
+                ${event.registration_deadline ? `
+                    <div class="info-item">
+                        <i class="fas fa-hourglass-end"></i>
+                        <div>
+                            <span class="info-label">Registration Deadline</span>
+                            <span class="info-value">${formatDate(event.registration_deadline)}</span>
+                        </div>
+                    </div>
+                ` : ''}
+                ${event.entry_fee ? `
+                    <div class="info-item">
+                        <i class="fas fa-money-bill"></i>
+                        <div>
+                            <span class="info-label">Entry Fee</span>
+                            <span class="info-value">$${event.entry_fee}</span>
+                        </div>
+                    </div>
+                ` : `
+                    <div class="info-item">
+                        <i class="fas fa-gift"></i>
+                        <div>
+                            <span class="info-label">Entry Fee</span>
+                            <span class="info-value">Free Event</span>
+                        </div>
+                    </div>
+                `}
+            `;
+            
+            // Contact info
+            if (event.contact_email || event.discord_server) {
+                document.getElementById('contact-card').style.display = 'block';
+                
+                let contactContent = '';
+                if (event.contact_email) {
+                    contactContent += `
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:${event.contact_email}">${event.contact_email}</a>
+                        </div>
+                    `;
+                }
+                if (event.discord_server) {
+                    contactContent += `
+                        <div class="contact-item">
+                            <i class="fab fa-discord"></i>
+                            <a href="${event.discord_server}" target="_blank">Discord Server</a>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('contact-info').innerHTML = contactContent;
+            }
+        }
+
+        // Check if user is registered for event
+        async function checkUserRegistration(eventId) {
+            try {
+                if (!auth.isAuthenticated()) return false;
+                
+                const registrations = await window.api.getMyRegistrations();
+                return registrations.some(reg => reg.event_id === eventId || reg.event.id === eventId);
+            } catch (error) {
+                console.error('Error checking registration:', error);
+                return false;
+            }
+        }
+
+        // Load participants
+        async function loadParticipants(eventId) {
+            try {
+                const registrations = await window.api.getEventRegistrations(eventId);
+                
+                const participantCount = document.getElementById('participant-count');
+                participantCount.textContent = `(${registrations.length})`;
+                
+                const participantsList = document.getElementById('participants-list');
+                
+                if (registrations.length === 0) {
+                    participantsList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-users"></i>
+                            <p>No participants yet. Be the first to register!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                participantsList.innerHTML = `
+                    <div class="participants-grid">
+                        ${registrations.map(reg => `
+                            <div class="participant-item">
+                                <div class="participant-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="participant-info">
+                                    <span class="participant-name">${reg.user_name || 'Anonymous Player'}</span>
+                                    <span class="participant-date">Joined ${formatTimeAgo(reg.registered_at || reg.created_at)}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+            } catch (error) {
+                console.error('Error loading participants:', error);
+                const participantsList = document.getElementById('participants-list');
+                participantsList.innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Unable to load participants</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load feedback
+        async function loadFeedback(eventId) {
+            try {
+                const feedback = await window.api.getEventFeedback(eventId);
+                
+                const feedbackContainer = document.getElementById('feedback-container');
+                
+                if (feedback.length === 0) {
+                    feedbackContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-comments"></i>
+                            <p>No feedback yet. Share your experience!</p>
+                        </div>
+                    `;
+                } else {
+                    feedbackContainer.innerHTML = `
+                        <div class="feedback-list">
+                            ${feedback.map(fb => `
+                                <div class="feedback-item">
+                                    <div class="feedback-header">
+                                        <div class="feedback-user">
+                                            <i class="fas fa-user-circle"></i>
+                                            <span>${fb.user_name || 'Anonymous'}</span>
+                                        </div>
+                                        <div class="feedback-rating">
+                                            ${generateStarRating(fb.rating)}
+                                        </div>
+                                    </div>
+                                    <p class="feedback-comment">${fb.comments}</p>
+                                    <span class="feedback-date">${formatTimeAgo(fb.created_at)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+                
+                // Show feedback form if user is registered and event is past
+                const isEventPast = new Date(currentEvent.date) < new Date();
+                const isUserRegistered = await checkUserRegistration(eventId);
+                
+                if (auth.isAuthenticated() && isUserRegistered && isEventPast) {
+                    document.getElementById('add-feedback-section').style.display = 'block';
+                }
+                
+            } catch (error) {
+                console.error('Error loading feedback:', error);
+                const feedbackContainer = document.getElementById('feedback-container');
+                feedbackContainer.innerHTML = `
+                    <div class="error-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Unable to load feedback</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Setup star rating
+        function setupStarRating() {
+            const stars = document.querySelectorAll('.star-rating i');
+            
+            stars.forEach((star, index) => {
+                star.addEventListener('click', () => {
+                    currentRating = index + 1;
+                    updateStarDisplay();
+                });
+                
+                star.addEventListener('mouseover', () => {
+                    highlightStars(index + 1);
+                });
+            });
+            
+            document.querySelector('.star-rating').addEventListener('mouseleave', () => {
+                updateStarDisplay();
+            });
+        }
+
+        function highlightStars(rating) {
+            const stars = document.querySelectorAll('.star-rating i');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        function updateStarDisplay() {
+            highlightStars(currentRating);
+        }
+
+        // Setup feedback form
+        function setupFeedbackForm() {
+            const feedbackForm = document.getElementById('feedback-form');
+            
+            feedbackForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                if (currentRating === 0) {
+                    showNotification('Please select a rating', 'warning');
+                    return;
+                }
+                
+                const comments = document.getElementById('feedback-comments').value.trim();
+                if (!comments) {
+                    showNotification('Please add your comments', 'warning');
+                    return;
+                }
+                
+                try {
+                    const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+                    submitBtn.disabled = true;
+                    
+                    await api.submitFeedback(currentEvent.id, currentRating, comments);
+                    
+                    showNotification('Thank you for your feedback!', 'success');
+                    
+                    // Reset form
+                    currentRating = 0;
+                    updateStarDisplay();
+                    document.getElementById('feedback-comments').value = '';
+                    
+                    // Hide feedback form
+                    document.getElementById('add-feedback-section').style.display = 'none';
+                    
+                    // Reload feedback
+                    await loadFeedback(currentEvent.id);
+                    
+                } catch (error) {
+                    console.error('Error submitting feedback:', error);
+                    showNotification('Failed to submit feedback. Please try again.', 'error');
+                    
+                    const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Feedback';
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+
+        // Registration modal functions
+        function showRegistrationModal() {
+            if (!auth.isAuthenticated()) {
+                redirectToLogin();
+                return;
+            }
+            
+            if (!currentEvent) return;
+            
+            const registrationContent = document.getElementById('registration-content');
+            registrationContent.innerHTML = `
+                <div class="registration-summary">
+                    <h4>${currentEvent.title}</h4>
+                    <div class="registration-details">
+                        <div class="detail-row">
+                            <i class="fas fa-calendar"></i>
+                            <span>${formatEventDateTime(currentEvent.date, currentEvent.time)}</span>
+                        </div>
+                        <div class="detail-row">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${currentEvent.location}</span>
+                        </div>
+                        ${currentEvent.entry_fee ? `
+                            <div class="detail-row">
+                                <i class="fas fa-dollar-sign"></i>
+                                <span>$${currentEvent.entry_fee} entry fee</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <div class="registration-confirmation">
+                    <p><strong>Confirm your registration for this event.</strong></p>
+                    <p>You will receive a confirmation email with event details.</p>
+                </div>
+            `;
+            
+            openModal('registration-modal');
+        }
+
+        async function confirmEventRegistration() {
+            if (!currentEvent) return;
+            
+            try {
+                const confirmBtn = document.getElementById('confirm-registration-btn');
+                const originalText = confirmBtn.innerHTML;
+                
+                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+                confirmBtn.disabled = true;
+                
+                await api.registerForEvent(currentEvent.id);
+                
+                showNotification('Successfully registered for the event!', 'success');
+                
+                closeModal('registration-modal');
+                
+                // Reload event details to update UI
+                await loadEventDetails(currentEvent.id);
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                showNotification('Failed to register for event. Please try again.', 'error');
+                
+                const confirmBtn = document.getElementById('confirm-registration-btn');
+                confirmBtn.innerHTML = '<i class="fas fa-rocket"></i> Register Now';
+                confirmBtn.disabled = false;
+            }
+        }
+
+        // Navigation and utility functions
+        function updateNavigationForAuth() {
+            const navButtons = document.getElementById('nav-buttons');
+            const currentUser = auth.getCurrentUser();
+            
+            if (currentUser) {
+                navButtons.innerHTML += `
+                    <div class="user-menu-mini">
+                        <span class="user-name">${currentUser.name}</span>
+                        <a href="../${currentUser.role}/dashboard.html" class="btn-primary">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                    </div>
+                `;
+            } else {
+                navButtons.innerHTML += `
+                    <button class="btn-primary" onclick="redirectToLogin()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Login
+                    </button>
+                `;
+            }
+        }
+
+        function redirectToLogin() {
+            localStorage.setItem('redirectAfterLogin', window.location.href);
+            window.location.href = '../../index.html';
+        }
+
+        function viewMyRegistrations() {
+            window.location.href = '../player/my-registrations.html';
+        }
+
+        function goBack() {
+            if (document.referrer) {
+                window.history.back();
+            } else {
+                window.location.href = '../player/browse-events.html';
+            }
+        }
+
+        // Share functions
+        function shareEvent(platform) {
+            const eventTitle = currentEvent ? currentEvent.title : 'GameHub Event';
+            const eventUrl = window.location.href;
+            
+            switch (platform) {
+                case 'copy':
+                    navigator.clipboard.writeText(eventUrl).then(() => {
+                        showNotification('Event link copied to clipboard!', 'success');
+                    }).catch(() => {
+                        showNotification('Failed to copy link', 'error');
+                    });
+                    break;
+                case 'twitter':
+                    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out this awesome gaming event: ${eventTitle}`)}&url=${encodeURIComponent(eventUrl)}`;
+                    window.open(twitterUrl, '_blank');
+                    break;
+                case 'facebook':
+                    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(eventUrl)}`;
+                    window.open(facebookUrl, '_blank');
+                    break;
+            }
+        }
+
+        // Utility functions
+        function formatEventDateTime(date, time) {
+            const eventDate = new Date(`${date}T${time}`);
+            return eventDate.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function formatDate(dateString) {
+            const options = { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        function formatTimeAgo(dateString) {
+            const now = new Date();
+            const date = new Date(dateString);
+            const diffInSeconds = Math.floor((now - date) / 1000);
+            
+            if (diffInSeconds < 60) return 'Just now';
+            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+            return `${Math.floor(diffInSeconds / 86400)}d ago`;
+        }
+
+        function formatTextContent(text) {
+            return text.replace(/\n/g, '<br>');
+        }
+
+        function getEventStatusClass(event) {
+            const now = new Date();
+            const eventDate = new Date(event.date);
+            
+            if (!event.is_active) return 'status-cancelled';
+            if (eventDate > now) return 'status-upcoming';
+            
+            const eventEndDate = new Date(eventDate.getTime() + 24 * 60 * 60 * 1000);
+            if (eventDate <= now && now <= eventEndDate) return 'status-live';
+            
+            return 'status-completed';
+        }
+
+        function getEventStatusText(event) {
+            const status = getEventStatusClass(event);
+            const statusTexts = {
+                'status-upcoming': 'Upcoming Event',
+                'status-live': 'Live Now',
+                'status-completed': 'Event Completed',
+                'status-cancelled': 'Event Cancelled'
+            };
+            return statusTexts[status] || 'Event';
+        }
+
+        function generateStarRating(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star filled"></i>';
+                } else {
+                    stars += '<i class="fas fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        function showEventError() {
+            document.getElementById('event-header').innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Unable to Load Event</h3>
+                    <p>There was a problem loading the event details.</p>
+                    <button class="btn-primary" onclick="window.location.reload()">
+                        <i class="fas fa-refresh"></i>
+                        Try Again
+                    </button>
+                </div>
+            `;
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            const icon = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            }[type];
+            
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="${icon}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                closeNotification(notification.querySelector('.notification-close'));
+            }, 5000);
+        }
+
+        function closeNotification(button) {
+            const notification = button.closest('.notification');
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }
+    </script>
+    
+    <style>
+        /* Event Details Specific Styles */
+        .event-details-main {
+            min-height: 100vh;
+            background: var(--gradient-dark);
+            padding-top: 70px;
+        }
+
+        .event-details-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+
+        .event-details-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: var(--spacing-xl);
+        }
+
+        .event-main-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .content-section {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+        }
+
+        .content-title {
+            font-family: var(--font-primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--demon-red);
+            margin: 0 0 var(--spacing-md) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .content-body {
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+
+        .event-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .sidebar-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+        }
+
+        .card-title {
+            font-family: var(--font-primary);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--demon-red);
+            margin: 0 0 var(--spacing-md) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .registration-stats {
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .spots-number {
+            font-family: var(--font-primary);
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--demon-red);
+            display: block;
+        }
+
+        .spots-label {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .entry-fee {
+            text-align: center;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-sm);
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            color: #f59e0b;
+        }
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background: rgba(220, 20, 60, 0.05);
+            border-radius: 8px;
+        }
+
+        .info-item i {
+            color: var(--demon-red);
+            width: 20px;
+            text-align: center;
+        }
+
+        .info-item div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .contact-item i {
+            color: var(--demon-red);
+            width: 20px;
+            text-align: center;
+        }
+
+        .contact-item a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition-fast);
+        }
+
+        .contact-item a:hover {
+            color: var(--demon-red);
+        }
+
+        .share-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .participants-grid {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .participant-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background: rgba(220, 20, 60, 0.05);
+            border-radius: 8px;
+        }
+
+        .participant-avatar {
+            width: 35px;
+            height: 35px;
+            background: var(--gradient-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+        }
+
+        .participant-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .participant-name {
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .participant-date {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+        }
+
+        .feedback-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .feedback-item {
+            padding: var(--spacing-md);
+            background: rgba(220, 20, 60, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(220, 20, 60, 0.1);
+        }
+
+        .feedback-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .feedback-user {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .feedback-rating {
+            display: flex;
+            gap: 2px;
+        }
+
+        .feedback-rating i {
+            color: var(--demon-red);
+            font-size: 0.9rem;
+        }
+
+        .feedback-comment {
+            color: var(--light-gray);
+            margin: 0 0 var(--spacing-xs) 0;
+            line-height: 1.6;
+        }
+
+        .feedback-date {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+        }
+
+        .add-feedback-section {
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .add-feedback-section h4 {
+            color: var(--white);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .feedback-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .rating-input {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .rating-input label {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 4px;
+        }
+
+        .star-rating i {
+            font-size: 1.5rem;
+            color: rgba(220, 20, 60, 0.3);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .star-rating i:hover,
+        .star-rating i.active {
+            color: var(--demon-red);
+            text-shadow: 0 0 8px var(--demon-red);
+        }
+
+        .event-status-badge {
+            position: absolute;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-upcoming {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-live {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .status-completed {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .user-menu-mini {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .user-name {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .registration-summary h4 {
+            font-family: var(--font-primary);
+            font-size: 1.2rem;
+            color: var(--demon-red);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .registration-details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--light-gray);
+        }
+
+        .detail-row i {
+            color: var(--demon-red);
+            width: 16px;
+        }
+
+        .registration-confirmation p {
+            color: var(--light-gray);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .event-details-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .event-sidebar {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .event-details-container {
+                padding: var(--spacing-lg);
+            }
+            
+            .event-detail-title {
+                font-size: 2rem;
+            }
+            
+            .event-detail-meta {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .event-details-container {
+                padding: var(--spacing-md);
+            }
+            
+            .content-section,
+            .sidebar-card {
+                padding: var(--spacing-md);
+            }
+            
+            .event-detail-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</body>
+</html>

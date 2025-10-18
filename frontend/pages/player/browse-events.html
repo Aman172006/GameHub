@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Events - GameHub</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/events.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GAMEHUB</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info" id="sidebar-user-info">
+                    <div class="user-name">Loading...</div>
+                    <div class="user-role">Player</div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="browse-events.html" class="nav-link">
+                            <i class="fas fa-calendar"></i>
+                            <span>Browse Events</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="my-registrations.html" class="nav-link">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span>My Registrations</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../shared/profile.html" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../events/event-search.html" class="nav-link">
+                            <i class="fas fa-search"></i>
+                            <span>Search Events</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-footer">
+                    <button class="btn-logout" onclick="auth.logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 class="page-title">
+                        <i class="fas fa-calendar"></i>
+                        Browse Events
+                    </h1>
+                    <p class="page-subtitle">Discover exciting gaming tournaments and competitions</p>
+                </div>
+                
+                <div class="header-right">
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-events">0</div>
+                            <div class="stat-label">Available Events</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="registered-events">0</div>
+                            <div class="stat-label">My Registrations</div>
+                        </div>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <button class="btn-secondary" onclick="refreshEvents()">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <button class="btn-primary" onclick="goToSearch()">
+                            <i class="fas fa-search"></i>
+                            Advanced Search
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Browse Content -->
+            <div class="dashboard-content">
+                <!-- Filters Section -->
+                <section class="filters-section">
+                    <div class="filters-header">
+                        <h3>Filter Events</h3>
+                        <button class="btn-outline btn-small" onclick="clearFilters()">
+                            <i class="fas fa-times"></i>
+                            Clear All
+                        </button>
+                    </div>
+                    
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">Category</label>
+                            <select id="category-filter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Categories</option>
+                                <option value="FPS">FPS</option>
+                                <option value="MOBA">MOBA</option>
+                                <option value="Battle Royale">Battle Royale</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Racing">Racing</option>
+                                <option value="Strategy">Strategy</option>
+                                <option value="Fighting">Fighting</option>
+                                <option value="RPG">RPG</option>
+                                <option value="Casual">Casual</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Location</label>
+                            <select id="location-filter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Locations</option>
+                                <option value="Online">Online</option>
+                                <option value="Gaming Center">Gaming Center</option>
+                                <option value="Arena">Arena</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Date Range</label>
+                            <select id="date-filter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Dates</option>
+                                <option value="today">Today</option>
+                                <option value="tomorrow">Tomorrow</option>
+                                <option value="this-week">This Week</option>
+                                <option value="next-week">Next Week</option>
+                                <option value="this-month">This Month</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Availability</label>
+                            <select id="availability-filter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Events</option>
+                                <option value="available">Available Spots</option>
+                                <option value="full">Nearly Full</option>
+                                <option value="new">New Events</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Search</label>
+                            <div class="search-input-container">
+                                <input 
+                                    type="text" 
+                                    id="search-filter" 
+                                    class="search-input" 
+                                    placeholder="Search events..."
+                                    oninput="debounceSearch()"
+                                >
+                                <i class="fas fa-search search-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Events Grid -->
+                <section class="events-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span id="events-count">All Events</span>
+                            <span class="events-sort">
+                                <label>Sort by:</label>
+                                <select id="sort-filter" class="sort-select" onchange="applyFilters()">
+                                    <option value="date-asc">Date (Earliest First)</option>
+                                    <option value="date-desc">Date (Latest First)</option>
+                                    <option value="name-asc">Name (A-Z)</option>
+                                    <option value="name-desc">Name (Z-A)</option>
+                                    <option value="participants-asc">Participants (Low to High)</option>
+                                    <option value="participants-desc">Participants (High to Low)</option>
+                                </select>
+                            </span>
+                        </h2>
+                    </div>
+                    
+                    <div class="events-grid" id="events-grid">
+                        <!-- Events will be loaded here -->
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading exciting events...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Load More Button -->
+                    <div class="load-more-container" id="load-more-container" style="display: none;">
+                        <button class="btn-outline btn-large" onclick="loadMoreEvents()">
+                            <i class="fas fa-plus"></i>
+                            Load More Events
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Event Registration Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus-circle"></i> Register for Event</h3>
+                <span class="modal-close" onclick="closeModal('register-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="register-content">
+                    <!-- Registration content will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('register-modal')">Cancel</button>
+                <button class="btn-primary" id="confirm-register-btn" onclick="confirmRegistration()">
+                    <i class="fas fa-rocket"></i>
+                    Register Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../config/api-config.js" defer></script>
+    <script src="../../assets/js/api.js" defer></script>
+    <script src="../../assets/js/auth.js" defer></script>
+    <script src="../../assets/js/utils.js" defer></script>
+    <script src="../../assets/js/events.js" defer></script>
+    
+    <script defer>
+        let allEvents = [];
+        let filteredEvents = [];
+        let currentEventId = null;
+        let eventsPerPage = 12;
+        let currentPage = 1;
+        let searchTimeout;
+
+        // Initialize browse events page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication
+            if (!auth.requireAuth()) {
+                return;
+            }
+            
+            // Update user info in sidebar
+            const user = auth.getCurrentUser();
+            if (user) {
+                updateSidebarUserInfo(user);
+            }
+            
+            // Load events and stats
+            await Promise.all([
+                loadAllEvents(),
+                loadPlayerStats()
+            ]);
+        });
+
+        // Update sidebar user info
+        function updateSidebarUserInfo(user) {
+            const userInfo = document.getElementById('sidebar-user-info');
+            if (userInfo) {
+                userInfo.innerHTML = `
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-role">${user.role}</div>
+                `;
+            }
+        }
+
+        // Load all events
+        async function loadAllEvents() {
+            try {
+                showLoadingState('Loading events...');
+                
+                const events = await api.getEvents();
+                allEvents = events.filter(event => {
+                    // Only show active events that haven't passed
+                    const eventDate = new Date(event.date);
+                    const now = new Date();
+                    return event.is_active && eventDate > now;
+                });
+                
+                filteredEvents = [...allEvents];
+                
+                // Update events count
+                updateEventsCount();
+                
+                // Display events
+                displayEvents();
+                
+            } catch (error) {
+                console.error('Error loading events:', error);
+                showEventsError();
+            } finally {
+                hideLoadingState();
+            }
+        }
+
+        // Load player statistics
+        async function loadPlayerStats() {
+            try {
+                const registrations = await api.getMyRegistrations();
+                
+                document.getElementById('total-events').textContent = allEvents.length;
+                document.getElementById('registered-events').textContent = registrations.length;
+                
+            } catch (error) {
+                console.error('Error loading player stats:', error);
+                document.getElementById('total-events').textContent = allEvents.length;
+                document.getElementById('registered-events').textContent = '0';
+            }
+        }
+
+        // Display events
+        function displayEvents() {
+            const eventsGrid = document.getElementById('events-grid');
+            const eventsToShow = filteredEvents.slice(0, currentPage * eventsPerPage);
+            
+            if (eventsToShow.length === 0) {
+                eventsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No Events Found</h3>
+                        <p>Try adjusting your filters or search criteria.</p>
+                        <button class="btn-primary" onclick="clearFilters()">Clear Filters</button>
+                    </div>
+                `;
+                document.getElementById('load-more-container').style.display = 'none';
+                return;
+            }
+            
+            eventsGrid.innerHTML = eventsToShow.map(event => `
+                <div class="event-card" data-event-id="${event.id}">
+                    <div class="event-header">
+                        <span class="event-category">${event.category}</span>
+                        <div class="event-date">
+                            <div>${formatEventDate(event.date)}</div>
+                            <div class="event-time">${event.time}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="event-content">
+                        <h3 class="event-title">${event.title}</h3>
+                        <p class="event-description">${truncateText(event.description, 100)}</p>
+                        
+                        <div class="event-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${event.location}</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-users"></i>
+                                <span>${event.registered_count || 0}/${event.max_participants}</span>
+                            </div>
+                            ${event.entry_fee ? `
+                                <div class="meta-item">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <span>$${event.entry_fee}</span>
+                                </div>
+                            ` : `
+                                <div class="meta-item free-event">
+                                    <i class="fas fa-gift"></i>
+                                    <span>Free</span>
+                                </div>
+                            `}
+                        </div>
+                        
+                        <div class="event-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${getRegistrationProgress(event)}%"></div>
+                            </div>
+                            <span class="progress-text">${getRegistrationProgress(event)}% Full</span>
+                        </div>
+                    </div>
+                    
+                    <div class="event-footer">
+                        <button class="btn-outline btn-small" onclick="viewEventDetails(${event.id})">
+                            <i class="fas fa-eye"></i>
+                            View Details
+                        </button>
+                        <button class="btn-primary btn-small" onclick="showRegistrationModal(${event.id})" 
+                                ${isEventFull(event) ? 'disabled' : ''}>
+                            <i class="fas fa-plus"></i>
+                            ${isEventFull(event) ? 'Event Full' : 'Register'}
+                        </button>
+                    </div>
+                    
+                    ${isEventFull(event) ? '<div class="event-full-overlay">Event Full</div>' : ''}
+                    ${isNewEvent(event) ? '<div class="event-new-badge">New</div>' : ''}
+                </div>
+            `).join('');
+            
+            // Show/hide load more button
+            const loadMoreContainer = document.getElementById('load-more-container');
+            if (eventsToShow.length < filteredEvents.length) {
+                loadMoreContainer.style.display = 'block';
+            } else {
+                loadMoreContainer.style.display = 'none';
+            }
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const categoryFilter = document.getElementById('category-filter').value;
+            const locationFilter = document.getElementById('location-filter').value;
+            const dateFilter = document.getElementById('date-filter').value;
+            const availabilityFilter = document.getElementById('availability-filter').value;
+            const searchFilter = document.getElementById('search-filter').value.toLowerCase();
+            const sortFilter = document.getElementById('sort-filter').value;
+            
+            // Filter events
+            filteredEvents = allEvents.filter(event => {
+                // Category filter
+                if (categoryFilter && event.category !== categoryFilter) return false;
+                
+                // Location filter
+                if (locationFilter && !event.location.toLowerCase().includes(locationFilter.toLowerCase())) return false;
+                
+                // Date filter
+                if (dateFilter && !matchesDateFilter(event.date, dateFilter)) return false;
+                
+                // Availability filter
+                if (availabilityFilter && !matchesAvailabilityFilter(event, availabilityFilter)) return false;
+                
+                // Search filter
+                if (searchFilter && !matchesSearch(event, searchFilter)) return false;
+                
+                return true;
+            });
+            
+            // Sort events
+            sortEvents(sortFilter);
+            
+            // Reset pagination
+            currentPage = 1;
+            
+            // Update display
+            updateEventsCount();
+            displayEvents();
+        }
+
+        // Sort events
+        function sortEvents(sortType) {
+            switch (sortType) {
+                case 'date-asc':
+                    filteredEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                case 'date-desc':
+                    filteredEvents.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'name-asc':
+                    filteredEvents.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'name-desc':
+                    filteredEvents.sort((a, b) => b.title.localeCompare(a.title));
+                    break;
+                case 'participants-asc':
+                    filteredEvents.sort((a, b) => (a.registered_count || 0) - (b.registered_count || 0));
+                    break;
+                case 'participants-desc':
+                    filteredEvents.sort((a, b) => (b.registered_count || 0) - (a.registered_count || 0));
+                    break;
+            }
+        }
+
+        // Filter helper functions
+        function matchesDateFilter(eventDate, filter) {
+            const event = new Date(eventDate);
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            switch (filter) {
+                case 'today':
+                    return event.toDateString() === today.toDateString();
+                case 'tomorrow':
+                    const tomorrow = new Date(today);
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    return event.toDateString() === tomorrow.toDateString();
+                case 'this-week':
+                    const endOfWeek = new Date(today);
+                    endOfWeek.setDate(today.getDate() + (7 - today.getDay()));
+                    return event >= today && event <= endOfWeek;
+                case 'next-week':
+                    const nextWeekStart = new Date(today);
+                    nextWeekStart.setDate(today.getDate() + (7 - today.getDay()) + 1);
+                    const nextWeekEnd = new Date(nextWeekStart);
+                    nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+                    return event >= nextWeekStart && event <= nextWeekEnd;
+                case 'this-month':
+                    return event.getMonth() === now.getMonth() && event.getFullYear() === now.getFullYear();
+                default:
+                    return true;
+            }
+        }
+
+        function matchesAvailabilityFilter(event, filter) {
+            const registeredCount = event.registered_count || 0;
+            const maxParticipants = event.max_participants;
+            const fillPercentage = (registeredCount / maxParticipants) * 100;
+            
+            switch (filter) {
+                case 'available':
+                    return fillPercentage < 80;
+                case 'full':
+                    return fillPercentage >= 80;
+                case 'new':
+                    return isNewEvent(event);
+                default:
+                    return true;
+            }
+        }
+
+        function matchesSearch(event, search) {
+            return event.title.toLowerCase().includes(search) ||
+                   event.description.toLowerCase().includes(search) ||
+                   event.category.toLowerCase().includes(search) ||
+                   event.location.toLowerCase().includes(search);
+        }
+
+        // Search with debounce
+        function debounceSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                applyFilters();
+            }, 300);
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('category-filter').value = '';
+            document.getElementById('location-filter').value = '';
+            document.getElementById('date-filter').value = '';
+            document.getElementById('availability-filter').value = '';
+            document.getElementById('search-filter').value = '';
+            document.getElementById('sort-filter').value = 'date-asc';
+            
+            applyFilters();
+        }
+
+        // Load more events
+        function loadMoreEvents() {
+            currentPage++;
+            displayEvents();
+        }
+
+        // Show registration modal
+        function showRegistrationModal(eventId) {
+            const event = allEvents.find(e => e.id === eventId);
+            if (!event) return;
+            
+            if (isEventFull(event)) {
+                showNotification('This event is full and no longer accepting registrations.', 'warning');
+                return;
+            }
+            
+            currentEventId = eventId;
+            
+            const registerContent = document.getElementById('register-content');
+            registerContent.innerHTML = `
+                <div class="registration-info">
+                    <div class="event-summary">
+                        <h4>${event.title}</h4>
+                        <div class="event-details">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>${formatEventDate(event.date)} at ${event.time}</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${event.location}</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span>${event.registered_count || 0}/${event.max_participants} participants</span>
+                            </div>
+                            ${event.entry_fee ? `
+                                <div class="detail-item">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <span>$${event.entry_fee} entry fee</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="registration-confirmation">
+                        <p><strong>Are you sure you want to register for this event?</strong></p>
+                        <p>You will receive a confirmation email with event details and further instructions.</p>
+                        ${event.entry_fee ? `<p class="fee-notice">Note: A $${event.entry_fee} entry fee applies to this event.</p>` : ''}
+                    </div>
+                </div>
+            `;
+            
+            openModal('register-modal');
+        }
+
+        // Confirm registration
+        async function confirmRegistration() {
+            if (!currentEventId) return;
+            
+            try {
+                const confirmBtn = document.getElementById('confirm-register-btn');
+                const originalText = confirmBtn.innerHTML;
+                
+                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+                confirmBtn.disabled = true;
+                
+                await api.registerForEvent(currentEventId);
+                
+                showNotification('Successfully registered for the event!', 'success');
+                
+                closeModal('register-modal');
+                
+                // Refresh events to update registration counts
+                await loadAllEvents();
+                await loadPlayerStats();
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                showNotification('Failed to register for event. Please try again.', 'error');
+                
+                const confirmBtn = document.getElementById('confirm-register-btn');
+                confirmBtn.innerHTML = '<i class="fas fa-rocket"></i> Register Now';
+                confirmBtn.disabled = false;
+            }
+        }
+
+        // Navigation functions
+        function goToSearch() {
+            window.location.href = '../events/event-search.html';
+        }
+
+        function viewEventDetails(eventId) {
+            localStorage.setItem('selectedEventId', eventId);
+            window.location.href = '../events/event-details.html';
+        }
+
+        function refreshEvents() {
+            loadAllEvents();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.dashboard-sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        // Utility functions
+        function updateEventsCount() {
+            const countElement = document.getElementById('events-count');
+            countElement.textContent = `${filteredEvents.length} Event${filteredEvents.length !== 1 ? 's' : ''}`;
+        }
+
+        function formatEventDate(dateString) {
+            const options = { month: 'short', day: 'numeric', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        function truncateText(text, maxLength) {
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
+        }
+
+        function getRegistrationProgress(event) {
+            const registered = event.registered_count || 0;
+            const max = event.max_participants;
+            return Math.round((registered / max) * 100);
+        }
+
+        function isEventFull(event) {
+            const registered = event.registered_count || 0;
+            return registered >= event.max_participants;
+        }
+
+        function isNewEvent(event) {
+            const eventCreated = new Date(event.created_at);
+            const now = new Date();
+            const daysDiff = (now - eventCreated) / (1000 * 60 * 60 * 24);
+            return daysDiff <= 7; // Consider events created within 7 days as "new"
+        }
+
+        function showEventsError() {
+            const eventsGrid = document.getElementById('events-grid');
+            eventsGrid.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Unable to Load Events</h3>
+                    <p>There was a problem loading the events. Please try again.</p>
+                    <button class="btn-primary" onclick="loadAllEvents()">
+                        <i class="fas fa-retry"></i>
+                        Retry
+                    </button>
+                </div>
+            `;
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Loading state functions
+        function showLoadingState(message = 'Loading...') {
+            const loadingOverlay = document.createElement('div');
+            loadingOverlay.id = 'loading-overlay';
+            loadingOverlay.innerHTML = `
+                <div class="loading-content">
+                    <div class="loading-spinner"></div>
+                    <p>${message}</p>
+                </div>
+            `;
+            document.body.appendChild(loadingOverlay);
+        }
+
+        function hideLoadingState() {
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.remove();
+            }
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            const icon = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            }[type];
+            
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="${icon}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                closeNotification(notification.querySelector('.notification-close'));
+            }, 5000);
+        }
+
+        function closeNotification(button) {
+            const notification = button.closest('.notification');
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }
+    </script>
+</body>
+</html>

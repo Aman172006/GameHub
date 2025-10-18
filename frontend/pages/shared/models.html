@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub Modals Component</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- GameHub Universal Modals Collection -->
+    
+    <!-- Loading Modal -->
+    <div id="loading-modal" class="modal loading-modal">
+        <div class="modal-content loading-content">
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring"></div>
+            </div>
+            <div class="loading-text" id="loading-text">Loading...</div>
+            <div class="loading-progress" id="loading-progress" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="loading-progress-bar"></div>
+                </div>
+                <div class="progress-text" id="loading-progress-text">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="confirmation-title">
+                    <i class="fas fa-question-circle"></i>
+                    Confirm Action
+                </h3>
+            </div>
+            <div class="modal-body">
+                <div class="confirmation-content">
+                    <div class="confirmation-icon" id="confirmation-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="confirmation-message">
+                        <p id="confirmation-message">Are you sure you want to proceed?</p>
+                        <div class="confirmation-details" id="confirmation-details" style="display: none;">
+                            <!-- Additional details will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="confirmation-cancel" onclick="closeConfirmationModal()">
+                    Cancel
+                </button>
+                <button class="btn-primary" id="confirmation-confirm" onclick="confirmAction()">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Modal -->
+    <div id="alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="alert-title">
+                    <i id="alert-icon" class="fas fa-info-circle"></i>
+                    <span id="alert-title-text">Notice</span>
+                </h3>
+                <span class="modal-close" onclick="closeAlertModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="alert-content">
+                    <p id="alert-message">This is an alert message.</p>
+                    <div class="alert-actions" id="alert-actions" style="display: none;">
+                        <!-- Additional action buttons will be added here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" onclick="closeAlertModal()">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div id="image-modal" class="modal image-modal">
+        <div class="modal-content image-content">
+            <div class="modal-header">
+                <h3 id="image-title">Image Preview</h3>
+                <span class="modal-close" onclick="closeImageModal()">&times;</span>
+            </div>
+            <div class="modal-body image-body">
+                <div class="image-container">
+                    <img id="modal-image" src="" alt="Preview">
+                    <div class="image-controls">
+                        <button class="image-control-btn" onclick="zoomOut()" title="Zoom Out">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button class="image-control-btn" onclick="resetZoom()" title="Reset Zoom">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button class="image-control-btn" onclick="zoomIn()" title="Zoom In">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="image-control-btn" onclick="downloadImage()" title="Download">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div id="video-modal" class="modal video-modal">
+        <div class="modal-content video-content">
+            <div class="modal-header">
+                <h3 id="video-title">Video Player</h3>
+                <span class="modal-close" onclick="closeVideoModal()">&times;</span>
+            </div>
+            <div class="modal-body video-body">
+                <div class="video-container">
+                    <video id="modal-video" controls>
+                        <source id="video-source" src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Quick View Modal -->
+    <div id="profile-quick-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-user"></i>
+                    Player Profile
+                </h3>
+                <span class="modal-close" onclick="closeModal('profile-quick-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="profile-quick-content" id="profile-quick-content">
+                    <!-- Profile content will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('profile-quick-modal')">Close</button>
+                <button class="btn-primary" id="view-full-profile" onclick="viewFullProfile()">
+                    View Full Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Quick Join Modal -->
+    <div id="quick-join-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-bolt"></i>
+                    Quick Join Event
+                </h3>
+                <span class="modal-close" onclick="closeModal('quick-join-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="quick-join-content" id="quick-join-content">
+                    <!-- Event details and join form will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('quick-join-modal')">Cancel</button>
+                <button class="btn-primary" id="quick-join-btn" onclick="quickJoinEvent()">
+                    <i class="fas fa-plus"></i>
+                    Join Event
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="share-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-share"></i>
+                    Share
+                </h3>
+                <span class="modal-close" onclick="closeModal('share-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="share-content">
+                    <div class="share-info" id="share-info">
+                        <!-- Share item info will be populated here -->
+                    </div>
+                    
+                    <div class="share-methods">
+                        <div class="share-method-section">
+                            <h4>Share on Social Media</h4>
+                            <div class="social-share-buttons">
+                                <button class="social-share-btn facebook" onclick="shareOn('facebook')">
+                                    <i class="fab fa-facebook-f"></i>
+                                    <span>Facebook</span>
+                                </button>
+                                <button class="social-share-btn twitter" onclick="shareOn('twitter')">
+                                    <i class="fab fa-twitter"></i>
+                                    <span>Twitter</span>
+                                </button>
+                                <button class="social-share-btn linkedin" onclick="shareOn('linkedin')">
+                                    <i class="fab fa-linkedin-in"></i>
+                                    <span>LinkedIn</span>
+                                </button>
+                                <button class="social-share-btn discord" onclick="shareOn('discord')">
+                                    <i class="fab fa-discord"></i>
+                                    <span>Discord</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="share-method-section">
+                            <h4>Copy Link</h4>
+                            <div class="copy-link-container">
+                                <input type="text" id="share-url" class="copy-input" readonly>
+                                <button class="copy-btn" onclick="copyShareLink()">
+                                    <i class="fas fa-copy"></i>
+                                    <span>Copy</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="share-method-section">
+                            <h4>Generate QR Code</h4>
+                            <div class="qr-code-container">
+                                <div class="qr-code" id="qr-code">
+                                    <!-- QR code will be generated here -->
+                                </div>
+                                <button class="btn-outline btn-small" onclick="downloadQR()">
+                                    <i class="fas fa-download"></i>
+                                    Download QR
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-cog"></i>
+                    Quick Settings
+                </h3>
+                <span class="modal-close" onclick="closeModal('settings-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="settings-content">
+                    <div class="settings-tabs">
+                        <button class="settings-tab active" onclick="switchSettingsTab('general')" data-tab="general">
+                            <i class="fas fa-sliders-h"></i>
+                            General
+                        </button>
+                        <button class="settings-tab" onclick="switchSettingsTab('notifications')" data-tab="notifications">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                        </button>
+                        <button class="settings-tab" onclick="switchSettingsTab('appearance')" data-tab="appearance">
+                            <i class="fas fa-palette"></i>
+                            Appearance
+                        </button>
+                    </div>
+                    
+                    <div class="settings-tab-content active" id="general-settings">
+                        <h4>General Settings</h4>
+                        <div class="settings-group">
+                            <div class="setting-item">
+                                <label class="setting-label">Language</label>
+                                <select class="setting-select" id="language-setting">
+                                    <option value="en">English</option>
+                                    <option value="es">Español</option>
+                                    <option value="fr">Français</option>
+                                    <option value="de">Deutsch</option>
+                                </select>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="setting-label">Time Zone</label>
+                                <select class="setting-select" id="timezone-setting">
+                                    <option value="UTC">UTC</option>
+                                    <option value="EST">Eastern Time</option>
+                                    <option value="PST">Pacific Time</option>
+                                    <option value="GMT">GMT</option>
+                                </select>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="auto-join-events">
+                                    <div class="checkbox-custom"></div>
+                                    <span>Auto-join recommended events</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-tab-content" id="notifications-settings">
+                        <h4>Notification Preferences</h4>
+                        <div class="settings-group">
+                            <div class="setting-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="email-notifications" checked>
+                                    <div class="checkbox-custom"></div>
+                                    <span>Email notifications</span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="push-notifications" checked>
+                                    <div class="checkbox-custom"></div>
+                                    <span>Push notifications</span>
+                                </label>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="event-reminders" checked>
+                                    <div class="checkbox-custom"></div>
+                                    <span>Event reminders</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-tab-content" id="appearance-settings">
+                        <h4>Appearance Settings</h4>
+                        <div class="settings-group">
+                            <div class="setting-item">
+                                <label class="setting-label">Theme</label>
+                                <div class="theme-options">
+                                    <button class="theme-option active" data-theme="dark" onclick="selectTheme('dark')">
+                                        <i class="fas fa-moon"></i>
+                                        Dark
+                                    </button>
+                                    <button class="theme-option" data-theme="light" onclick="selectTheme('light')">
+                                        <i class="fas fa-sun"></i>
+                                        Light
+                                    </button>
+                                    <button class="theme-option" data-theme="auto" onclick="selectTheme('auto')">
+                                        <i class="fas fa-adjust"></i>
+                                        Auto
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="setting-label">Accent Color</label>
+                                <div class="color-options">
+                                    <button class="color-option active" data-color="red" onclick="selectColor('red')" style="background: #dc143c;"></button>
+                                    <button class="color-option" data-color="blue" onclick="selectColor('blue')" style="background: #3b82f6;"></button>
+                                    <button class="color-option" data-color="green" onclick="selectColor('green')" style="background: #22c55e;"></button>
+                                    <button class="color-option" data-color="purple" onclick="selectColor('purple')" style="background: #8b5cf6;"></button>
+                                    <button class="color-option" data-color="orange" onclick="selectColor('orange')" style="background: #f59e0b;"></button>
+                                </div>
+                            </div>
+                            
+                            <div class="setting-item">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="animations-enabled" checked>
+                                    <div class="checkbox-custom"></div>
+                                    <span>Enable animations</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('settings-modal')">Cancel</button>
+                <button class="btn-primary" onclick="saveSettings()">
+                    <i class="fas fa-save"></i>
+                    Save Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>
+                    <i class="fas fa-search"></i>
+                    Quick Search
+                </h3>
+                <span class="modal-close" onclick="closeModal('search-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="search-content">
+                    <div class="search-input-container">
+                        <input type="text" id="quick-search-input" class="search-input" placeholder="Search events, players, tournaments..." autofocus>
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    
+                    <div class="search-filters">
+                        <button class="search-filter active" data-filter="all" onclick="setSearchFilter('all')">
+                            All
+                        </button>
+                        <button class="search-filter" data-filter="events" onclick="setSearchFilter('events')">
+                            Events
+                        </button>
+                        <button class="search-filter" data-filter="players" onclick="setSearchFilter('players')">
+                            Players
+                        </button>
+                        <button class="search-filter" data-filter="tournaments" onclick="setSearchFilter('tournaments')">
+                            Tournaments
+                        </button>
+                    </div>
+                    
+                    <div class="search-results" id="quick-search-results">
+                        <div class="search-placeholder">
+                            <i class="fas fa-search"></i>
+                            <p>Start typing to search...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals JavaScript -->
+    <script>
+        // Modal Management System
+        class GameHubModals {
+            constructor() {
+                this.activeModals = new Set();
+                this.confirmationCallback = null;
+                this.currentImageZoom = 1;
+                this.currentShareData = null;
+                this.init();
+            }
+            
+            init() {
+                // Setup modal event listeners
+                this.setupEventListeners();
+                
+                // Setup keyboard navigation
+                this.setupKeyboardNavigation();
+            }
+            
+            setupEventListeners() {
+                // Close modals when clicking overlay
+                document.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal')) {
+                        this.closeTopModal();
+                    }
+                });
+                
+                // Handle search input
+                const searchInput = document.getElementById('quick-search-input');
+                if (searchInput) {
+                    searchInput.addEventListener('input', (e) => {
+                        this.handleQuickSearch(e.target.value);
+                    });
+                }
+            }
+            
+            setupKeyboardNavigation() {
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && this.activeModals.size > 0) {
+                        this.closeTopModal();
+                    }
+                });
+            }
+            
+            // Generic modal functions
+            openModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (!modal) return;
+                
+                modal.classList.add('show');
+                modal.style.display = 'flex';
+                this.activeModals.add(modalId);
+                document.body.style.overflow = 'hidden';
+                
+                // Focus management
+                const firstFocusable = modal.querySelector('input, button, select, textarea');
+                if (firstFocusable) {
+                    setTimeout(() => firstFocusable.focus(), 100);
+                }
+            }
+            
+            closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (!modal) return;
+                
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+                
+                this.activeModals.delete(modalId);
+                
+                if (this.activeModals.size === 0) {
+                    document.body.style.overflow = 'auto';
+                }
+            }
+            
+            closeTopModal() {
+                if (this.activeModals.size > 0) {
+                    const topModal = Array.from(this.activeModals).pop();
+                    this.closeModal(topModal);
+                }
+            }
+            
+            // Loading modal
+            showLoading(text = 'Loading...', showProgress = false) {
+                document.getElementById('loading-text').textContent = text;
+                const progressEl = document.getElementById('loading-progress');
+                progressEl.style.display = showProgress ? 'block' : 'none';
+                this.openModal('loading-modal');
+            }
+            
+            updateLoadingProgress(percentage, text = '') {
+                const progressBar = document.getElementById('loading-progress-bar');
+                const progressText = document.getElementById('loading-progress-text');
+                const loadingText = document.getElementById('loading-text');
+                
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${percentage}%`;
+                
+                if (text) {
+                    loadingText.textContent = text;
+                }
+            }
+            
+            hideLoading() {
+                this.closeModal('loading-modal');
+            }
+            
+            // Confirmation modal
+            showConfirmation(options = {}) {
+                const {
+                    title = 'Confirm Action',
+                    message = 'Are you sure you want to proceed?',
+                    details = null,
+                    confirmText = 'Confirm',
+                    cancelText = 'Cancel',
+                    type = 'warning', // warning, danger, info
+                    callback = null
+                } = options;
+                
+                document.getElementById('confirmation-title').innerHTML = `<i class="fas fa-${this.getConfirmationIcon(type)}"></i> ${title}`;
+                document.getElementById('confirmation-message').textContent = message;
+                
+                const detailsEl = document.getElementById('confirmation-details');
+                if (details) {
+                    detailsEl.innerHTML = details;
+                    detailsEl.style.display = 'block';
+                } else {
+                    detailsEl.style.display = 'none';
+                }
+                
+                const confirmBtn = document.getElementById('confirmation-confirm');
+                const cancelBtn = document.getElementById('confirmation-cancel');
+                
+                confirmBtn.textContent = confirmText;
+                cancelBtn.textContent = cancelText;
+                
+                // Apply type-specific styling
+                confirmBtn.className = `btn-${type === 'danger' ? 'danger' : 'primary'}`;
+                
+                this.confirmationCallback = callback;
+                this.openModal('confirmation-modal');
+            }
+            
+            getConfirmationIcon(type) {
+                const icons = {
+                    warning: 'exclamation-triangle',
+                    danger: 'exclamation-circle',
+                    info: 'info-circle',
+                    question: 'question-circle'
+                };
+                return icons[type] || 'question-circle';
+            }
+            
+            // Alert modal
+            showAlert(options = {}) {
+                const {
+                    title = 'Notice',
+                    message = 'This is an alert message.',
+                    type = 'info', // success, error, warning, info
+                    actions = null
+                } = options;
+                
+                const alertIcon = document.getElementById('alert-icon');
+                const alertTitle = document.getElementById('alert-title-text');
+                const alertMessage = document.getElementById('alert-message');
+                const alertActions = document.getElementById('alert-actions');
+                
+                // Set icon and styling based on type
+                const iconMap = {
+                    success: 'check-circle',
+                    error: 'exclamation-circle',
+                    warning: 'exclamation-triangle',
+                    info: 'info-circle'
+                };
+                
+                alertIcon.className = `fas fa-${iconMap[type]}`;
+                alertTitle.textContent = title;
+                alertMessage.textContent = message;
+                
+                // Handle custom actions
+                if (actions) {
+                    alertActions.innerHTML = actions;
+                    alertActions.style.display = 'block';
+                } else {
+                    alertActions.style.display = 'none';
+                }
+                
+                this.openModal('alert-modal');
+            }
+            
+            // Image modal
+            showImage(imageSrc, title = 'Image Preview') {
+                const modalImage = document.getElementById('modal-image');
+                const imageTitle = document.getElementById('image-title');
+                
+                modalImage.src = imageSrc;
+                imageTitle.textContent = title;
+                this.currentImageZoom = 1;
+                modalImage.style.transform = 'scale(1)';
+                
+                this.openModal('image-modal');
+            }
+            
+            // Video modal
+            showVideo(videoSrc, title = 'Video Player') {
+                const modalVideo = document.getElementById('modal-video');
+                const videoSource = document.getElementById('video-source');
+                const videoTitle = document.getElementById('video-title');
+                
+                videoSource.src = videoSrc;
+                videoTitle.textContent = title;
+                modalVideo.load();
+                
+                this.openModal('video-modal');
+            }
+            
+            // Profile quick view modal
+            showProfileQuickView(userId) {
+                this.loadProfileData(userId);
+                this.openModal('profile-quick-modal');
+            }
+            
+            async loadProfileData(userId) {
+                const content = document.getElementById('profile-quick-content');
+                content.innerHTML = '<div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i></div>';
+                
+                try {
+                    // Simulate API call
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    content.innerHTML = `
+                        <div class="profile-quick">
+                            <div class="profile-header">
+                                <div class="profile-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="profile-info">
+                                    <h4>Gaming Pro ${userId}</h4>
+                                    <p class="profile-role">Professional Player</p>
+                                    <div class="profile-stats">
+                                        <span class="stat">Level 15</span>
+                                        <span class="stat">1,250 XP</span>
+                                        <span class="stat">Level 15</span>
+                                        <span class="stat">1,250 XP</span>
+                                        <span class="stat">42 Wins</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Favorite Game:</span>
+                                    <span class="detail-value">Counter-Strike 2</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Rank:</span>
+                                    <span class="detail-value">Global Elite</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Join Date:</span>
+                                    <span class="detail-value">January 2023</span>
+                                </div>
+                            </div>
+                            <div class="profile-actions">
+                                <button class="btn-outline btn-small" onclick="sendFriendRequest(userId)">
+                                    <i class="fas fa-user-plus"></i>
+                                    Add Friend
+                                </button>
+                                <button class="btn-outline btn-small" onclick="sendMessage(userId)">
+                                    <i class="fas fa-envelope"></i>
+                                    Message
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                } catch (error) {
+                    content.innerHTML = '<p>Failed to load profile data.</p>';
+                }
+            }
+            
+            // Share modal
+            showShare(data) {
+                this.currentShareData = data;
+                const shareInfo = document.getElementById('share-info');
+                const shareUrl = document.getElementById('share-url');
+                
+                shareInfo.innerHTML = `
+                    <div class="share-item">
+                        <div class="share-icon">
+                            <i class="fas fa-${data.type === 'event' ? 'calendar' : 'gamepad'}"></i>
+                        </div>
+                        <div class="share-details">
+                            <h4>${data.title}</h4>
+                            <p>${data.description}</p>
+                        </div>
+                    </div>
+                `;
+                
+                shareUrl.value = data.url;
+                this.generateQRCode(data.url);
+                this.openModal('share-modal');
+            }
+            
+            generateQRCode(url) {
+                const qrContainer = document.getElementById('qr-code');
+                // Simple QR code placeholder - in production use QR library
+                qrContainer.innerHTML = `
+                    <div class="qr-placeholder">
+                        <i class="fas fa-qrcode"></i>
+                        <p>QR Code</p>
+                    </div>
+                `;
+            }
+            
+            // Search functionality
+            async handleQuickSearch(query) {
+                const resultsContainer = document.getElementById('quick-search-results');
+                
+                if (query.length < 2) {
+                    resultsContainer.innerHTML = `
+                        <div class="search-placeholder">
+                            <i class="fas fa-search"></i>
+                            <p>Start typing to search...</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Show loading
+                resultsContainer.innerHTML = `
+                    <div class="search-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Searching...</p>
+                    </div>
+                `;
+                
+                try {
+                    // Simulate API search
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    const mockResults = [
+                        { type: 'event', title: 'CS:GO Championship', description: 'Professional tournament with $50,000 prize pool' },
+                        { type: 'player', title: 'ProGamer123', description: 'Level 25 • Global Elite • 150 wins' },
+                        { type: 'tournament', title: 'Weekly Battle Arena', description: 'Every Friday • Free entry • All skill levels' }
+                    ];
+                    
+                    resultsContainer.innerHTML = `
+                        <div class="search-results-list">
+                            ${mockResults.map(result => `
+                                <div class="search-result-item" onclick="selectSearchResult('${result.type}', '${result.title}')">
+                                    <div class="result-icon">
+                                        <i class="fas fa-${result.type === 'event' ? 'calendar' : result.type === 'player' ? 'user' : 'trophy'}"></i>
+                                    </div>
+                                    <div class="result-content">
+                                        <div class="result-title">${result.title}</div>
+                                        <div class="result-description">${result.description}</div>
+                                    </div>
+                                    <div class="result-type">${result.type}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                } catch (error) {
+                    resultsContainer.innerHTML = `
+                        <div class="search-error">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Search failed. Please try again.</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+        
+        // Global modal instance
+        let modalsInstance = null;
+        
+        // Initialize modals when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            modalsInstance = new GameHubModals();
+            window.gameHubModals = modalsInstance;
+        });
+        
+        // Global modal functions
+        function openModal(modalId) {
+            if (modalsInstance) modalsInstance.openModal(modalId);
+        }
+        
+        function closeModal(modalId) {
+            if (modalsInstance) modalsInstance.closeModal(modalId);
+        }
+        
+        function showLoading(text, showProgress) {
+            if (modalsInstance) modalsInstance.showLoading(text, showProgress);
+        }
+        
+        function hideLoading() {
+            if (modalsInstance) modalsInstance.hideLoading();
+        }
+        
+        function showConfirmation(options) {
+            if (modalsInstance) modalsInstance.showConfirmation(options);
+        }
+        
+        function showAlert(options) {
+            if (modalsInstance) modalsInstance.showAlert(options);
+        }
+        
+        function showImage(src, title) {
+            if (modalsInstance) modalsInstance.showImage(src, title);
+        }
+        
+        function showVideo(src, title) {
+            if (modalsInstance) modalsInstance.showVideo(src, title);
+        }
+        
+        function showProfileQuickView(userId) {
+            if (modalsInstance) modalsInstance.showProfileQuickView(userId);
+        }
+        
+        function showShare(data) {
+            if (modalsInstance) modalsInstance.showShare(data);
+        }
+        
+        // Specific modal close functions
+        function closeConfirmationModal() {
+            closeModal('confirmation-modal');
+        }
+        
+        function closeAlertModal() {
+            closeModal('alert-modal');
+        }
+        
+        function closeImageModal() {
+            const video = document.getElementById('modal-video');
+            if (video) video.pause();
+            closeModal('image-modal');
+        }
+        
+        function closeVideoModal() {
+            const video = document.getElementById('modal-video');
+            if (video) video.pause();
+            closeModal('video-modal');
+        }
+        
+        // Confirmation modal actions
+        function confirmAction() {
+            if (modalsInstance && modalsInstance.confirmationCallback) {
+                modalsInstance.confirmationCallback();
+            }
+            closeModal('confirmation-modal');
+        }
+        
+        // Image modal controls
+        function zoomIn() {
+            if (modalsInstance) {
+                modalsInstance.currentImageZoom += 0.25;
+                const img = document.getElementById('modal-image');
+                img.style.transform = `scale(${modalsInstance.currentImageZoom})`;
+            }
+        }
+        
+        function zoomOut() {
+            if (modalsInstance && modalsInstance.currentImageZoom > 0.25) {
+                modalsInstance.currentImageZoom -= 0.25;
+                const img = document.getElementById('modal-image');
+                img.style.transform = `scale(${modalsInstance.currentImageZoom})`;
+            }
+        }
+        
+        function resetZoom() {
+            if (modalsInstance) {
+                modalsInstance.currentImageZoom = 1;
+                const img = document.getElementById('modal-image');
+                img.style.transform = 'scale(1)';
+            }
+        }
+        
+        function downloadImage() {
+            const img = document.getElementById('modal-image');
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.download = 'gamehub-image.jpg';
+            link.click();
+        }
+        
+        // Share modal functions
+        function shareOn(platform) {
+            if (!modalsInstance || !modalsInstance.currentShareData) return;
+            
+            const data = modalsInstance.currentShareData;
+            const urls = {
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data.url)}`,
+                twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data.url)}&text=${encodeURIComponent(data.title)}`,
+                linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(data.url)}`,
+                discord: data.url // Discord doesn't have direct share URL, just copy link
+            };
+            
+            if (platform === 'discord') {
+                copyShareLink();
+                showAlert({ 
+                    title: 'Link Copied', 
+                    message: 'Share this link in your Discord server!', 
+                    type: 'success' 
+                });
+            } else {
+                window.open(urls[platform], '_blank', 'width=600,height=400');
+            }
+        }
+        
+        function copyShareLink() {
+            const shareUrl = document.getElementById('share-url');
+            shareUrl.select();
+            document.execCommand('copy');
+            
+            const copyBtn = document.querySelector('.copy-btn span');
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied!';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+            }, 2000);
+        }
+        
+        function downloadQR() {
+            // In production, this would download the actual QR code
+            showAlert({ 
+                title: 'QR Code', 
+                message: 'QR code download functionality coming soon!', 
+                type: 'info' 
+            });
+        }
+        
+        // Settings modal functions
+        function switchSettingsTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.settings-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-settings`).classList.add('active');
+        }
+        
+        function selectTheme(theme) {
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            document.querySelector(`[data-theme="${theme}"]`).classList.add('active');
+        }
+        
+        function selectColor(color) {
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            document.querySelector(`[data-color="${color}"]`).classList.add('active');
+        }
+        
+        function saveSettings() {
+            // Get all settings values
+            const settings = {
+                language: document.getElementById('language-setting').value,
+                timezone: document.getElementById('timezone-setting').value,
+                autoJoin: document.getElementById('auto-join-events').checked,
+                emailNotifications: document.getElementById('email-notifications').checked,
+                pushNotifications: document.getElementById('push-notifications').checked,
+                eventReminders: document.getElementById('event-reminders').checked,
+                theme: document.querySelector('.theme-option.active').getAttribute('data-theme'),
+                accentColor: document.querySelector('.color-option.active').getAttribute('data-color'),
+                animations: document.getElementById('animations-enabled').checked
+            };
+            
+            // Save to localStorage (in production, save to backend)
+            localStorage.setItem('gameHubSettings', JSON.stringify(settings));
+            
+            showAlert({ 
+                title: 'Settings Saved', 
+                message: 'Your preferences have been saved successfully!', 
+                type: 'success' 
+            });
+            
+            closeModal('settings-modal');
+        }
+        
+        // Search modal functions
+        function setSearchFilter(filter) {
+            document.querySelectorAll('.search-filter').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+        }
+        
+        function selectSearchResult(type, title) {
+            closeModal('search-modal');
+            
+            // Navigate to result based on type
+            switch(type) {
+                case 'event':
+                    window.location.href = '../events/event-details.html';
+                    break;
+                case 'player':
+                    showProfileQuickView(Math.floor(Math.random() * 1000));
+                    break;
+                case 'tournament':
+                    window.location.href = '../events/event-list.html';
+                    break;
+            }
+        }
+        
+        // Profile modal functions
+        function viewFullProfile() {
+            const profileId = document.getElementById('view-full-profile').getAttribute('data-profile-id');
+            window.location.href = `../player/profile.html?id=${profileId}`;
+        }
+        
+        function sendFriendRequest(userId) {
+            showAlert({ 
+                title: 'Friend Request Sent', 
+                message: `Friend request sent to user ${userId}!`, 
+                type: 'success' 
+            });
+        }
+        
+        function sendMessage(userId) {
+            // Open messaging interface
+            window.location.href = `../shared/messages.html?user=${userId}`;
+        }
+        
+        // Quick join modal functions
+        function quickJoinEvent() {
+            showLoading('Joining event...', true);
+            
+            // Simulate join process
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 20;
+                modalsInstance.updateLoadingProgress(progress, `Step ${progress/20} of 5...`);
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        hideLoading();
+                        showAlert({ 
+                            title: 'Successfully Joined!', 
+                            message: 'You have successfully joined the event. Check your email for confirmation.', 
+                            type: 'success' 
+                        });
+                        closeModal('quick-join-modal');
+                    }, 500);
+                }
+            }, 500);
+        }
+        
+        // Demo functions to showcase modals
+        function showLoadingDemo() {
+            showLoading('Processing your request...', true);
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                modalsInstance.updateLoadingProgress(progress);
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        hideLoading();
+                        showAlert({ 
+                            title: 'Complete!', 
+                            message: 'Operation completed successfully.', 
+                            type: 'success' 
+                        });
+                    }, 500);
+                }
+            }, 200);
+        }
+        
+        function showConfirmationDemo() {
+            showConfirmation({
+                title: 'Delete Event',
+                message: 'Are you sure you want to delete this event?',
+                details: 'This action cannot be undone. All registrations will be cancelled.',
+                type: 'danger',
+                confirmText: 'Delete',
+                callback: () => {
+                    showAlert({ 
+                        title: 'Event Deleted', 
+                        message: 'The event has been successfully deleted.', 
+                        type: 'success' 
+                    });
+                }
+            });
+        }
+        
+        function showShareDemo() {
+            showShare({
+                type: 'event',
+                title: 'Ultimate Gaming Championship',
+                description: 'Join the biggest gaming tournament of the year!',
+                url: window.location.href
+            });
+        }
+    </script>
+
+    <style>
+        /* Modal System Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: relative;
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: auto;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: var(--shadow-glow);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        .modal-content.large {
+            max-width: 800px;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-60px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(-50%);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .modal-header h3 {
+            font-family: var(--font-primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--light-gray);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all var(--transition-normal);
+        }
+
+        .modal-close:hover {
+            color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .modal-body {
+            padding: var(--spacing-lg);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            border-top: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        /* Loading Modal */
+        .loading-modal .modal-content {
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .loading-content {
+            background: var(--gradient-dark);
+            border-radius: 20px;
+            padding: var(--spacing-xl);
+        }
+
+        .loading-spinner {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto var(--spacing-lg) auto;
+        }
+
+        .spinner-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid transparent;
+            border-top: 3px solid var(--demon-red);
+            border-radius: 50%;
+            animation: spin 1.2s linear infinite;
+        }
+
+        .spinner-ring:nth-child(2) {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+            border-top-color: #ff6b35;
+            animation-duration: 1s;
+            animation-direction: reverse;
+        }
+
+        .spinner-ring:nth-child(3) {
+            width: 40%;
+            height: 40%;
+            top: 30%;
+            left: 30%;
+            border-top-color: #f7931e;
+            animation-duration: 0.8s;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: var(--white);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .loading-progress {
+            margin-top: var(--spacing-md);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(220, 20, 60, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-red);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Confirmation Modal */
+        .confirmation-content {
+            display: flex;
+            gap: var(--spacing-lg);
+            align-items: flex-start;
+        }
+
+        .confirmation-icon {
+            font-size: 3rem;
+            color: #f59e0b;
+            flex-shrink: 0;
+        }
+
+        .confirmation-message {
+            flex: 1;
+        }
+
+        .confirmation-message p {
+            color: var(--white);
+            font-size: 1.1rem;
+            margin: 0 0 var(--spacing-md) 0;
+            line-height: 1.5;
+        }
+
+        .confirmation-details {
+            background: rgba(220, 20, 60, 0.05);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Alert Modal */
+        .alert-content {
+            text-align: center;
+        }
+
+        .alert-content p {
+            color: var(--white);
+            font-size: 1.1rem;
+            line-height: 1.5;
+            margin: 0 0 var(--spacing-md) 0;
+        }
+
+        .alert-actions {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        /* Image Modal */
+        .image-modal .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+        }
+
+        .image-body {
+            padding: 0;
+            position: relative;
+        }
+
+        .image-container {
+            position: relative;
+            text-align: center;
+            background: #000;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            cursor: grab;
+        }
+
+        .image-container img:active {
+            cursor: grabbing;
+        }
+
+        .image-controls {
+            position: absolute;
+            bottom: var(--spacing-md);
+            right: var(--spacing-md);
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+
+        .image-control-btn {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            color: var(--white);
+            padding: var(--spacing-sm);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .image-control-btn:hover {
+            background: rgba(220, 20, 60, 0.8);
+            border-color: var(--demon-red);
+        }
+
+        /* Video Modal */
+        .video-modal .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+        }
+
+        .video-body {
+            padding: 0;
+        }
+
+        .video-container {
+            background: #000;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+            border-radius: 0 0 20px 20px;
+        }
+
+        /* Profile Quick View */
+        .profile-quick {
+            text-align: center;
+        }
+
+        .profile-header {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .profile-avatar {
+            font-size: 4rem;
+            color: var(--demon-red);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .profile-info h4 {
+            color: var(--white);
+            font-size: 1.3rem;
+            margin: 0 0 var(--spacing-xs) 0;
+        }
+
+        .profile-role {
+            color: var(--demon-red);
+            font-weight: 600;
+            margin: 0 0 var(--spacing-md) 0;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+        }
+
+        .profile-stats .stat {
+            background: rgba(220, 20, 60, 0.1);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 12px;
+            color: var(--demon-red);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .profile-details {
+            text-align: left;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid rgba(220, 20, 60, 0.1);
+        }
+
+        .detail-label {
+            color: var(--light-gray);
+        }
+
+        .detail-value {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+        }
+
+        /* Share Modal */
+        .share-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .share-item {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: rgba(220, 20, 60, 0.05);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 12px;
+        }
+
+        .share-icon {
+            font-size: 2rem;
+            color: var(--demon-red);
+            flex-shrink: 0;
+        }
+
+        .share-details h4 {
+            color: var(--white);
+            margin: 0 0 var(--spacing-xs) 0;
+        }
+
+        .share-details p {
+            color: var(--light-gray);
+            margin: 0;
+        }
+
+        .share-method-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .share-method-section h4 {
+            color: var(--white);
+            margin: 0 0 var(--spacing-md) 0;
+        }
+
+        .social-share-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--spacing-sm);
+        }
+
+        .social-share-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .social-share-btn.facebook { background: #1877f2; }
+        .social-share-btn.twitter { background: #1da1f2; }
+        .social-share-btn.linkedin { background: #0077b5; }
+        .social-share-btn.discord { background: #7289da; }
+
+        .social-share-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .copy-link-container {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .copy-input {
+            flex: 1;
+            padding: var(--spacing-sm);
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--gradient-red);
+            border: none;
+            border-radius: 8px;
+            color: var(--white);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #ff1744, #dc143c);
+        }
+
+        .qr-code-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: var(--white);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-placeholder {
+            text-align: center;
+            color: var(--dark-gray);
+        }
+
+        .qr-placeholder i {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        /* Settings Modal */
+        .settings-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .settings-tabs {
+            display: flex;
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            padding: 4px;
+        }
+
+        .settings-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--light-gray);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+        }
+
+        .settings-tab:hover {
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--white);
+        }
+
+        .settings-tab.active {
+            background: var(--demon-red);
+            color: var(--white);
+        }
+
+        .settings-tab-content {
+            display: none;
+        }
+
+        .settings-tab-content.active {
+            display: block;
+        }
+
+        .settings-tab-content h4 {
+            color: var(--demon-red);
+            margin: 0 0 var(--spacing-lg) 0;
+        }
+
+        .settings-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .setting-label {
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .setting-select {
+            padding: var(--spacing-sm);
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 0.9rem;
+        }
+
+        .theme-options,
+        .color-options {
+            display: flex;
+            gap: var(--spacing-sm);
+        }
+
+        .theme-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-md);
+            background: none;
+            border: 2px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            color: var(--light-gray);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            min-width: 80px;
+        }
+
+        .theme-option:hover {
+            border-color: var(--demon-red);
+            color: var(--white);
+        }
+
+        .theme-option.active {
+            border-color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--demon-red);
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: var(--white);
+            box-shadow: 0 0 0 2px var(--demon-red);
+        }
+
+        /* Search Modal */
+        .search-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .search-input-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 50px;
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            color: var(--white);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all var(--transition-normal);
+        }
+
+        .search-input:focus {
+            border-color: var(--demon-red);
+            background: rgba(26, 26, 26, 1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--light-gray);
+            font-size: 1.2rem;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: var(--spacing-xs);
+            flex-wrap: wrap;
+        }
+
+        .search-filter {
+            background: none;
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            color: var(--light-gray);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .search-filter:hover {
+            border-color: var(--demon-red);
+            color: var(--white);
+        }
+
+        .search-filter.active {
+            background: var(--demon-red);
+            border-color: var(--demon-red);
+            color: var(--white);
+        }
+
+        .search-results {
+            min-height: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-placeholder,
+        .search-loading,
+        .search-error {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: var(--light-gray);
+            text-align: center;
+        }
+
+        .search-placeholder i,
+        .search-loading i,
+        .search-error i {
+            font-size: 3rem;
+            color: var(--demon-red);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .search-loading i {
+            animation: spin 1s linear infinite;
+        }
+
+        .search-results-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .search-result-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: rgba(220, 20, 60, 0.05);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .search-result-item:hover {
+            background: rgba(220, 20, 60, 0.1);
+            border-color: var(--demon-red);
+        }
+
+        .result-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .result-content {
+            flex: 1;
+        }
+
+        .result-title {
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .result-description {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+
+        .result-type {
+            background: rgba(220, 20, 60, 0.2);
+            color: var(--demon-red);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                max-height: 95vh;
+                margin: 20px auto;
+            }
+
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding: var(--spacing-md);
+            }
+
+            .confirmation-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .social-share-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .copy-link-container {
+                flex-direction: column;
+            }
+
+            .settings-tabs {
+                flex-direction: column;
+            }
+
+            .theme-options,
+            .color-options {
+                justify-content: center;
+            }
+
+            .profile-stats {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            .profile-actions {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                width: 98%;
+                border-radius: 12px;
+            }
+
+            .modal-header h3 {
+                font-size: 1.1rem;
+            }
+
+            .modal-footer {
+                flex-direction: column-reverse;
+                gap: var(--spacing-sm);
+            }
+
+            .modal-footer button {
+                width: 100%;
+            }
+        }
+    </style>
+</body>
+</html>

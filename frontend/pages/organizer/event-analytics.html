@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Analytics - GameHub</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for Data Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/date-fns@2.29.3/index.min.js"></script>
+</head>
+<body class="dashboard-body">
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <i class="fas fa-crown"></i>
+                    <span>ORGANIZER</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <div class="user-info" id="sidebar-user-info">
+                    <div class="user-name">Loading...</div>
+                    <div class="user-role">Organizer</div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="create-event.html" class="nav-link">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Create Event</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="manage-events.html" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Manage Events</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="registrations.html" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Registrations</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="event-analytics.html" class="nav-link">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../shared/profile.html" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-footer">
+                    <button class="btn-logout" onclick="auth.logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 class="page-title">
+                        <i class="fas fa-chart-line"></i>
+                        Event Analytics
+                    </h1>
+                    <p class="page-subtitle">Comprehensive insights into your tournament performance and metrics</p>
+                </div>
+                
+                <div class="header-right">
+                    <div class="header-actions">
+                        <div class="date-range-picker">
+                            <select id="analytics-period" class="period-select" onchange="updateAnalyticsPeriod()">
+                                <option value="7days">Last 7 Days</option>
+                                <option value="30days" selected>Last 30 Days</option>
+                                <option value="90days">Last 90 Days</option>
+                                <option value="6months">Last 6 Months</option>
+                                <option value="1year">Last Year</option>
+                                <option value="custom">Custom Range</option>
+                            </select>
+                        </div>
+                        <button class="btn-secondary" onclick="exportAnalytics()">
+                            <i class="fas fa-download"></i>
+                            Export Report
+                        </button>
+                        <button class="btn-primary" onclick="refreshAnalytics()">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Analytics Content -->
+            <div class="dashboard-content">
+                <!-- Key Performance Indicators -->
+                <section class="kpi-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Key Performance Indicators
+                    </h2>
+                    
+                    <div class="kpi-grid">
+                        <div class="kpi-card revenue">
+                            <div class="kpi-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value" id="total-revenue">$0</div>
+                                <div class="kpi-label">Total Revenue</div>
+                                <div class="kpi-change" id="revenue-change">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card participants">
+                            <div class="kpi-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value" id="total-participants">0</div>
+                                <div class="kpi-label">Total Participants</div>
+                                <div class="kpi-change" id="participants-change">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card events">
+                            <div class="kpi-icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value" id="total-events">0</div>
+                                <div class="kpi-label">Events Hosted</div>
+                                <div class="kpi-change" id="events-change">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+0%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card conversion">
+                            <div class="kpi-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="kpi-content">
+                                <div class="kpi-value" id="conversion-rate">0%</div>
+                                <div class="kpi-label">Registration Rate</div>
+                                <div class="kpi-change" id="conversion-change">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Charts Section -->
+                <section class="charts-section">
+                    <div class="charts-grid">
+                        <!-- Revenue Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>
+                                    <i class="fas fa-chart-line"></i>
+                                    Revenue Trend
+                                </h3>
+                                <div class="chart-controls">
+                                    <button class="chart-toggle active" data-chart="revenue" data-type="line">Line</button>
+                                    <button class="chart-toggle" data-chart="revenue" data-type="bar">Bar</button>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="revenue-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Participants Chart -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>
+                                    <i class="fas fa-users"></i>
+                                    Participant Growth
+                                </h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="participants-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Event Categories Distribution -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>
+                                    <i class="fas fa-chart-pie"></i>
+                                    Event Categories
+                                </h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="categories-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Registration Timeline -->
+                        <div class="chart-card">
+                            <div class="chart-header">
+                                <h3>
+                                    <i class="fas fa-clock"></i>
+                                    Registration Timeline
+                                </h3>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="timeline-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Detailed Analytics -->
+                <section class="detailed-analytics">
+                    <div class="analytics-tabs">
+                        <button class="analytics-tab active" onclick="switchAnalyticsTab('events')" data-tab="events">
+                            <i class="fas fa-calendar"></i>
+                            Events Performance
+                        </button>
+                        <button class="analytics-tab" onclick="switchAnalyticsTab('audience')" data-tab="audience">
+                            <i class="fas fa-users"></i>
+                            Audience Insights
+                        </button>
+                        <button class="analytics-tab" onclick="switchAnalyticsTab('revenue')" data-tab="revenue">
+                            <i class="fas fa-dollar-sign"></i>
+                            Revenue Analysis
+                        </button>
+                        <button class="analytics-tab" onclick="switchAnalyticsTab('geographic')" data-tab="geographic">
+                            <i class="fas fa-globe"></i>
+                            Geographic Data
+                        </button>
+                    </div>
+
+                    <!-- Events Performance Tab -->
+                    <div class="analytics-tab-content active" id="events-tab">
+                        <div class="analytics-grid">
+                            <!-- Top Performing Events -->
+                            <div class="analytics-card">
+                                <div class="card-header">
+                                    <h4>
+                                        <i class="fas fa-trophy"></i>
+                                        Top Performing Events
+                                    </h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="events-list" id="top-events-list">
+                                        <!-- Populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Event Success Metrics -->
+                            <div class="analytics-card">
+                                <div class="card-header">
+                                    <h4>
+                                        <i class="fas fa-chart-bar"></i>
+                                        Success Metrics
+                                    </h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="metrics-grid">
+                                        <div class="metric-item">
+                                            <span class="metric-label">Average Fill Rate</span>
+                                            <span class="metric-value" id="avg-fill-rate">0%</span>
+                                        </div>
+                                        <div class="metric-item">
+                                            <span class="metric-label">Completion Rate</span>
+                                            <span class="metric-value" id="completion-rate">0%</span>
+                                        </div>
+                                        <div class="metric-item">
+                                            <span class="metric-label">No-Show Rate</span>
+                                            <span class="metric-value" id="no-show-rate">0%</span>
+                                        </div>
+                                        <div class="metric-item">
+                                            <span class="metric-label">Average Rating</span>
+                                            <span class="metric-value" id="avg-rating">0.0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audience Insights Tab -->
+                    <div class="analytics-tab-content" id="audience-tab">
+                        <div class="analytics-grid">
+                            <!-- Demographics Chart -->
+                            <div class="analytics-card">
+                                <div class="card-header">
+                                    <h4>
+                                        <i class="fas fa-chart-donut"></i>
+                                        Age Demographics
+                                    </h4>
+                                </div>
+                                <div class="card-content">
+                                    <canvas id="demographics-chart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Player Types -->
+                            <div class="analytics-card">
+                                <div class="card-header">
+                                    <h4>
+                                        <i class="fas fa-gamepad"></i>
+                                        Player Skill Levels
+                                    </h4>
+                                </div>
+                                <div class="card-content">
+                                    <canvas id="skill-levels-chart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Analysis Tab -->
+                    <div class="analytics-tab-content" id="revenue-tab">
+                        <div class="analytics-grid">
+                            <!-- Revenue Breakdown -->
+                            <div class="analytics-card">
+                                <div class="card-header">
+                                    <h4>
+                                        <i class="fas fa-money-bill-wave"></i>
+                                        Revenue Breakdown
+                                    </h4>
+                                </div>
+                                <div class="card-content">
+                                    <canvas id="revenue-breakdown-chart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Revenue Statistics -->
+                            <div class="analytics-card">
+                                <div class="card-header">
+                                    <h4>
+                                        <i class="fas fa-calculator"></i>
+                                        Revenue Statistics
+                                    </h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="revenue-stats">
+                                        <div class="stat-row">
+                                            <span class="stat-label">Average Event Revenue</span>
+                                            <span class="stat-value" id="avg-event-revenue">$0</span>
+                                        </div>
+                                        <div class="stat-row">
+                                            <span class="stat-label">Revenue per Participant</span>
+                                            <span class="stat-value" id="revenue-per-participant">$0</span>
+                                        </div>
+                                        <div class="stat-row">
+                                            <span class="stat-label">Monthly Recurring Revenue</span>
+                                            <span class="stat-value" id="monthly-revenue">$0</span>
+                                        </div>
+                                        <div class="stat-row">
+                                            <span class="stat-label">Revenue Growth Rate</span>
+                                            <span class="stat-value positive" id="revenue-growth">+0%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Geographic Data Tab -->
+                    <div class="analytics-tab-content" id="geographic-tab">
+                        <div class="analytics-grid">
+                            <!-- Geographic Distribution -->
+                            <div class="analytics-card full-width">
+                                <div class="card-header">
+                                    <h4>
+                                        <i class="fas fa-map-marked-alt"></i>
+                                        Participant Geographic Distribution
+                                    </h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="geographic-data" id="geographic-data">
+                                        <!-- Populated with country/region data -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recommendations Section -->
+                <section class="recommendations-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-lightbulb"></i>
+                            AI-Powered Recommendations
+                        </h2>
+                    </div>
+                    
+                    <div class="recommendations-grid" id="recommendations-grid">
+                        <!-- Recommendations populated by AI analysis -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Custom Date Range Modal -->
+    <div id="date-range-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-calendar-alt"></i> Custom Date Range</h3>
+                <span class="modal-close" onclick="closeModal('date-range-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="date-range-form">
+                    <div class="form-group">
+                        <label class="form-label">Start Date</label>
+                        <input type="date" id="custom-start-date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">End Date</label>
+                        <input type="date" id="custom-end-date" class="form-input">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('date-range-modal')">Cancel</button>
+                <button class="btn-primary" onclick="applyCustomDateRange()">Apply</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../config/api-config.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    
+    <script>
+        let analyticsData = {};
+        let charts = {};
+        let currentPeriod = '30days';
+
+        // Initialize analytics page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication and role
+            if (!auth.requireOrganizer()) {
+                return;
+            }
+            
+            // Update user info in sidebar
+            const user = auth.getCurrentUser();
+            if (user) {
+                updateSidebarUserInfo(user);
+            }
+            
+            // Load analytics data
+            await loadAnalyticsData();
+            
+            // Initialize charts
+            initializeCharts();
+            
+            // Load recommendations
+            loadRecommendations();
+        });
+
+        // Update sidebar user info
+        function updateSidebarUserInfo(user) {
+            const userInfo = document.getElementById('sidebar-user-info');
+            if (userInfo) {
+                userInfo.innerHTML = `
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-role">${user.role}</div>
+                `;
+            }
+        }
+
+        // Load analytics data
+        async function loadAnalyticsData() {
+            try {
+                showLoadingState();
+                
+                // In production, this would be actual API calls
+                analyticsData = await generateMockAnalyticsData();
+                
+                // Update KPIs
+                updateKPIs();
+                
+                // Update detailed analytics
+                updateDetailedAnalytics();
+                
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+                showErrorState();
+            } finally {
+                hideLoadingState();
+            }
+        }
+
+        // Generate mock analytics data (replace with actual API calls)
+       // Generate mock analytics data with all values as zero
+async function generateMockAnalyticsData() {
+  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
+  
+  const now = new Date();
+  const days = 30; // depending on currentPeriod
+  
+  return {
+    kpis: {
+      totalRevenue: 0,
+      revenueChange: 0,
+      totalParticipants: 0,
+      participantsChange: 0,
+      totalEvents: 0,
+      eventsChange: 0,
+      conversionRate: 0,
+      conversionChange: 0,
+    },
+    revenue: generateTimeSeriesData(days, 0, 0, 'revenue'), // all zeros
+    participants: generateTimeSeriesData(days, 0, 0, 'participants'),
+    categories: [
+      { name: 'FPS', value: 0, revenue: 0 },
+      { name: 'MOBA', value: 0, revenue: 0 },
+      { name: 'Battle Royale', value: 0, revenue: 0 },
+      { name: 'Sports', value: 0, revenue: 0 },
+      { name: 'Other', value: 0, revenue: 0 },
+    ],
+    topEvents: [
+      { name: 'Ultimate FPS Championship', participants: 0, revenue: 0, rating: 0 },
+      { name: 'MOBA Masters Tournament', participants: 0, revenue: 0, rating: 0 },
+      { name: 'Battle Royale Showdown', participants: 0, revenue: 0, rating: 0 },
+      { name: 'Sports Gaming League', participants: 0, revenue: 0, rating: 0 },
+      { name: 'Retro Gaming Competition', participants: 0, revenue: 0, rating: 0 },
+    ],
+    demographics: [
+      { age: '13-17', percentage: 0 },
+      { age: '18-24', percentage: 0 },
+      { age: '25-34', percentage: 0 },
+      { age: '35-44', percentage: 0 },
+      { age: '45+', percentage: 0 },
+    ],
+    skillLevels: [
+      { level: 'Beginner', percentage: 0 },
+      { level: 'Intermediate', percentage: 0 },
+      { level: 'Advanced', percentage: 0 },
+      { level: 'Professional', percentage: 0 },
+    ],
+    geographic: [
+      { country: 'United States', participants: 0, revenue: 0 },
+      { country: 'United Kingdom', participants: 0, revenue: 0 },
+      { country: 'Germany', participants: 0, revenue: 0 },
+      { country: 'France', participants: 0, revenue: 0 },
+      { country: 'Canada', participants: 0, revenue: 0 },
+      { country: 'Australia', participants: 0, revenue: 0 },
+      { country: 'Japan', participants: 0, revenue: 0 },
+      { country: 'Other', participants: 0, revenue: 0 },
+    ],
+  };
+}
+
+// Helper function to generate time series data with zero values
+function generateTimeSeriesData(days, min, max, type) {
+  const data = [];
+  const now = new Date();
+  for (let i = days - 1; i >= 0; i--) {
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    data.push({ date: date.toISOString().split('T')[0], value: 0 });
+  }
+  return data;
+}
+
+
+        // Update KPIs
+        function updateKPIs() {
+            const kpis = analyticsData.kpis;
+            
+            document.getElementById('total-revenue').textContent = '$' + kpis.totalRevenue.toLocaleString();
+            updateKPIChange('revenue-change', kpis.revenueChange);
+            
+            document.getElementById('total-participants').textContent = kpis.totalParticipants.toLocaleString();
+            updateKPIChange('participants-change', kpis.participantsChange);
+            
+            document.getElementById('total-events').textContent = kpis.totalEvents.toString();
+            updateKPIChange('events-change', kpis.eventsChange);
+            
+            document.getElementById('conversion-rate').textContent = kpis.conversionRate + '%';
+            updateKPIChange('conversion-change', kpis.conversionChange);
+        }
+
+        function updateKPIChange(elementId, change) {
+            const element = document.getElementById(elementId);
+            const isPositive = change > 0;
+            const isNegative = change < 0;
+            
+            element.className = `kpi-change ${isPositive ? 'positive' : isNegative ? 'negative' : 'neutral'}`;
+            element.innerHTML = `
+                <i class="fas fa-arrow-${isPositive ? 'up' : isNegative ? 'down' : 'right'}"></i>
+                <span>${isPositive ? '+' : ''}${change.toFixed(1)}%</span>
+            `;
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            initializeRevenueChart();
+            initializeParticipantsChart();
+            initializeCategoriesChart();
+            initializeTimelineChart();
+            initializeDemographicsChart();
+            initializeSkillLevelsChart();
+            initializeRevenueBreakdownChart();
+        }
+
+        function initializeRevenueChart() {
+            const ctx = document.getElementById('revenue-chart').getContext('2d');
+            
+            charts.revenue = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: analyticsData.revenue.map(d => DateUtils.formatDate(d.date)),
+                    datasets: [{
+                        label: 'Revenue',
+                        data: analyticsData.revenue.map(d => d.value),
+                        borderColor: '#dc143c',
+                        backgroundColor: 'rgba(220, 20, 60, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: getChartOptions('Revenue ($)')
+            });
+        }
+
+        function initializeParticipantsChart() {
+            const ctx = document.getElementById('participants-chart').getContext('2d');
+            
+            charts.participants = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: analyticsData.participants.map(d => DateUtils.formatDate(d.date)),
+                    datasets: [{
+                        label: 'Participants',
+                        data: analyticsData.participants.map(d => d.value),
+                        backgroundColor: 'rgba(220, 20, 60, 0.8)',
+                        borderColor: '#dc143c',
+                        borderWidth: 1
+                    }]
+                },
+                options: getChartOptions('Participants')
+            });
+        }
+
+        function initializeCategoriesChart() {
+            const ctx = document.getElementById('categories-chart').getContext('2d');
+            
+            charts.categories = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: analyticsData.categories.map(c => c.name),
+                    datasets: [{
+                        data: analyticsData.categories.map(c => c.value),
+                        backgroundColor: [
+                            '#dc143c',
+                            '#ff6b35',
+                            '#f7931e',
+                            '#ffcc5c',
+                            '#96ceb4'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#1a1a1a'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeTimelineChart() {
+            const ctx = document.getElementById('timeline-chart').getContext('2d');
+            
+            // Generate registration timeline data
+            const timelineData = generateRegistrationTimeline();
+            
+            charts.timeline = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timelineData.map(d => d.time),
+                    datasets: [{
+                        label: 'Registrations',
+                        data: timelineData.map(d => d.count),
+                        borderColor: '#22c55e',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: getChartOptions('Registrations')
+            });
+        }
+
+        function initializeDemographicsChart() {
+            const ctx = document.getElementById('demographics-chart').getContext('2d');
+            
+            charts.demographics = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: analyticsData.demographics.map(d => d.age),
+                    datasets: [{
+                        data: analyticsData.demographics.map(d => d.percentage),
+                        backgroundColor: [
+                            '#dc143c',
+                            '#ff6b35',
+                            '#f7931e',
+                            '#ffcc5c',
+                            '#96ceb4'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeSkillLevelsChart() {
+            const ctx = document.getElementById('skill-levels-chart').getContext('2d');
+            
+            charts.skillLevels = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: analyticsData.skillLevels.map(s => s.level),
+                    datasets: [{
+                        label: 'Players',
+                        data: analyticsData.skillLevels.map(s => s.percentage),
+                        backgroundColor: 'rgba(220, 20, 60, 0.8)',
+                        borderColor: '#dc143c',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#ffffff',
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#ffffff'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initializeRevenueBreakdownChart() {
+            const ctx = document.getElementById('revenue-breakdown-chart').getContext('2d');
+            
+            charts.revenueBreakdown = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: analyticsData.categories.map(c => c.name),
+                    datasets: [{
+                        label: 'Revenue by Category',
+                        data: analyticsData.categories.map(c => c.revenue),
+                        backgroundColor: 'rgba(220, 20, 60, 0.8)',
+                        borderColor: '#dc143c',
+                        borderWidth: 1
+                    }]
+                },
+                options: getChartOptions('Revenue ($)')
+            });
+        }
+
+        function getChartOptions(yAxisLabel) {
+            return {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: yAxisLabel,
+                            color: '#ffffff'
+                        },
+                        ticks: {
+                            color: '#ffffff'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#ffffff'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ffffff'
+                        }
+                    }
+                }
+            };
+        }
+
+        function generateRegistrationTimeline() {
+            const timeline = [];
+            const hours = ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'];
+            
+            hours.forEach(hour => {
+                timeline.push({
+                    time: hour,
+                    count: Math.floor(Math.random() * 20) + 5
+                });
+            });
+            
+            return timeline;
+        }
+
+        // Update detailed analytics
+        function updateDetailedAnalytics() {
+            updateTopEventsList();
+            updateSuccessMetrics();
+            updateRevenueStats();
+            updateGeographicData();
+        }
+
+        function updateTopEventsList() {
+            const container = document.getElementById('top-events-list');
+            
+            container.innerHTML = analyticsData.topEvents.map((event, index) => `
+                <div class="event-item">
+                    <div class="event-rank">#${index + 1}</div>
+                    <div class="event-info">
+                        <div class="event-name">${event.name}</div>
+                        <div class="event-stats">
+                            <span class="stat">
+                                <i class="fas fa-users"></i>
+                                ${event.participants} participants
+                            </span>
+                            <span class="stat">
+                                <i class="fas fa-dollar-sign"></i>
+                                $${event.revenue}
+                            </span>
+                            <span class="stat rating">
+                                <i class="fas fa-star"></i>
+                                ${event.rating}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateSuccessMetrics() {
+            document.getElementById('avg-fill-rate').textContent = '0%';
+            document.getElementById('completion-rate').textContent = '0%';
+            document.getElementById('no-show-rate').textContent = '0%';
+            document.getElementById('avg-rating').textContent = '0';
+        }
+
+        function updateRevenueStats() {
+            document.getElementById('avg-event-revenue').textContent = '$375';
+            document.getElementById('revenue-per-participant').textContent = '$12.64';
+            document.getElementById('monthly-revenue').textContent = '$5,250';
+            document.getElementById('revenue-growth').textContent = '+12.5%';
+        }
+
+        function updateGeographicData() {
+            const container = document.getElementById('geographic-data');
+            
+            container.innerHTML = analyticsData.geographic.map(location => `
+                <div class="geographic-item">
+                    <div class="location-info">
+                        <div class="location-name">${location.country}</div>
+                        <div class="location-stats">
+                            <span class="participants">${location.participants} participants</span>
+                            <span class="revenue">$${location.revenue}</span>
+                        </div>
+                    </div>
+                    <div class="location-bar">
+                        <div class="bar-fill" style="width: ${(location.participants / 425) * 100}%"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load AI-powered recommendations
+        function loadRecommendations() {
+            const recommendations = [
+                {
+                    type: 'growth',
+                    icon: 'fas fa-chart-line',
+                    title: 'Increase FPS Events',
+                    description: 'FPS events show 35% higher engagement. Consider hosting 2-3 more FPS tournaments this month.',
+                    impact: 'High',
+                    action: 'Create FPS Event'
+                },
+                {
+                    type: 'optimization',
+                    icon: 'fas fa-clock',
+                    title: 'Optimize Event Timing',
+                    description: 'Weekend events generate 30% more revenue. Schedule premium events on Saturdays.',
+                    impact: 'Medium',
+                    action: 'View Calendar'
+                },
+                {
+                    type: 'retention',
+                    icon: 'fas fa-users',
+                    title: 'Improve Retention',
+                    description: 'Send personalized follow-ups to increase repeat participation by 15%.',
+                    impact: 'Medium',
+                    action: 'Setup Automation'
+                },
+                {
+                    type: 'pricing',
+                    icon: 'fas fa-dollar-sign',
+                    title: 'Price Optimization',
+                    description: 'Based on demand patterns, you can increase entry fees by 10% without affecting participation.',
+                    impact: 'High',
+                    action: 'Review Pricing'
+                }
+            ];
+
+            const container = document.getElementById('recommendations-grid');
+            container.innerHTML = recommendations.map(rec => `
+                <div class="recommendation-card ${rec.type}">
+                    <div class="recommendation-header">
+                        <div class="recommendation-icon">
+                            <i class="${rec.icon}"></i>
+                        </div>
+                        <div class="recommendation-impact impact-${rec.impact.toLowerCase()}">${rec.impact} Impact</div>
+                    </div>
+                    <div class="recommendation-content">
+                        <h4 class="recommendation-title">${rec.title}</h4>
+                        <p class="recommendation-description">${rec.description}</p>
+                    </div>
+                    <div class="recommendation-action">
+                        <button class="btn-outline btn-small" onclick="handleRecommendationAction('${rec.type}')">
+                            ${rec.action}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Tab switching
+        function switchAnalyticsTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.analytics-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.analytics-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // Period change handler
+        function updateAnalyticsPeriod() {
+            const period = document.getElementById('analytics-period').value;
+            
+            if (period === 'custom') {
+                openModal('date-range-modal');
+                return;
+            }
+            
+            currentPeriod = period;
+            loadAnalyticsData().then(() => {
+                updateCharts();
+            });
+        }
+
+        function applyCustomDateRange() {
+            const startDate = document.getElementById('custom-start-date').value;
+            const endDate = document.getElementById('custom-end-date').value;
+            
+            if (!startDate || !endDate) {
+                showNotification('Please select both start and end dates', 'warning');
+                return;
+            }
+            
+            if (new Date(startDate) > new Date(endDate)) {
+                showNotification('Start date must be before end date', 'error');
+                return;
+            }
+            
+            // Apply custom date range
+            currentPeriod = 'custom';
+            closeModal('date-range-modal');
+            
+            loadAnalyticsData().then(() => {
+                updateCharts();
+            });
+        }
+
+        function updateCharts() {
+            // Destroy existing charts
+            Object.values(charts).forEach(chart => {
+                if (chart) chart.destroy();
+            });
+            
+            // Reinitialize with new data
+            initializeCharts();
+        }
+
+        // Export functionality
+        function exportAnalytics() {
+            showNotification('Preparing analytics report for download...', 'info');
+            
+            // Simulate export process
+            setTimeout(() => {
+                const reportData = {
+                    period: currentPeriod,
+                    generated: new Date().toISOString(),
+                    kpis: analyticsData.kpis,
+                    summary: 'Analytics report generated successfully'
+                };
+                
+                const dataStr = JSON.stringify(reportData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `analytics-report-${currentPeriod}-${Date.now()}.json`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+                showNotification('Analytics report downloaded successfully!', 'success');
+            }, 2000);
+        }
+
+        function refreshAnalytics() {
+            loadAnalyticsData().then(() => {
+                updateCharts();
+                showNotification('Analytics data refreshed!', 'success');
+            });
+        }
+
+        // Recommendation action handlers
+        function handleRecommendationAction(type) {
+            switch (type) {
+                case 'growth':
+                    window.location.href = 'create-event.html?category=FPS';
+                    break;
+                case 'optimization':
+                    window.location.href = 'manage-events.html?view=calendar';
+                    break;
+                case 'retention':
+                    showNotification('Retention automation feature coming soon!', 'info');
+                    break;
+                case 'pricing':
+                    showNotification('Pricing optimization tools coming soon!', 'info');
+                    break;
+            }
+        }
+
+        // Chart control handlers
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('chart-toggle')) {
+                const chartName = e.target.getAttribute('data-chart');
+                const chartType = e.target.getAttribute('data-type');
+                
+                // Update active state
+                e.target.parentElement.querySelectorAll('.chart-toggle').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                e.target.classList.add('active');
+                
+                // Update chart type
+                if (charts[chartName]) {
+                    charts[chartName].config.type = chartType;
+                    charts[chartName].update();
+                }
+            }
+        });
+
+        // Utility functions
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.dashboard-sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        function showLoadingState() {
+            // Show loading indicators
+        }
+
+        function hideLoadingState() {
+            // Hide loading indicators
+        }
+
+        function showErrorState() {
+            showNotification('Failed to load analytics data', 'error');
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            const icon = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            }[type];
+            
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="${icon}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                closeNotification(notification.querySelector('.notification-close'));
+            }, 5000);
+        }
+
+        function closeNotification(button) {
+            const notification = button.closest('.notification');
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }
+    </script>
+
+    <style>
+        /* Analytics Specific Styles */
+        .period-select {
+            padding: 8px 12px;
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 0.9rem;
+        }
+
+        /* KPI Cards */
+        .kpi-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .kpi-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--demon-red);
+        }
+
+        .kpi-card.revenue::before { background: #22c55e; }
+        .kpi-card.participants::before { background: #3b82f6; }
+        .kpi-card.events::before { background: #f59e0b; }
+        .kpi-card.conversion::before { background: #8b5cf6; }
+
+        .kpi-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(220, 20, 60, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--demon-red);
+        }
+
+        .kpi-card.revenue .kpi-icon { background: rgba(34, 197, 94, 0.1); color: #22c55e; }
+        .kpi-card.participants .kpi-icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
+        .kpi-card.events .kpi-icon { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+        .kpi-card.conversion .kpi-icon { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+        .kpi-content {
+            flex: 1;
+        }
+
+        .kpi-value {
+            font-family: var(--font-primary);
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .kpi-label {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .kpi-change {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .kpi-change.positive { color: #22c55e; }
+        .kpi-change.negative { color: #ef4444; }
+        .kpi-change.neutral { color: var(--light-gray); }
+
+        /* Charts */
+        .charts-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .chart-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .chart-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .chart-toggle {
+            padding: 4px 12px;
+            background: none;
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 6px;
+            color: var(--light-gray);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .chart-toggle.active,
+        .chart-toggle:hover {
+            background: var(--demon-red);
+            color: var(--white);
+            border-color: var(--demon-red);
+        }
+
+        .chart-container {
+            padding: var(--spacing-lg);
+            height: 300px;
+        }
+
+        /* Analytics Tabs */
+        .detailed-analytics {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .analytics-tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: var(--spacing-lg);
+            overflow-x: auto;
+        }
+
+        .analytics-tab {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--light-gray);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            border-radius: 8px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .analytics-tab:hover {
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--white);
+        }
+
+        .analytics-tab.active {
+            background: var(--demon-red);
+            color: var(--white);
+        }
+
+        .analytics-tab-content {
+            display: none;
+        }
+
+        .analytics-tab-content.active {
+            display: block;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .analytics-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .analytics-card.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .card-header {
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .card-header h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .card-content {
+            padding: var(--spacing-lg);
+        }
+
+        /* Events List */
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .event-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: rgba(220, 20, 60, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .event-rank {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: var(--white);
+        }
+
+        .event-info {
+            flex: 1;
+        }
+
+        .event-name {
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .event-stats {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .event-stats .stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--light-gray);
+            font-size: 0.8rem;
+        }
+
+        .event-stats .stat.rating {
+            color: #fbbf24;
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid rgba(220, 20, 60, 0.1);
+        }
+
+        .metric-label {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        .metric-value {
+            font-weight: 700;
+            color: var(--demon-red);
+        }
+
+        /* Revenue Stats */
+        .revenue-stats {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid rgba(220, 20, 60, 0.1);
+        }
+
+        .stat-label {
+            color: var(--light-gray);
+        }
+
+        .stat-value {
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .stat-value.positive {
+            color: #22c55e;
+        }
+
+        /* Geographic Data */
+        .geographic-data {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .geographic-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-sm) 0;
+        }
+
+        .location-info {
+            flex: 1;
+        }
+
+        .location-name {
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 2px;
+        }
+
+        .location-stats {
+            display: flex;
+            gap: var(--spacing-md);
+            font-size: 0.8rem;
+            color: var(--light-gray);
+        }
+
+        .location-bar {
+            width: 100px;
+            height: 8px;
+            background: rgba(220, 20, 60, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: var(--demon-red);
+            border-radius: 4px;
+            transition: width var(--transition-normal);
+        }
+
+        /* Recommendations */
+        .recommendations-section {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .recommendation-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+
+        .recommendation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .recommendation-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(220, 20, 60, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--demon-red);
+        }
+
+        .recommendation-impact {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .impact-high {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .impact-medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .impact-low {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .recommendation-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0 0 var(--spacing-sm) 0;
+        }
+
+        .recommendation-description {
+            color: var(--light-gray);
+            line-height: 1.5;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .recommendation-action {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Date Range Form */
+        .date-range-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-actions {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .analytics-tabs {
+                flex-direction: column;
+            }
+            
+            .analytics-tab {
+                justify-content: center;
+            }
+            
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .recommendations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .date-range-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chart-container {
+                height: 250px;
+                padding: var(--spacing-md);
+            }
+            
+            .event-stats {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+    </style>
+</body>
+</html>

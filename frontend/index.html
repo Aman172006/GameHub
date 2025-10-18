@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Ultimate Gaming Tournament Platform</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="gaming-logo">
+                <i class="fas fa-gamepad"></i>
+                <h2>GAMEHUB</h2>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p>Loading Gaming Arena...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-gamepad brand-icon"></i>
+                <span class="brand-text">GAMEHUB</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#events" class="nav-link">Events</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-buttons" id="nav-buttons">
+                <!-- Guest Navigation -->
+                <div class="guest-nav" id="guest-nav">
+                    <button class="btn-secondary" onclick="openModal('loginModal')">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button class="btn-primary" onclick="openModal('registerModal')">
+                        <i class="fas fa-user-plus"></i> Join Now
+                    </button>
+                </div>
+                <!-- Authenticated User Navigation -->
+                <div class="auth-nav" id="auth-nav" style="display: none;">
+                    <div class="user-info">
+                        <span class="user-welcome">Welcome, <span id="user-name-display">Player</span>!</span>
+                        <div class="user-dropdown">
+                            <button class="user-dropdown-btn" onclick="toggleUserDropdown()">
+                                <i class="fas fa-user-circle"></i>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" id="user-dropdown-menu">
+                                <a href="#" class="dropdown-item" onclick="goToDashboard()">
+                                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="goToProfile()">
+                                    <i class="fas fa-user"></i> Profile
+                                </a>
+                                <a href="#" class="dropdown-item" onclick="goToSettings()">
+                                    <i class="fas fa-cog"></i> Settings
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" class="dropdown-item logout" onclick="handleLogout()">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-background">
+            <div class="animated-bg"></div>
+            <div class="particles"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line">WELCOME TO</span>
+                    <span class="title-main">GAMEHUB</span>
+                    <span class="title-subtitle">Ultimate Gaming Tournament Platform</span>
+                </h1>
+                <p class="hero-description">
+                    Join thousands of gamers, compete in epic tournaments, 
+                    and claim your victory in the ultimate gaming arena.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn-primary btn-large pulse-animation" onclick="handlePrimaryAction()">
+                        <i class="fas fa-rocket"></i>
+                        <span id="primary-action-text">START GAMING</span>
+                    </button>
+                    <button class="btn-secondary btn-large" onclick="scrollToSection('events')">
+                        <i class="fas fa-calendar-alt"></i>
+                        VIEW EVENTS
+                    </button>
+                </div>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="17">0</div>
+                    <div class="stat-label">Active Players</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="2">0</div>
+                    <div class="stat-label">Live Events</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="17">0</div>
+                    <div class="stat-label">Game Categories</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Events Section -->
+    <section id="events" class="events-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-accent">FEATURED</span>
+                    <span class="title-main">TOURNAMENTS</span>
+                </h2>
+                <p class="section-subtitle">Join the most epic gaming competitions</p>
+            </div>
+            <div class="events-grid" id="featured-events">
+                <!-- Events will be loaded dynamically -->
+                <div class="loading-placeholder">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading tournaments...</p>
+                </div>
+            </div>
+            <div class="section-footer">
+                <button class="btn-primary" onclick="viewAllEvents()">
+                    <i class="fas fa-trophy"></i>
+                    VIEW ALL TOURNAMENTS
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="title-accent">WHY CHOOSE</span>
+                    <span class="title-main">GAMEHUB?</span>
+                </h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Instant registration and real-time updates for all tournaments</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure Platform</h3>
+                    <p>Advanced security measures to protect your gaming experience</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Global Community</h3>
+                    <p>Connect with gamers worldwide and build your network</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Epic Rewards</h3>
+                    <p>Win amazing prizes and climb the leaderboards</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="brand-logo">
+                        <i class="fas fa-gamepad"></i>
+                        <span>GAMEHUB</span>
+                    </div>
+                    <p>The ultimate gaming tournament platform for champions.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <a href="pages/events/event-list.html">Tournaments</a>
+                        <a href="pages/shared/leaderboards.html">Leaderboards</a>
+                        <a href="pages/shared/community.html">Community</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="pages/shared/help.html">Help Center</a>
+                        <a href="pages/shared/contact.html">Contact Us</a>
+                        <a href="pages/shared/faq.html">FAQ</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Follow Us</h4>
+                        <div class="social-links">
+                            <a href="#" target="_blank"><i class="fab fa-discord"></i></a>
+                            <a href="#" target="_blank"><i class="fab fa-twitch"></i></a>
+                            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a href="#" target="_blank"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 GameHub. All rights reserved. Built for champions.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Only the relevant navigation section and Login Button changed! -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <i class="fas fa-gamepad brand-icon"></i>
+            <span class="brand-text">GAMEHUB</span>
+        </div>
+        <div class="nav-menu">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#events" class="nav-link">Events</a>
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-buttons">
+            <!-- Login now goes to the login page, not modal -->
+            <button class="btn-secondary" onclick="window.location.href='pages/auth/login.html'">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <button class="btn-primary" onclick="window.location.href='pages/auth/register.html'">
+                <i class="fas fa-user-plus"></i> Join Now
+            </button>
+        </div>
+        <div class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content success-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-check-circle"></i> <span id="successTitle">Success!</span></h3>
+                <span class="modal-close" onclick="closeModal('successModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="success-content">
+                    <div class="success-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <p id="successMessage">Welcome to GameHub!</p>
+                    <button class="btn-primary" onclick="closeModal('successModal')" id="successActionBtn">
+                        <i class="fas fa-arrow-right"></i>
+                        Continue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content error-modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Error</h3>
+                <span class="modal-close" onclick="closeModal('errorModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="error-content">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <p id="errorMessage">An error occurred. Please try again.</p>
+                    <button class="btn-secondary" onclick="closeModal('errorModal')">
+                        <i class="fas fa-times"></i>
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config/api-config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/animations.js"></script>
+
+    <script>
+        // Enhanced Index Page JavaScript with Backend Integration
+        class GameHubHome {
+            constructor() {
+                this.currentUser = null;
+                this.featuredEvents = [];
+                this.init();
+            }
+
+            async init() {
+                // Initialize page
+                this.setupEventListeners();
+                
+                // Check if user is already logged in
+                await this.checkAuthStatus();
+                
+                // Load featured events
+                this.loadFeaturedEvents();
+                
+                // Start animations
+                this.startAnimations();
+                
+                // Hide loading screen
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                }, 2000);
+            }
+
+            async checkAuthStatus() {
+                try {
+                    const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+                    if (token) {
+                        // Validate token with backend
+                        const response = await api.validateToken();
+                        if (response.success) {
+                            this.currentUser = response.user;
+                            this.updateUIForAuthenticatedUser();
+                        } else {
+                            // Clear invalid token
+                            this.clearAuthData();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Auth check failed:', error);
+                    this.clearAuthData();
+                }
+            }
+
+            updateUIForAuthenticatedUser() {
+                // Hide guest navigation
+                document.getElementById('guest-nav').style.display = 'none';
+                
+                // Show authenticated navigation
+                document.getElementById('auth-nav').style.display = 'flex';
+                document.getElementById('user-name-display').textContent = this.currentUser.name;
+                
+                // Update hero button
+                const primaryBtn = document.querySelector('#primary-action-text');
+                primaryBtn.textContent = 'GO TO DASHBOARD';
+            }
+
+            clearAuthData() {
+                localStorage.removeItem('authToken');
+                sessionStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+                this.currentUser = null;
+            }
+
+            setupEventListeners() {
+                // Login form
+                const loginForm = document.getElementById('loginForm');
+                loginForm.addEventListener('submit', this.handleLogin.bind(this));
+
+                // Register form
+                const registerForm = document.getElementById('registerForm');
+                registerForm.addEventListener('submit', this.handleRegister.bind(this));
+
+                // Password strength checker
+                const passwordInput = document.getElementById('registerPassword');
+                passwordInput.addEventListener('input', this.checkPasswordStrength.bind(this));
+
+                // Confirm password validation
+                const confirmPasswordInput = document.getElementById('confirmPassword');
+                confirmPasswordInput.addEventListener('blur', this.validatePasswordMatch.bind(this));
+
+                // Real-time email validation
+                const registerEmailInput = document.getElementById('registerEmail');
+                registerEmailInput.addEventListener('blur', this.validateEmail.bind(this));
+
+                // Close modals when clicking outside
+                window.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('modal')) {
+                        this.closeModal(e.target.id);
+                    }
+                });
+            }
+
+            async handleLogin(e) {
+                e.preventDefault();
+                
+                const submitBtn = document.getElementById('loginSubmitBtn');
+                const originalHTML = submitBtn.innerHTML;
+                
+                try {
+                    // Show loading state
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Logging in...</span>';
+                    submitBtn.disabled = true;
+                    
+                    // Clear previous errors
+                    this.clearFormErrors('login');
+                    
+                    // Get form data
+                    const formData = new FormData(e.target);
+                    const loginData = {
+                        email: formData.get('email'),
+                        password: formData.get('password'),
+                        rememberMe: formData.get('rememberMe') === 'on'
+                    };
+                    
+                    // Validate form
+                    if (!this.validateLoginForm(loginData)) {
+                        return;
+                    }
+                    
+                    // Call backend API
+                    const response = await api.login(loginData);
+                    
+                    if (response.success) {
+                        // Store auth data
+                        const storage = loginData.rememberMe ? localStorage : sessionStorage;
+                        storage.setItem('authToken', response.token);
+                        storage.setItem('user', JSON.stringify(response.user));
+                        
+                        this.currentUser = response.user;
+                        
+                        // Show success modal
+                        this.showSuccess('Login Successful!', `Welcome back, ${response.user.name}! Redirecting to your dashboard...`);
+                        
+                        // Close login modal
+                        this.closeModal('loginModal');
+                        
+                        // Update UI
+                        this.updateUIForAuthenticatedUser();
+                        
+                        // Redirect to dashboard after delay
+                        setTimeout(() => {
+                            this.redirectToDashboard();
+                        }, 2000);
+                        
+                    } else {
+                        throw new Error(response.message || 'Login failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('Login error:', error);
+                    this.showError(error.message || 'Login failed. Please check your credentials and try again.');
+                    
+                    // Handle specific error types
+                    if (error.message.includes('email')) {
+                        this.showFieldError('loginEmailError', 'Invalid email address');
+                    } else if (error.message.includes('password')) {
+                        this.showFieldError('loginPasswordError', 'Invalid password');
+                    }
+                    
+                } finally {
+                    // Reset button
+                    submitBtn.innerHTML = originalHTML;
+                    submitBtn.disabled = false;
+                }
+            }
+
+            async handleRegister(e) {
+                e.preventDefault();
+                
+                const submitBtn = document.getElementById('registerSubmitBtn');
+                const originalHTML = submitBtn.innerHTML;
+                
+                try {
+                    // Show loading state
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Creating account...</span>';
+                    submitBtn.disabled = true;
+                    
+                    // Clear previous errors
+                    this.clearFormErrors('register');
+                    
+                    // Get form data
+                    const formData = new FormData(e.target);
+                    const registerData = {
+                        name: formData.get('name'),
+                        email: formData.get('email'),
+                        password: formData.get('password'),
+                        confirmPassword: formData.get('confirmPassword'),
+                        role: formData.get('role'),
+                        agreeTerms: formData.get('agreeTerms') === 'on'
+                    };
+                    
+                    // Validate form
+                    if (!this.validateRegisterForm(registerData)) {
+                        return;
+                    }
+                    
+                    // Call backend API
+                    const response = await api.register(registerData);
+                    
+                    if (response.success) {
+                        // Show success modal
+                        this.showSuccess('Registration Successful!', `Welcome to GameHub, ${registerData.name}! Please check your email to verify your account.`);
+                        
+                        // Close register modal
+                        this.closeModal('registerModal');
+                        
+                        // Reset form
+                        document.getElementById('registerForm').reset();
+                        
+                        // Auto-login if backend supports it
+                        if (response.autoLogin && response.token) {
+                            sessionStorage.setItem('authToken', response.token);
+                            sessionStorage.setItem('user', JSON.stringify(response.user));
+                            this.currentUser = response.user;
+                            this.updateUIForAuthenticatedUser();
+                            
+                            setTimeout(() => {
+                                this.redirectToDashboard();
+                            }, 3000);
+                        } else {
+                            // Show login modal after success
+                            setTimeout(() => {
+                                this.closeModal('successModal');
+                                this.openModal('loginModal');
+                            }, 3000);
+                        }
+                        
+                    } else {
+                        throw new Error(response.message || 'Registration failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    this.showError(error.message || 'Registration failed. Please try again.');
+                    
+                    // Handle specific validation errors
+                    if (error.validationErrors) {
+                        Object.keys(error.validationErrors).forEach(field => {
+                            this.showFieldError(`register${this.capitalize(field)}Error`, error.validationErrors[field]);
+                        });
+                    }
+                    
+                } finally {
+                    // Reset button
+                    submitBtn.innerHTML = originalHTML;
+                    submitBtn.disabled = false;
+                }
+            }
+
+            validateLoginForm(data) {
+                let isValid = true;
+                
+                // Email validation
+                if (!data.email || !this.isValidEmail(data.email)) {
+                    this.showFieldError('loginEmailError', 'Please enter a valid email address');
+                    isValid = false;
+                }
+                
+                // Password validation
+                if (!data.password || data.password.length < 1) {
+                    this.showFieldError('loginPasswordError', 'Please enter your password');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+
+            validateRegisterForm(data) {
+                let isValid = true;
+                
+                // Name validation
+                if (!data.name || data.name.length < 2) {
+                    this.showFieldError('registerNameError', 'Name must be at least 2 characters long');
+                    isValid = false;
+                }
+                
+                // Email validation
+                if (!data.email || !this.isValidEmail(data.email)) {
+                    this.showFieldError('registerEmailError', 'Please enter a valid email address');
+                    isValid = false;
+                }
+                
+                // Password validation
+                if (!data.password || data.password.length < 6) {
+                    this.showFieldError('registerPasswordError', 'Password must be at least 6 characters long');
+                    isValid = false;
+                }
+                
+                // Password match validation
+                if (data.password !== data.confirmPassword) {
+                    this.showFieldError('confirmPasswordError', 'Passwords do not match');
+                    isValid = false;
+                }
+                
+                // Role validation
+                if (!data.role) {
+                    this.showFieldError('registerRoleError', 'Please select your role');
+                    isValid = false;
+                }
+                
+                // Terms agreement validation
+                if (!data.agreeTerms) {
+                    this.showFieldError('agreeTermsError', 'You must agree to the terms and conditions');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+
+            checkPasswordStrength() {
+                const password = document.getElementById('registerPassword').value;
+                const strengthDiv = document.getElementById('passwordStrength');
+                
+                let strength = 0;
+                let feedback = [];
+                
+                if (password.length >= 8) strength++;
+                else feedback.push('at least 8 characters');
+                
+                if (/[A-Z]/.test(password)) strength++;
+                else feedback.push('uppercase letter');
+                
+                if (/[a-z]/.test(password)) strength++;
+                else feedback.push('lowercase letter');
+                
+                if (/[0-9]/.test(password)) strength++;
+                else feedback.push('number');
+                
+                if (/[^A-Za-z0-9]/.test(password)) strength++;
+                else feedback.push('special character');
+                
+                const levels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+                const colors = ['#ff4757', '#ff6b35', '#f7931e', '#2ed573', '#1dd1a1'];
+                
+                strengthDiv.innerHTML = `
+                    <div class="password-meter">
+                        <div class="password-meter-fill" style="width: ${strength * 20}%; background: ${colors[strength - 1] || '#ff4757'}"></div>
+                    </div>
+                    <div class="password-feedback">
+                        <span style="color: ${colors[strength - 1] || '#ff4757'}">${levels[strength - 1] || 'Very Weak'}</span>
+                        ${feedback.length > 0 ? `<small>Missing: ${feedback.join(', ')}</small>` : ''}
+                    </div>
+                `;
+            }
+
+            validatePasswordMatch() {
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                
+                if (confirmPassword && password !== confirmPassword) {
+                    this.showFieldError('confirmPasswordError', 'Passwords do not match');
+                } else {
+                    this.clearFieldError('confirmPasswordError');
+                }
+            }
+
+            async validateEmail() {
+                const email = document.getElementById('registerEmail').value;
+                if (!email || !this.isValidEmail(email)) return;
+                
+                try {
+                    // Check if email is already registered
+                    const response = await api.checkEmailAvailability(email);
+                    if (!response.available) {
+                        this.showFieldError('registerEmailError', 'This email is already registered');
+                    } else {
+                        this.clearFieldError('registerEmailError');
+                    }
+                } catch (error) {
+                    console.error('Email validation error:', error);
+                }
+            }
+
+            async loadFeaturedEvents() {
+                try {
+                    const response = await api.getFeaturedEvents();
+                    if (response.success) {
+                        this.featuredEvents = response.events;
+                        this.displayFeaturedEvents();
+                    }
+                } catch (error) {
+                    console.error('Error loading events:', error);
+                    // Show placeholder events or error message
+                    this.displayPlaceholderEvents();
+                }
+            }
+
+            displayFeaturedEvents() {
+                const container = document.getElementById('featured-events');
+                
+                if (this.featuredEvents.length === 0) {
+                    container.innerHTML = `
+                        <div class="no-events">
+                            <i class="fas fa-calendar-times"></i>
+                            <h3>No Featured Events</h3>
+                            <p>Check back soon for upcoming tournaments!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                container.innerHTML = this.featuredEvents.slice(0, 6).map(event => `
+                    <div class="event-card" onclick="viewEvent('${event.id}')">
+                        <div class="event-image">
+                            <img src="${event.image || 'assets/images/default-event.jpg'}" alt="${event.title}">
+                            <div class="event-badge">${event.type}</div>
+                        </div>
+                        <div class="event-content">
+                            <h3 class="event-title">${event.title}</h3>
+                            <p class="event-description">${event.description}</p>
+                            <div class="event-details">
+                                <div class="event-date">
+                                    <i class="fas fa-calendar"></i>
+                                    ${new Date(event.date).toLocaleDateString()}
+                                </div>
+                                <div class="event-prize">
+                                    <i class="fas fa-trophy"></i>
+                                    ${event.prizePool}
+                                </div>
+                            </div>
+                            <div class="event-participants">
+                                <i class="fas fa-users"></i>
+                                ${event.registeredCount}/${event.maxParticipants} participants
+                            </div>
+                        </div>
+                        <div class="event-actions">
+                            <button class="btn-primary btn-small" onclick="event.stopPropagation(); joinEvent('${event.id}')">
+                                <i class="fas fa-plus"></i> Join Event
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            displayPlaceholderEvents() {
+                const container = document.getElementById('featured-events');
+                const placeholderEvents = [
+                    { title: 'CS:GO Championship', type: 'FPS', prize: '$10,000', date: '2025-10-15' },
+                    { title: 'League of Legends Tournament', type: 'MOBA', prize: '$15,000', date: '2025-10-20' },
+                    { title: 'Valorant Masters', type: 'FPS', prize: '$8,000', date: '2025-10-25' }
+                ];
+                
+                container.innerHTML = placeholderEvents.map(event => `
+                    <div class="event-card placeholder">
+                        <div class="event-image">
+                            <div class="placeholder-image"></div>
+                            <div class="event-badge">${event.type}</div>
+                        </div>
+                        <div class="event-content">
+                            <h3 class="event-title">${event.title}</h3>
+                            <p class="event-description">Join this exciting tournament and compete with players worldwide!</p>
+                            <div class="event-details">
+                                <div class="event-date">
+                                    <i class="fas fa-calendar"></i>
+                                    ${new Date(event.date).toLocaleDateString()}
+                                </div>
+                                <div class="event-prize">
+                                    <i class="fas fa-trophy"></i>
+                                    ${event.prize}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="event-actions">
+                            <button class="btn-primary btn-small" onclick="showLoginRequired()">
+                                <i class="fas fa-lock"></i> Login to Join
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            redirectToDashboard() {
+                if (this.currentUser) {
+                    const dashboardUrl = this.currentUser.role === 'organizer' 
+                        ? 'pages/organizer/dashboard.html' 
+                        : 'pages/player/dashboard.html';
+                    window.location.href = dashboardUrl;
+                }
+            }
+
+            // Utility methods
+            isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            capitalize(str) {
+                return str.charAt(0).toUpperCase() + str.slice(1);
+            }
+
+            showFieldError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.style.display = 'block';
+                }
+            }
+
+            clearFieldError(elementId) {
+                const errorElement = document.getElementById(elementId);
+                if (errorElement) {
+                    errorElement.textContent = '';
+                    errorElement.style.display = 'none';
+                }
+            }
+
+            clearFormErrors(formType) {
+                const errorElements = document.querySelectorAll(`#${formType}Form .form-error`);
+                errorElements.forEach(element => {
+                    element.textContent = '';
+                    element.style.display = 'none';
+                });
+            }
+
+            showSuccess(title, message) {
+                document.getElementById('successTitle').textContent = title;
+                document.getElementById('successMessage').textContent = message;
+                this.openModal('successModal');
+            }
+
+            showError(message) {
+                document.getElementById('errorMessage').textContent = message;
+                this.openModal('errorModal');
+            }
+
+            openModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.style.display = 'flex';
+                    setTimeout(() => modal.classList.add('show'), 10);
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            closeModal(modalId) {
+                const modal = document.getElementById(modalId);
+                if (modal) {
+                    modal.classList.remove('show');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }, 300);
+                }
+            }
+
+            startAnimations() {
+                // Animate stat counters
+                this.animateCounters();
+                
+                // Start particle animation
+                this.initParticles();
+            }
+
+            animateCounters() {
+                const counters = document.querySelectorAll('.stat-number');
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-count'));
+                    const increment = target / 100;
+                    let current = 0;
+                    
+                    const timer = setInterval(() => {
+                        current += increment;
+                        counter.textContent = Math.floor(current);
+                        
+                        if (current >= target) {
+                            counter.textContent = target;
+                            clearInterval(timer);
+                        }
+                    }, 30);
+                });
+            }
+
+            initParticles() {
+                // Particle animation implementation
+                // This would be implemented in animations.js
+            }
+        }
+
+        // Global functions
+        function handlePrimaryAction() {
+            if (gameHub.currentUser) {
+                gameHub.redirectToDashboard();
+            } else {
+                openModal('registerModal');
+            }
+        }
+
+        function openModal(modalId) {
+            gameHub.openModal(modalId);
+        }
+
+        function closeModal(modalId) {
+            gameHub.closeModal(modalId);
+        }
+
+        function switchModal(fromModal, toModal) {
+            gameHub.closeModal(fromModal);
+            setTimeout(() => gameHub.openModal(toModal), 300);
+        }
+
+        function viewEvent(eventId) {
+            localStorage.setItem('selectedEventId', eventId);
+            window.location.href = 'pages/events/event-details.html';
+        }
+
+        function joinEvent(eventId) {
+            if (!gameHub.currentUser) {
+                showLoginRequired();
+                return;
+            }
+            
+            localStorage.setItem('joinEventId', eventId);
+            window.location.href = 'pages/player/event-registration.html';
+        }
+
+        function showLoginRequired() {
+            gameHub.showError('Please login or register to join events.');
+        }
+
+        function viewAllEvents() {
+            window.location.href = 'pages/events/event-list.html';
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('user-dropdown-menu');
+            dropdown.classList.toggle('show');
+        }
+
+        function goToDashboard() {
+            gameHub.redirectToDashboard();
+        }
+
+        function goToProfile() {
+            window.location.href = 'pages/shared/profile.html';
+        }
+
+        function goToSettings() {
+            window.location.href = 'pages/shared/settings.html';
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                gameHub.clearAuthData();
+                location.reload();
+            }
+        }
+
+        function toggleMobileMenu() {
+            // Mobile menu implementation
+            const nav = document.querySelector('.nav-container');
+            nav.classList.toggle('mobile-open');
+        }
+
+        function openForgotPassword() {
+            gameHub.closeModal('loginModal');
+            window.location.href = 'pages/auth/forgot-password.html';
+        }
+
+        // Initialize the application
+        let gameHub;
+        document.addEventListener('DOMContentLoaded', () => {
+            gameHub = new GameHubHome();
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.user-dropdown')) {
+                document.getElementById('user-dropdown-menu')?.classList.remove('show');
+            }
+        });
+    </script>
+
+    <style>
+        /* Additional styles for enhanced functionality */
+        .auth-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-welcome {
+            color: var(--white);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .user-dropdown {
+            position: relative;
+        }
+
+        .user-dropdown-btn {
+            background: none;
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 8px;
+            color: var(--white);
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all var(--transition-normal);
+        }
+
+        .user-dropdown-btn:hover {
+            border-color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            min-width: 200px;
+            box-shadow: var(--shadow-glow);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all var(--transition-normal);
+            z-index: 1000;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: var(--light-gray);
+            text-decoration: none;
+            transition: all var(--transition-normal);
+            border-radius: 8px;
+            margin: 2px;
+        }
+
+        .dropdown-item:hover {
+            color: var(--white);
+            background: rgba(220, 20, 60, 0.1);
+        }
+
+        .dropdown-item.logout {
+            color: #ef4444;
+        }
+
+        .dropdown-item.logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(220, 20, 60, 0.2);
+            margin: 0.5rem 0;
+        }
+
+        .form-error {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .checkmark {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(220, 20, 60, 0.3);
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .checkbox-label input:checked + .checkmark {
+            background: var(--demon-red);
+            border-color: var(--demon-red);
+        }
+
+        .checkbox-label input:checked + .checkmark::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .forgot-password {
+            color: var(--demon-red);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+        }
+
+        .password-meter {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+
+        .password-meter-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .password-feedback {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .password-feedback small {
+            color: var(--light-gray);
+            opacity: 0.8;
+        }
+
+        .success-modal .modal-content,
+        .error-modal .modal-content {
+            text-align: center;
+        }
+
+        .success-icon,
+        .error-icon {
+            font-size: 4rem;
+            margin: 1rem 0;
+        }
+
+        .success-icon {
+            color: #22c55e;
+        }
+
+        .error-icon {
+            color: #ef4444;
+        }
+
+        .loading-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            color: var(--light-gray);
+        }
+
+        .loading-placeholder i {
+            font-size: 3rem;
+            color: var(--demon-red);
+            margin-bottom: 1rem;
+        }
+
+        .event-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all var(--transition-normal);
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--demon-red);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .event-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .placeholder-image {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1a1a1a, #2a2a2a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--gradient-red);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .event-content {
+            padding: 1.5rem;
+        }
+
+        .event-title {
+            color: var(--white);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-description {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+        }
+
+        .event-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .event-date,
+        .event-prize {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--light-gray);
+        }
+
+        .event-participants {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: var(--demon-red);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .event-actions {
+            border-top: 1px solid rgba(220, 20, 60, 0.2);
+            padding: 1rem 1.5rem;
+        }
+
+        .no-events {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--light-gray);
+        }
+
+        .no-events i {
+            font-size: 3rem;
+            color: var(--demon-red);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .auth-nav {
+                display: none;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .user-welcome {
+                display: none;
+            }
+
+            .dropdown-menu {
+                right: -100px;
+            }
+
+            .form-options {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</body>
+</html>

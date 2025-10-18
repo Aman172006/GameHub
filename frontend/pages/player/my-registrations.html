@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Registrations - GameHub</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/events.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard-body">
+    <!-- Dashboard Layout -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <i class="fas fa-gamepad"></i>
+                    <span>GAMEHUB</span>
+                </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <div class="sidebar-user">
+                <div class="user-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-info" id="sidebar-user-info">
+                    <div class="user-name">Loading...</div>
+                    <div class="user-role">Player</div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="browse-events.html" class="nav-link">
+                            <i class="fas fa-calendar"></i>
+                            <span>Browse Events</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="my-registrations.html" class="nav-link">
+                            <i class="fas fa-ticket-alt"></i>
+                            <span>My Registrations</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../shared/profile.html" class="nav-link">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="../events/event-search.html" class="nav-link">
+                            <i class="fas fa-search"></i>
+                            <span>Search Events</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="sidebar-footer">
+                    <button class="btn-logout" onclick="auth.logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h1 class="page-title">
+                        <i class="fas fa-ticket-alt"></i>
+                        My Registrations
+                    </h1>
+                    <p class="page-subtitle">Track your tournament registrations and upcoming battles</p>
+                </div>
+                
+                <div class="header-right">
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="total-registrations">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="active-registrations">0</div>
+                            <div class="stat-label">Active</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="completed-registrations">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <button class="btn-secondary" onclick="refreshRegistrations()">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                        <button class="btn-primary" onclick="browseEvents()">
+                            <i class="fas fa-plus"></i>
+                            Join More Events
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="dashboard-content">
+                <!-- Registration Filters -->
+                <section class="filters-section">
+                    <div class="filters-header">
+                        <h3>Filter Registrations</h3>
+                        <button class="btn-outline btn-small" onclick="clearFilters()">
+                            <i class="fas fa-times"></i>
+                            Clear
+                        </button>
+                    </div>
+                    
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label class="filter-label">Status</label>
+                            <select id="status-filter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Statuses</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="live">Live</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Category</label>
+                            <select id="category-filter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Categories</option>
+                                <option value="FPS">FPS</option>
+                                <option value="MOBA">MOBA</option>
+                                <option value="Battle Royale">Battle Royale</option>
+                                <option value="Sports">Sports</option>
+                                <option value="Racing">Racing</option>
+                                <option value="Strategy">Strategy</option>
+                                <option value="Fighting">Fighting</option>
+                                <option value="RPG">RPG</option>
+                                <option value="Casual">Casual</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Time Period</label>
+                            <select id="time-filter" class="filter-select" onchange="applyFilters()">
+                                <option value="">All Time</option>
+                                <option value="this-week">This Week</option>
+                                <option value="next-week">Next Week</option>
+                                <option value="this-month">This Month</option>
+                                <option value="next-month">Next Month</option>
+                                <option value="past">Past Events</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">Search</label>
+                            <div class="search-input-container">
+                                <input 
+                                    type="text" 
+                                    id="search-filter" 
+                                    class="search-input" 
+                                    placeholder="Search registrations..."
+                                    oninput="debounceSearch()"
+                                >
+                                <i class="fas fa-search search-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Registrations List -->
+                <section class="registrations-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <span id="registrations-count">My Registrations</span>
+                            <span class="registrations-sort">
+                                <label>Sort by:</label>
+                                <select id="sort-filter" class="sort-select" onchange="applyFilters()">
+                                    <option value="date-desc">Event Date (Newest First)</option>
+                                    <option value="date-asc">Event Date (Oldest First)</option>
+                                    <option value="registered-desc">Registration Date (Newest)</option>
+                                    <option value="registered-asc">Registration Date (Oldest)</option>
+                                    <option value="name-asc">Event Name (A-Z)</option>
+                                    <option value="name-desc">Event Name (Z-A)</option>
+                                </select>
+                            </span>
+                        </h2>
+                    </div>
+                    
+                    <div class="registrations-container" id="registrations-container">
+                        <!-- Registrations will be loaded here -->
+                        <div class="loading-placeholder">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Loading your registrations...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Cancel Registration Modal -->
+    <div id="cancel-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Cancel Registration</h3>
+                <span class="modal-close" onclick="closeModal('cancel-modal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="cancel-content">
+                    <!-- Cancel content will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="closeModal('cancel-modal')">Keep Registration</button>
+                <button class="btn-danger" id="confirm-cancel-btn" onclick="confirmCancellation()">
+                    <i class="fas fa-times"></i>
+                    Cancel Registration
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../config/api-config.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+    <script src="../../assets/js/utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+    
+    <script>
+        let allRegistrations = [];
+        let filteredRegistrations = [];
+        let currentCancelId = null;
+        let searchTimeout;
+
+        // Initialize my registrations page
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check authentication
+            if (!auth.requireAuth()) {
+                return;
+            }
+            
+            // Update user info in sidebar
+            const user = auth.getCurrentUser();
+            if (user) {
+                updateSidebarUserInfo(user);
+            }
+            
+            // Load registrations
+            await loadMyRegistrations();
+        });
+
+        // Update sidebar user info
+        function updateSidebarUserInfo(user) {
+            const userInfo = document.getElementById('sidebar-user-info');
+            if (userInfo) {
+                userInfo.innerHTML = `
+                    <div class="user-name">${user.name}</div>
+                    <div class="user-role">${user.role}</div>
+                `;
+            }
+        }
+
+        // Load my registrations
+        async function loadMyRegistrations() {
+            try {
+                showLoadingState('Loading your registrations...');
+                
+                const registrations = await api.getMyRegistrations();
+                allRegistrations = registrations;
+                filteredRegistrations = [...allRegistrations];
+                
+                // Update statistics
+                updateRegistrationStats();
+                
+                // Display registrations
+                displayRegistrations();
+                
+            } catch (error) {
+                console.error('Error loading registrations:', error);
+                showRegistrationsError();
+            } finally {
+                hideLoadingState();
+            }
+        }
+
+        // Update registration statistics
+        function updateRegistrationStats() {
+            const total = allRegistrations.length;
+            const now = new Date();
+            
+            const active = allRegistrations.filter(reg => 
+                reg.status === 'registered' && 
+                new Date(reg.event.date) > now &&
+                reg.event.is_active
+            ).length;
+            
+            const completed = allRegistrations.filter(reg => 
+                new Date(reg.event.date) <= now ||
+                !reg.event.is_active
+            ).length;
+            
+            document.getElementById('total-registrations').textContent = total;
+            document.getElementById('active-registrations').textContent = active;
+            document.getElementById('completed-registrations').textContent = completed;
+        }
+
+        // Display registrations
+        function displayRegistrations() {
+            const container = document.getElementById('registrations-container');
+            
+            if (filteredRegistrations.length === 0) {
+                if (allRegistrations.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-ticket-alt"></i>
+                            <h3>No Registrations Yet</h3>
+                            <p>You haven't registered for any events yet. Start your gaming journey!</p>
+                            <button class="btn-primary" onclick="browseEvents()">
+                                <i class="fas fa-calendar"></i>
+                                Browse Events
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <h3>No Matching Registrations</h3>
+                            <p>Try adjusting your filters to find what you're looking for.</p>
+                            <button class="btn-outline" onclick="clearFilters()">
+                                <i class="fas fa-times"></i>
+                                Clear Filters
+                            </button>
+                        </div>
+                    `;
+                }
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="registrations-grid">
+                    ${filteredRegistrations.map(registration => createRegistrationCard(registration)).join('')}
+                </div>
+            `;
+            
+            updateRegistrationsCount();
+        }
+
+        // Create registration card
+        function createRegistrationCard(registration) {
+            const event = registration.event;
+            const registrationDate = new Date(registration.registered_at || registration.created_at);
+            const eventDate = new Date(event.date);
+            const now = new Date();
+            
+            const status = getEventStatus(event);
+            const canCancel = status === 'upcoming' && eventDate > new Date(now.getTime() + 24 * 60 * 60 * 1000);
+            const daysUntil = Math.ceil((eventDate - now) / (1000 * 60 * 60 * 24));
+            
+            return `
+                <div class="registration-card ${status}" data-registration-id="${registration.id}">
+                    <div class="registration-header">
+                        <div class="event-category">${event.category}</div>
+                        <div class="registration-status status-${status}">
+                            ${getEventStatusText(event)}
+                        </div>
+                    </div>
+                    
+                    <div class="registration-content">
+                        <h3 class="event-title">${event.title}</h3>
+                        <p class="event-description">${StringUtils.truncate(event.description, 100)}</p>
+                        
+                        <div class="event-details">
+                            <div class="detail-item">
+                                <i class="fas fa-calendar"></i>
+                                <span>${DateUtils.formatDateTime(event.date, event.time)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${event.location}</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Registered ${DateUtils.getTimeAgo(registrationDate)}</span>
+                            </div>
+                            ${event.entry_fee ? `
+                                <div class="detail-item">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <span>$${event.entry_fee} entry fee</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        ${status === 'upcoming' && daysUntil > 0 ? `
+                            <div class="countdown-info">
+                                <i class="fas fa-hourglass-half"></i>
+                                <span>${daysUntil} day${daysUntil !== 1 ? 's' : ''} until event</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${status === 'live' ? `
+                            <div class="live-indicator">
+                                <i class="fas fa-dot-circle"></i>
+                                <span>Event is live now!</span>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div class="registration-footer">
+                        <button class="btn-outline btn-small" onclick="viewEventDetails(${event.id})">
+                            <i class="fas fa-eye"></i>
+                            View Event
+                        </button>
+                        
+                        ${status === 'completed' ? `
+                            <button class="btn-secondary btn-small" onclick="addFeedback(${event.id})">
+                                <i class="fas fa-star"></i>
+                                Add Review
+                            </button>
+                        ` : canCancel ? `
+                            <button class="btn-danger btn-small" onclick="showCancelModal(${registration.id}, '${event.title}')">
+                                <i class="fas fa-times"></i>
+                                Cancel
+                            </button>
+                        ` : `
+                            <button class="btn-secondary btn-small" disabled>
+                                <i class="fas fa-lock"></i>
+                                Cannot Cancel
+                            </button>
+                        `}
+                    </div>
+                    
+                    ${status === 'upcoming' && daysUntil <= 1 ? `
+                        <div class="urgent-notice">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Event starts ${daysUntil === 0 ? 'today' : 'tomorrow'}!</span>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const categoryFilter = document.getElementById('category-filter').value;
+            const timeFilter = document.getElementById('time-filter').value;
+            const searchFilter = document.getElementById('search-filter').value.toLowerCase();
+            const sortFilter = document.getElementById('sort-filter').value;
+            
+            // Filter registrations
+            filteredRegistrations = allRegistrations.filter(registration => {
+                const event = registration.event;
+                
+                // Status filter
+                if (statusFilter && getEventStatus(event) !== statusFilter) return false;
+                
+                // Category filter
+                if (categoryFilter && event.category !== categoryFilter) return false;
+                
+                // Time filter
+                if (timeFilter && !matchesTimeFilter(event.date, timeFilter)) return false;
+                
+                // Search filter
+                if (searchFilter && !matchesSearch(registration, searchFilter)) return false;
+                
+                return true;
+            });
+            
+            // Sort registrations
+            sortRegistrations(sortFilter);
+            
+            // Display filtered results
+            displayRegistrations();
+        }
+
+        // Sort registrations
+        function sortRegistrations(sortType) {
+            switch (sortType) {
+                case 'date-asc':
+                    filteredRegistrations.sort((a, b) => new Date(a.event.date) - new Date(b.event.date));
+                    break;
+                case 'date-desc':
+                    filteredRegistrations.sort((a, b) => new Date(b.event.date) - new Date(a.event.date));
+                    break;
+                case 'registered-asc':
+                    filteredRegistrations.sort((a, b) => new Date(a.registered_at || a.created_at) - new Date(b.registered_at || b.created_at));
+                    break;
+                case 'registered-desc':
+                    filteredRegistrations.sort((a, b) => new Date(b.registered_at || b.created_at) - new Date(a.registered_at || a.created_at));
+                    break;
+                case 'name-asc':
+                    filteredRegistrations.sort((a, b) => a.event.title.localeCompare(b.event.title));
+                    break;
+                case 'name-desc':
+                    filteredRegistrations.sort((a, b) => b.event.title.localeCompare(a.event.title));
+                    break;
+            }
+        }
+
+        // Filter helper functions
+        function matchesTimeFilter(eventDate, filter) {
+            const event = new Date(eventDate);
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            switch (filter) {
+                case 'this-week':
+                    const endOfWeek = new Date(today);
+                    endOfWeek.setDate(today.getDate() + (7 - today.getDay()));
+                    return event >= today && event <= endOfWeek;
+                case 'next-week':
+                    const nextWeekStart = new Date(today);
+                    nextWeekStart.setDate(today.getDate() + (7 - today.getDay()) + 1);
+                    const nextWeekEnd = new Date(nextWeekStart);
+                    nextWeekEnd.setDate(nextWeekStart.getDate() + 6);
+                    return event >= nextWeekStart && event <= nextWeekEnd;
+                case 'this-month':
+                    return event.getMonth() === now.getMonth() && event.getFullYear() === now.getFullYear();
+                case 'next-month':
+                    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+                    return event.getMonth() === nextMonth.getMonth() && event.getFullYear() === nextMonth.getFullYear();
+                case 'past':
+                    return event < now;
+                default:
+                    return true;
+            }
+        }
+
+        function matchesSearch(registration, search) {
+            const event = registration.event;
+            return event.title.toLowerCase().includes(search) ||
+                   event.description.toLowerCase().includes(search) ||
+                   event.category.toLowerCase().includes(search) ||
+                   event.location.toLowerCase().includes(search);
+        }
+
+        // Search with debounce
+        function debounceSearch() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                applyFilters();
+            }, 300);
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            document.getElementById('status-filter').value = '';
+            document.getElementById('category-filter').value = '';
+            document.getElementById('time-filter').value = '';
+            document.getElementById('search-filter').value = '';
+            document.getElementById('sort-filter').value = 'date-desc';
+            
+            applyFilters();
+        }
+
+        // Show cancel modal
+        function showCancelModal(registrationId, eventTitle) {
+            currentCancelId = registrationId;
+            
+            const cancelContent = document.getElementById('cancel-content');
+            cancelContent.innerHTML = `
+                <div class="cancel-warning">
+                    <div class="warning-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="warning-content">
+                        <h4>Cancel Registration</h4>
+                        <p>Are you sure you want to cancel your registration for <strong>"${eventTitle}"</strong>?</p>
+                        <div class="warning-notice">
+                            <i class="fas fa-info-circle"></i>
+                            <span>This action cannot be undone. You may lose your spot and any entry fees paid.</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            openModal('cancel-modal');
+        }
+
+        // Confirm cancellation
+        async function confirmCancellation() {
+            if (!currentCancelId) return;
+            
+            try {
+                const confirmBtn = document.getElementById('confirm-cancel-btn');
+                const originalText = confirmBtn.innerHTML;
+                
+                confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cancelling...';
+                confirmBtn.disabled = true;
+                
+                await api.cancelRegistration(currentCancelId);
+                
+                showNotification('Registration cancelled successfully', 'success');
+                
+                closeModal('cancel-modal');
+                
+                // Reload registrations
+                await loadMyRegistrations();
+                
+            } catch (error) {
+                console.error('Cancellation error:', error);
+                showNotification('Failed to cancel registration. Please try again.', 'error');
+                
+                const confirmBtn = document.getElementById('confirm-cancel-btn');
+                confirmBtn.innerHTML = '<i class="fas fa-times"></i> Cancel Registration';
+                confirmBtn.disabled = false;
+            }
+        }
+
+        // Navigation functions
+        function viewEventDetails(eventId) {
+            localStorage.setItem('selectedEventId', eventId);
+            window.location.href = '../events/event-details.html';
+        }
+
+        function addFeedback(eventId) {
+            localStorage.setItem('selectedEventId', eventId);
+            window.location.href = '../events/event-details.html#feedback';
+        }
+
+        function browseEvents() {
+            window.location.href = 'browse-events.html';
+        }
+
+        function refreshRegistrations() {
+            loadMyRegistrations();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.dashboard-sidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        // Utility functions
+        function updateRegistrationsCount() {
+            const countElement = document.getElementById('registrations-count');
+            countElement.textContent = `${filteredRegistrations.length} Registration${filteredRegistrations.length !== 1 ? 's' : ''}`;
+        }
+
+        function getEventStatus(event) {
+            const now = new Date();
+            const eventDate = new Date(event.date);
+            
+            if (!event.is_active) return 'cancelled';
+            if (eventDate > now) return 'upcoming';
+            
+            const eventEndDate = new Date(eventDate.getTime() + 24 * 60 * 60 * 1000);
+            if (eventDate <= now && now <= eventEndDate) return 'live';
+            
+            return 'completed';
+        }
+
+        function getEventStatusText(event) {
+            const status = getEventStatus(event);
+            const statusTexts = {
+                upcoming: 'Upcoming',
+                live: 'Live Now',
+                completed: 'Completed',
+                cancelled: 'Cancelled'
+            };
+            return statusTexts[status] || 'Unknown';
+        }
+
+        function showRegistrationsError() {
+            const container = document.getElementById('registrations-container');
+            container.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Unable to Load Registrations</h3>
+                    <p>There was a problem loading your registrations. Please try again.</p>
+                    <button class="btn-primary" onclick="loadMyRegistrations()">
+                        <i class="fas fa-retry"></i>
+                        Retry
+                    </button>
+                </div>
+            `;
+        }
+
+        // Loading state functions
+        function showLoadingState(message = 'Loading...') {
+            const container = document.getElementById('registrations-container');
+            container.innerHTML = `
+                <div class="loading-placeholder">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function hideLoadingState() {
+            // Loading state will be replaced by actual content
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('show');
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            const icon = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            }[type];
+            
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="${icon}"></i>
+                    <span>${message}</span>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                closeNotification(notification.querySelector('.notification-close'));
+            }, 5000);
+        }
+
+        function closeNotification(button) {
+            const notification = button.closest('.notification');
+            notification.classList.remove('show');
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }
+    </script>
+
+    <style>
+        /* Registration Card Styles */
+        .registrations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .registration-card {
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+
+        .registration-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--demon-red);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .registration-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .registration-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-upcoming {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-live {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .status-completed {
+            background: rgba(156, 163, 175, 0.2);
+            color: #9ca3af;
+            border: 1px solid rgba(156, 163, 175, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .registration-content {
+            padding: var(--spacing-md);
+        }
+
+        .event-details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+            margin: var(--spacing-md) 0;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            color: var(--light-gray);
+            font-size: 0.9rem;
+        }
+
+        .detail-item i {
+            color: var(--demon-red);
+            width: 16px;
+            text-align: center;
+        }
+
+        .countdown-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 8px;
+            padding: var(--spacing-sm);
+            color: #22c55e;
+            font-weight: 600;
+            margin-top: var(--spacing-md);
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            padding: var(--spacing-sm);
+            color: #ef4444;
+            font-weight: 600;
+            margin-top: var(--spacing-md);
+        }
+
+        .registration-footer {
+            display: flex;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-md);
+            border-top: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .registration-footer .btn-small {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .urgent-notice {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(245, 158, 11, 0.9);
+            color: var(--white);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 2;
+        }
+
+        /* Cancel Warning Styles */
+        .cancel-warning {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: flex-start;
+        }
+
+        .warning-icon {
+            flex-shrink: 0;
+        }
+
+        .warning-icon i {
+            font-size: 3rem;
+            color: #f59e0b;
+        }
+
+        .warning-content {
+            flex: 1;
+        }
+
+        .warning-content h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0 0 var(--spacing-sm) 0;
+        }
+
+        .warning-content p {
+            color: var(--light-gray);
+            line-height: 1.6;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .warning-notice {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: var(--spacing-sm);
+            color: #f59e0b;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .registrations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .registration-footer {
+                flex-direction: column;
+            }
+            
+            .cancel-warning {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .warning-icon i {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</body>
+</html>

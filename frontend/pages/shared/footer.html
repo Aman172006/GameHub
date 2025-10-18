@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub Footer Component</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    
+    <!-- Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- GameHub Universal Footer Component -->
+    <footer class="gamehub-footer" id="gamehub-footer">
+        <!-- Main Footer Content -->
+        <div class="footer-main">
+            <div class="footer-container">
+                <!-- Footer Brand Section -->
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fas fa-gamepad brand-icon"></i>
+                        <span class="brand-text">GAMEHUB</span>
+                    </div>
+                    <p class="footer-tagline">The ultimate platform for gaming tournaments and events. Join the arena, compete with the best, and claim your victory!</p>
+                    
+                    <!-- Social Media Links -->
+                    <div class="social-links">
+                        <a href="#" class="social-link facebook" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link twitter" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link instagram" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link discord" title="Discord">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link youtube" title="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="social-link twitch" title="Twitch">
+                            <i class="fab fa-twitch"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Footer Links Sections -->
+                <div class="footer-links">
+                    <!-- Platform Section -->
+                    <div class="footer-section">
+                        <h3 class="footer-section-title">
+                            <i class="fas fa-gamepad"></i>
+                            Platform
+                        </h3>
+                        <ul class="footer-links-list">
+                            <li><a href="../events/event-list.html">Browse Events</a></li>
+                            <li><a href="../events/event-search.html">Search Tournaments</a></li>
+                            <li><a href="../player/browse-events.html">Join Competitions</a></li>
+                            <li><a href="../organizer/create-event.html">Create Events</a></li>
+                            <li><a href="#" onclick="showLeaderboards()">Leaderboards</a></li>
+                            <li><a href="#" onclick="showPrizePool()">Prize Pools</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Community Section -->
+                    <div class="footer-section">
+                        <h3 class="footer-section-title">
+                            <i class="fas fa-users"></i>
+                            Community
+                        </h3>
+                        <ul class="footer-links-list">
+                            <li><a href="#" onclick="showCommunityForum()">Community Forum</a></li>
+                            <li><a href="#" onclick="showDiscordServer()">Discord Server</a></li>
+                            <li><a href="#" onclick="showEsportsNews()">Esports News</a></li>
+                            <li><a href="#" onclick="showStreamingHub()">Streaming Hub</a></li>
+                            <li><a href="#" onclick="showPlayerProfiles()">Player Profiles</a></li>
+                            <li><a href="#" onclick="showTeamRankings()">Team Rankings</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Resources Section -->
+                    <div class="footer-section">
+                        <h3 class="footer-section-title">
+                            <i class="fas fa-book"></i>
+                            Resources
+                        </h3>
+                        <ul class="footer-links-list">
+                            <li><a href="#" onclick="showGamingGuides()">Gaming Guides</a></li>
+                            <li><a href="#" onclick="showTutorials()">Tutorials</a></li>
+                            <li><a href="#" onclick="showRulesRegulations()">Rules & Regulations</a></li>
+                            <li><a href="#" onclick="showFAQ()">FAQ</a></li>
+                            <li><a href="#" onclick="showAPIDocumentation()">API Documentation</a></li>
+                            <li><a href="#" onclick="showDeveloperTools()">Developer Tools</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Support Section -->
+                    <div class="footer-section">
+                        <h3 class="footer-section-title">
+                            <i class="fas fa-headset"></i>
+                            Support
+                        </h3>
+                        <ul class="footer-links-list">
+                            <li><a href="#" onclick="showHelpCenter()">Help Center</a></li>
+                            <li><a href="#" onclick="showContactSupport()">Contact Support</a></li>
+                            <li><a href="#" onclick="showReportIssue()">Report Issue</a></li>
+                            <li><a href="#" onclick="showSystemStatus()">System Status</a></li>
+                            <li><a href="#" onclick="showBugBounty()">Bug Bounty</a></li>
+                            <li><a href="#" onclick="showFeatureRequest()">Feature Request</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Newsletter Signup -->
+                <div class="footer-newsletter">
+                    <div class="newsletter-content">
+                        <h3 class="newsletter-title">
+                            <i class="fas fa-trophy"></i>
+                            Stay in the Game!
+                        </h3>
+                        <p class="newsletter-description">Get the latest tournament updates, gaming news, and exclusive offers delivered to your inbox.</p>
+                        
+                        <form class="newsletter-form" id="newsletter-form">
+                            <div class="newsletter-input-group">
+                                <input 
+                                    type="email" 
+                                    id="newsletter-email"
+                                    name="email"
+                                    class="newsletter-input" 
+                                    placeholder="Enter your email address"
+                                    required
+                                >
+                                <button type="submit" class="newsletter-submit">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Subscribe
+                                </button>
+                            </div>
+                            
+                            <div class="newsletter-preferences">
+                                <label class="checkbox-label small">
+                                    <input type="checkbox" name="tournament_updates" checked>
+                                    <div class="checkbox-custom"></div>
+                                    <span>Tournament Updates</span>
+                                </label>
+                                <label class="checkbox-label small">
+                                    <input type="checkbox" name="gaming_news">
+                                    <div class="checkbox-custom"></div>
+                                    <span>Gaming News</span>
+                                </label>
+                                <label class="checkbox-label small">
+                                    <input type="checkbox" name="promotions">
+                                    <div class="checkbox-custom"></div>
+                                    <span>Special Offers</span>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Stats Bar -->
+        <div class="footer-stats">
+            <div class="footer-container">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-players">50,000+</div>
+                        <div class="stat-label">Active Players</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-tournaments">2,500+</div>
+                        <div class="stat-label">Tournaments Hosted</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-prize-money">$1M+</div>
+                        <div class="stat-label">Prize Money Awarded</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-games">150+</div>
+                        <div class="stat-label">Games Supported</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="footer-container">
+                <div class="footer-bottom-content">
+                    <div class="footer-legal">
+                        <p class="copyright">
+                            © 2025 GameHub. All rights reserved. 
+                            <span class="made-with-love">Made with <i class="fas fa-heart"></i> for gamers worldwide.</span>
+                        </p>
+                        
+                        <div class="legal-links">
+                            <a href="#" onclick="showPrivacyPolicy()">Privacy Policy</a>
+                            <a href="#" onclick="showTermsOfService()">Terms of Service</a>
+                            <a href="#" onclick="showCookiePolicy()">Cookie Policy</a>
+                            <a href="#" onclick="showAccessibility()">Accessibility</a>
+                        </div>
+                    </div>
+                    
+                    <div class="footer-meta">
+                        <div class="app-links">
+                            <span class="app-links-label">Get the App:</span>
+                            <a href="#" class="app-link" onclick="downloadMobileApp('ios')">
+                                <i class="fab fa-apple"></i>
+                                <span>iOS</span>
+                            </a>
+                            <a href="#" class="app-link" onclick="downloadMobileApp('android')">
+                                <i class="fab fa-google-play"></i>
+                                <span>Android</span>
+                            </a>
+                        </div>
+                        
+                        <div class="language-selector">
+                            <button class="language-toggle" onclick="toggleLanguageSelector()">
+                                <i class="fas fa-globe"></i>
+                                <span id="current-language">English</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="language-dropdown" id="language-dropdown">
+                                <a href="#" onclick="changeLanguage('en')" class="language-option active">
+                                    <i class="fas fa-flag-usa"></i>
+                                    <span>English</span>
+                                </a>
+                                <a href="#" onclick="changeLanguage('es')" class="language-option">
+                                    <i class="fas fa-flag"></i>
+                                    <span>Español</span>
+                                </a>
+                                <a href="#" onclick="changeLanguage('fr')" class="language-option">
+                                    <i class="fas fa-flag"></i>
+                                    <span>Français</span>
+                                </a>
+                                <a href="#" onclick="changeLanguage('de')" class="language-option">
+                                    <i class="fas fa-flag"></i>
+                                    <span>Deutsch</span>
+                                </a>
+                                <a href="#" onclick="changeLanguage('ja')" class="language-option">
+                                    <i class="fas fa-flag"></i>
+                                    <span>日本語</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Footer JavaScript -->
+    <script>
+        // Footer Component JavaScript
+        class GameHubFooter {
+            constructor() {
+                this.init();
+            }
+            
+            init() {
+                this.setupNewsletterForm();
+                this.loadFooterStats();
+                this.setupLanguageSelector();
+            }
+            
+            setupNewsletterForm() {
+                const form = document.getElementById('newsletter-form');
+                if (form) {
+                    form.addEventListener('submit', this.handleNewsletterSubmit.bind(this));
+                }
+            }
+            
+            async handleNewsletterSubmit(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(e.target);
+                const email = formData.get('email');
+                const preferences = {
+                    tournament_updates: formData.get('tournament_updates') === 'on',
+                    gaming_news: formData.get('gaming_news') === 'on',
+                    promotions: formData.get('promotions') === 'on'
+                };
+                
+                try {
+                    // Show loading state
+                    const submitBtn = form.querySelector('.newsletter-submit');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
+                    submitBtn.disabled = true;
+                    
+                    // Simulate API call (replace with actual API)
+                    await this.simulateNewsletterSignup(email, preferences);
+                    
+                    // Show success
+                    this.showNewsletterSuccess();
+                    form.reset();
+                    
+                } catch (error) {
+                    console.error('Newsletter signup error:', error);
+                    this.showNewsletterError();
+                } finally {
+                    // Reset button
+                    const submitBtn = form.querySelector('.newsletter-submit');
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Subscribe';
+                    submitBtn.disabled = false;
+                }
+            }
+            
+            async simulateNewsletterSignup(email, preferences) {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // In production, replace with actual API call:
+                // await api.subscribeToNewsletter({ email, preferences });
+                
+                console.log('Newsletter signup:', { email, preferences });
+            }
+            
+            showNewsletterSuccess() {
+                this.showNotification('Successfully subscribed to our newsletter! 🎉', 'success');
+            }
+            
+            showNewsletterError() {
+                this.showNotification('Failed to subscribe. Please try again.', 'error');
+            }
+            
+            async loadFooterStats() {
+                try {
+                    // In production, load real stats from API
+                    const stats = await this.getFooterStats();
+                    this.updateFooterStats(stats);
+                    
+                    // Animate numbers
+                    this.animateStatNumbers();
+                    
+                } catch (error) {
+                    console.error('Error loading footer stats:', error);
+                }
+            }
+            
+            async getFooterStats() {
+                // Simulate API call for stats
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                return {
+                    totalPlayers: 52847,
+                    totalTournaments: 2648,
+                    totalPrizeMoney: 1250000,
+                    totalGames: 156
+                };
+            }
+            
+            updateFooterStats(stats) {
+                document.getElementById('total-players').textContent = this.formatNumber(stats.totalPlayers) + '+';
+                document.getElementById('total-tournaments').textContent = this.formatNumber(stats.totalTournaments) + '+';
+                document.getElementById('total-prize-money').textContent = '$' + this.formatMoney(stats.totalPrizeMoney) + '+';
+                document.getElementById('total-games').textContent = this.formatNumber(stats.totalGames) + '+';
+            }
+            
+            formatNumber(num) {
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1) + 'M';
+                } else if (num >= 1000) {
+                    return (num / 1000).toFixed(0) + 'K';
+                }
+                return num.toString();
+            }
+            
+            formatMoney(amount) {
+                if (amount >= 1000000) {
+                    return (amount / 1000000).toFixed(1) + 'M';
+                } else if (amount >= 1000) {
+                    return (amount / 1000).toFixed(0) + 'K';
+                }
+                return amount.toString();
+            }
+            
+            animateStatNumbers() {
+                const statNumbers = document.querySelectorAll('.stat-number');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate');
+                        }
+                    });
+                });
+                
+                statNumbers.forEach(stat => {
+                    observer.observe(stat);
+                });
+            }
+            
+            setupLanguageSelector() {
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    const dropdown = document.getElementById('language-dropdown');
+                    const toggle = document.querySelector('.language-toggle');
+                    
+                    if (!toggle.contains(e.target)) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            }
+            
+            showNotification(message, type = 'info') {
+                // Create and show notification
+                const notification = document.createElement('div');
+                notification.className = `footer-notification notification-${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="${this.getNotificationIcon(type)}"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button class="notification-close" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                
+                // Add styles
+                notification.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    max-width: 350px;
+                    background: var(--gradient-dark);
+                    border: 1px solid ${type === 'success' ? '#22c55e' : '#ef4444'};
+                    border-radius: 12px;
+                    padding: var(--spacing-md);
+                    box-shadow: var(--shadow-dark);
+                    z-index: 10000;
+                    transform: translateX(100%);
+                    transition: all var(--transition-normal);
+                    color: var(--white);
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 100);
+                
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => notification.remove(), 300);
+                }, 5000);
+            }
+            
+            getNotificationIcon(type) {
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle'
+                };
+                return icons[type] || icons.info;
+            }
+        }
+        
+        // Global footer functions
+        function toggleLanguageSelector() {
+            const dropdown = document.getElementById('language-dropdown');
+            dropdown.classList.toggle('show');
+        }
+        
+        function changeLanguage(lang) {
+            const languages = {
+                'en': 'English',
+                'es': 'Español', 
+                'fr': 'Français',
+                'de': 'Deutsch',
+                'ja': '日本語'
+            };
+            
+            document.getElementById('current-language').textContent = languages[lang] || 'English';
+            document.getElementById('language-dropdown').classList.remove('show');
+            
+            // Update active state
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            document.querySelector(`[onclick="changeLanguage('${lang}')"]`).classList.add('active');
+            
+            // Here you would implement actual language change
+            console.log('Language changed to:', lang);
+        }
+        
+        // Placeholder functions for footer links
+        function showLeaderboards() {
+            window.location.href = '../shared/leaderboards.html';
+        }
+        
+        function showPrizePool() {
+            window.location.href = '../shared/prize-pools.html';
+        }
+        
+        function showCommunityForum() {
+            window.location.href = '../shared/community.html';
+        }
+        
+        function showDiscordServer() {
+            window.open('https://discord.gg/gamehub', '_blank');
+        }
+        
+        function showEsportsNews() {
+            window.location.href = '../shared/news.html';
+        }
+        
+        function showStreamingHub() {
+            window.location.href = '../shared/streaming.html';
+        }
+        
+        function showPlayerProfiles() {
+            window.location.href = '../shared/players.html';
+        }
+        
+        function showTeamRankings() {
+            window.location.href = '../shared/teams.html';
+        }
+        
+        function showGamingGuides() {
+            window.location.href = '../shared/guides.html';
+        }
+        
+        function showTutorials() {
+            window.location.href = '../shared/tutorials.html';
+        }
+        
+        function showRulesRegulations() {
+            window.location.href = '../shared/rules.html';
+        }
+        
+        function showFAQ() {
+            window.location.href = '../shared/faq.html';
+        }
+        
+        function showAPIDocumentation() {
+            window.location.href = '../shared/api-docs.html';
+        }
+        
+        function showDeveloperTools() {
+            window.location.href = '../shared/dev-tools.html';
+        }
+        
+        function showHelpCenter() {
+            window.location.href = '../shared/help.html';
+        }
+        
+        function showContactSupport() {
+            window.location.href = '../shared/contact.html';
+        }
+        
+        function showReportIssue() {
+            window.location.href = '../shared/report-issue.html';
+        }
+        
+        function showSystemStatus() {
+            window.location.href = '../shared/status.html';
+        }
+        
+        function showBugBounty() {
+            window.location.href = '../shared/bug-bounty.html';
+        }
+        
+        function showFeatureRequest() {
+            window.location.href = '../shared/feature-request.html';
+        }
+        
+        function showPrivacyPolicy() {
+            window.location.href = '../shared/privacy.html';
+        }
+        
+        function showTermsOfService() {
+            window.location.href = '../shared/terms.html';
+        }
+        
+        function showCookiePolicy() {
+            window.location.href = '../shared/cookies.html';
+        }
+        
+        function showAccessibility() {
+            window.location.href = '../shared/accessibility.html';
+        }
+        
+        function downloadMobileApp(platform) {
+            const urls = {
+                ios: 'https://apps.apple.com/app/gamehub',
+                android: 'https://play.google.com/store/apps/details?id=com.gamehub'
+            };
+            
+            if (urls[platform]) {
+                window.open(urls[platform], '_blank');
+            }
+        }
+        
+        // Initialize footer when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.gameHubFooter = new GameHubFooter();
+        });
+    </script>
+
+    <style>
+        /* Footer Component Styles */
+        .gamehub-footer {
+            background: linear-gradient(135deg, var(--pure-black), var(--dark-gray));
+            color: var(--light-gray);
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+        }
+
+        /* Main Footer Content */
+        .footer-main {
+            padding: var(--spacing-xl) 0;
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .footer-container > .footer-main {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: var(--spacing-xl);
+            align-items: flex-start;
+        }
+
+        /* Footer Brand */
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .footer-logo .brand-icon {
+            font-size: 2.5rem;
+            color: var(--demon-red);
+            text-shadow: 0 0 15px var(--demon-red);
+        }
+
+        .footer-logo .brand-text {
+            font-family: var(--font-primary);
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--white);
+            letter-spacing: 2px;
+        }
+
+        .footer-tagline {
+            line-height: 1.6;
+            color: var(--light-gray);
+            font-size: 0.95rem;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(220, 20, 60, 0.1);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            color: var(--light-gray);
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+        }
+
+        .social-link:hover {
+            transform: translateY(-2px);
+            border-color: var(--demon-red);
+            background: rgba(220, 20, 60, 0.2);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+        }
+
+        .social-link.facebook:hover { background: #1877f2; border-color: #1877f2; }
+        .social-link.twitter:hover { background: #1da1f2; border-color: #1da1f2; }
+        .social-link.instagram:hover { background: #e4405f; border-color: #e4405f; }
+        .social-link.discord:hover { background: #7289da; border-color: #7289da; }
+        .social-link.youtube:hover { background: #ff0000; border-color: #ff0000; }
+        .social-link.twitch:hover { background: #9146ff; border-color: #9146ff; }
+
+        /* Footer Links */
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-xl);
+        }
+
+        .footer-section-title {
+            font-family: var(--font-primary);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--demon-red);
+            margin: 0 0 var(--spacing-md) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .footer-section-title i {
+            font-size: 1rem;
+        }
+
+        .footer-links-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .footer-links-list li {
+            padding: 0;
+        }
+
+        .footer-links-list a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all var(--transition-normal);
+            padding: 4px 0;
+            display: block;
+        }
+
+        .footer-links-list a:hover {
+            color: var(--demon-red);
+            padding-left: var(--spacing-xs);
+        }
+
+        /* Newsletter */
+        .footer-newsletter {
+            background: rgba(220, 20, 60, 0.05);
+            border: 1px solid rgba(220, 20, 60, 0.2);
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+        }
+
+        .newsletter-title {
+            font-family: var(--font-primary);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            margin: 0 0 var(--spacing-sm) 0;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .newsletter-description {
+            color: var(--light-gray);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .newsletter-input-group {
+            display: flex;
+            margin-bottom: var(--spacing-md);
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid rgba(220, 20, 60, 0.3);
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 14px 16px;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .newsletter-input::placeholder {
+            color: var(--light-gray);
+            opacity: 0.8;
+        }
+
+        .newsletter-submit {
+            padding: 14px 20px;
+            background: var(--gradient-red);
+            border: none;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        .newsletter-submit:hover {
+            background: linear-gradient(135deg, #ff1744, #dc143c);
+        }
+
+        .newsletter-preferences {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .checkbox-label.small {
+            font-size: 0.8rem;
+            color: var(--light-gray);
+        }
+
+        .checkbox-label.small .checkbox-custom {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Footer Stats */
+        .footer-stats {
+            background: rgba(220, 20, 60, 0.05);
+            padding: var(--spacing-lg) 0;
+            border-bottom: 1px solid rgba(220, 20, 60, 0.2);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: var(--spacing-md);
+        }
+
+        .stat-number {
+            font-family: var(--font-primary);
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--demon-red);
+            text-shadow: 0 0 10px rgba(220, 20, 60, 0.5);
+            margin-bottom: var(--spacing-xs);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease-out;
+        }
+
+        .stat-number.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stat-label {
+            color: var(--white);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Bottom */
+        .footer-bottom {
+            padding: var(--spacing-lg) 0;
+            background: var(--pure-black);
+        }
+
+        .footer-bottom-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-lg);
+            flex-wrap: wrap;
+        }
+
+        .footer-legal {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .copyright {
+            color: var(--light-gray);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .made-with-love {
+            color: var(--demon-red);
+        }
+
+        .made-with-love i {
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .legal-links {
+            display: flex;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .legal-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color var(--transition-normal);
+        }
+
+        .legal-links a:hover {
+            color: var(--demon-red);
+        }
+
+        /* Footer Meta */
+        .footer-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .app-links {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .app-links-label {
+            color: var(--light-gray);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .app-link {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 12px;
+            background: rgba(220, 20, 60, 0.1);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 8px;
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all var(--transition-normal);
+        }
+
+        .app-link:hover {
+            background: rgba(220, 20, 60, 0.2);
+            color: var(--white);
+            border-color: var(--demon-red);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: 8px 12px;
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 8px;
+            color: var(--light-gray);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .language-toggle:hover {
+            background: rgba(220, 20, 60, 0.1);
+            border-color: var(--demon-red);
+            color: var(--white);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            width: 150px;
+            background: var(--gradient-dark);
+            border: 1px solid rgba(220, 20, 60, 0.3);
+            border-radius: 12px;
+            box-shadow: var(--shadow-dark);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all var(--transition-normal);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .language-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .language-option {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-md);
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all var(--transition-normal);
+            border-radius: 8px;
+            margin: 2px;
+        }
+
+        .language-option:hover {
+            background: rgba(220, 20, 60, 0.1);
+            color: var(--white);
+        }
+
+        .language-option.active {
+            background: rgba(220, 20, 60, 0.15);
+            color: var(--demon-red);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .footer-container > .footer-main {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-xl);
+            }
+            
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                padding: 0 var(--spacing-md);
+            }
+            
+            .footer-main {
+                padding: var(--spacing-lg) 0;
+            }
+            
+            .footer-links {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--spacing-md);
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .footer-bottom-content {
+                flex-direction: column;
+                text-align: center;
+                gap: var(--spacing-md);
+            }
+            
+            .footer-meta {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+            
+            .legal-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .footer-newsletter {
+                padding: var(--spacing-md);
+            }
+            
+            .newsletter-input-group {
+                flex-direction: column;
+            }
+            
+            .newsletter-submit {
+                justify-content: center;
+                border-radius: 0 0 10px 10px;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .app-links {
+                flex-direction: column;
+                align-items: center;
+                gap: var(--spacing-sm);
+            }
+        }
+    </style>
+</body>
+</html>

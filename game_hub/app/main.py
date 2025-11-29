@@ -159,26 +159,10 @@ def create_event(
     return db_event
 
 # The rest of your endpoints (like events listing/creating, registrations, feedback posting, sample data) remain unchanged but ensure your models define relationships to User as shown.
-# ===== EVENTS =====
-
-@app.get("/events/my-events", response_model=List[schemas.Event])
-def get_my_events(current_user: models.User = Depends(auth.get_current_user), db: Session = Depends(get_db)):
-    if getattr(current_user, "role", None) != "organizer":
-        return []
-    events = db.query(models.Event).filter(models.Event.organizer_id == current_user.id).all()
-    return events
 
 
-@app.get("/events/", response_model=List[schemas.Event])
-def get_all_events(skip: int = Query(0, ge=0), limit: int = Query(10, le=100), db: Session = Depends(get_db)):
-    events = db.query(models.Event).offset(skip).limit(limit).all()
-    return events
 
 
-@app.get("/events/featured", response_model=List[schemas.Event])
-def get_featured_events(db: Session = Depends(get_db)):
-    events = db.query(models.Event).order_by(models.Event.id.desc()).limit(6).all()
-    return events
 
 @app.post("/test/register-event", response_model=schemas.Registration)
 def register_for_event(

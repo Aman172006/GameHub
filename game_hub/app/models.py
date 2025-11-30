@@ -5,7 +5,7 @@ from .database import Base
 
 class User(Base):
     __tablename__ = "users"
-    
+
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
     email = Column(String(100), unique=True, index=True, nullable=False)
@@ -13,7 +13,32 @@ class User(Base):
     role = Column(String(20), nullable=False, default="player")  # player, organizer, admin
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    
+
+    # Profile fields
+    phone = Column(String(20))
+    date_of_birth = Column(String(20))
+    country = Column(String(50))
+    city = Column(String(100))
+    bio = Column(Text)
+
+    # Gaming profile fields
+    gamer_tag = Column(String(100))
+    skill_level = Column(String(50))
+    gaming_platform = Column(String(50))
+    favorite_genre = Column(String(50))
+    favorite_games = Column(Text)  # Comma-separated list
+    steam_profile = Column(String(200))
+    discord_username = Column(String(100))
+    gaming_achievements = Column(Text)
+
+    # Preferences
+    event_reminders = Column(Boolean, default=True)
+    new_events_notifications = Column(Boolean, default=True)
+    marketing_emails = Column(Boolean, default=False)
+    public_profile = Column(Boolean, default=True)
+    show_online_status = Column(Boolean, default=True)
+    show_gaming_stats = Column(Boolean, default=True)
+
     # Relationships
     organized_events = relationship("Event", back_populates="organizer")
     registrations = relationship("Registration", back_populates="user")

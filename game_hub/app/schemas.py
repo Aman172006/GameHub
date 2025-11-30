@@ -19,9 +19,57 @@ class User(UserBase):
     id: int
     is_active: bool
     created_at: datetime
-    
+
+    # Profile fields
+    phone: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
+    bio: Optional[str] = None
+
+    # Gaming profile fields
+    gamer_tag: Optional[str] = None
+    skill_level: Optional[str] = None
+    gaming_platform: Optional[str] = None
+    favorite_genre: Optional[str] = None
+    favorite_games: Optional[str] = None
+    steam_profile: Optional[str] = None
+    discord_username: Optional[str] = None
+    gaming_achievements: Optional[str] = None
+
+    # Preferences
+    event_reminders: Optional[bool] = True
+    new_events_notifications: Optional[bool] = True
+    marketing_emails: Optional[bool] = False
+    public_profile: Optional[bool] = True
+    show_online_status: Optional[bool] = True
+    show_gaming_stats: Optional[bool] = True
+
     class Config:
         from_attributes = True
+
+# Profile Update Schema
+class UserProfileUpdate(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
+    bio: Optional[str] = None
+    gamer_tag: Optional[str] = None
+    skill_level: Optional[str] = None
+    gaming_platform: Optional[str] = None
+    favorite_genre: Optional[str] = None
+    favorite_games: Optional[str] = None
+    steam_profile: Optional[str] = None
+    discord_username: Optional[str] = None
+    gaming_achievements: Optional[str] = None
+    event_reminders: Optional[bool] = None
+    new_events_notifications: Optional[bool] = None
+    marketing_emails: Optional[bool] = None
+    public_profile: Optional[bool] = None
+    show_online_status: Optional[bool] = None
+    show_gaming_stats: Optional[bool] = None
 
 # Event Schemas
 class EventBase(BaseModel):

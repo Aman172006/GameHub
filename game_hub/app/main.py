@@ -24,7 +24,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Adjust for production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -202,7 +202,10 @@ def register_for_event(
 
 @app.get("/registrations/my-registrations")
 def get_my_registrations(current_user: models.User = Depends(auth.get_current_user), db: Session = Depends(get_db)):
-    registrations = db.query(models.Registration).filter(models.Registration.user_id == current_user.id).all()
+    registrations = db.query(models.Registration)\
+        .options(joinedload(models.Registration.event))\
+        .filter(models.Registration.user_id == current_user.id)\
+        .all()
     return registrations
 
 
@@ -303,6 +306,33 @@ def delete_event(
         raise HTTPException(status_code=500, detail=f"Failed to delete event: {str(e)}")
 
 
-@app.get('/pages/organizer/dashboard.html')
+@app.get('/pages/organizer/dashboard')
 def orgdash() :
     return 'Hello'
+
+from sqlalchemy import func
+from fastapi import Depends
+from .database import get_db
+from . import models
+
+@app.get("/stats/dashboard")
+def get_dashboard_stats(db: Session = Depends(get_db)):
+    active_players = db.query(models.User) \
+        .filter(
+            models.User.role == "player",
+            models.User.is_active == True
+        ).count()
+    live_events = db.query(models.Event) \
+        .filter(models.Event.is_active == True) \
+        .count()
+    game_categories = db.query(
+        func.count(func.distinct(models.Event.category))
+    ).filter(
+        models.Event.is_active == True
+    ).scalar()
+
+    return {
+        "active_players": active_players,
+        "live_events": live_events,
+        "game_categories": game_categories,
+    }

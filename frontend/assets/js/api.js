@@ -170,10 +170,15 @@ class APIClient {
             })
         });
     }
-    
+
     async getEventFeedback(eventId) {
         const endpoint = this.endpoints.FEEDBACK.EVENT_FEEDBACK.replace('{id}', eventId);
         return await this.request(endpoint);
+    }
+
+    // ===== STATS METHODS =====
+    async getDashboardStats() {
+        return await this.request(this.endpoints.STATS.DASHBOARD);
     }
     
     // ===== FALLBACK DATA METHODS =====
